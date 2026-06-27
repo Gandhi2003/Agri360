@@ -1,0 +1,95 @@
+import { NavLink } from 'react-router-dom';
+import { Sprout, X } from 'lucide-react';
+import { cn } from '@lib/cn';
+import { APP_NAME } from '@common/constants';
+import { usePermissions } from '@common/hooks';
+import { useUiStore } from '@app/store';
+import { NAVIGATION, type NavItem } from '@app/router/navigation.config';
+
+function SidebarLink({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
+  const { icon: Icon, label, to } = item;
+  return (
+    <NavLink
+      to={to}
+      title={collapsed ? label : undefined}
+      className={({ isActive }) =>
+        cn(
+          'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+          collapsed && 'justify-center',
+          isActive
+            ? 'bg-primary/10 text-primary'
+            : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+        )
+      }
+    >
+      <Icon className="size-5 shrink-0" />
+      {!collapsed && <span className="truncate">{label}</span>}
+    </NavLink>
+  );
+}
+
+export function Sidebar() {
+  const collapsed = useUiStore((s) => s.sidebarCollapsed);
+  const mobileOpen = useUiStore((s) => s.mobileSidebarOpen);
+  const setMobileOpen = useUiStore((s) => s.setMobileSidebarOpen);
+  const { can } = usePermissions();
+
+  const visibleSections = NAVIGATION.map((section) => ({
+    ...section,
+    items: section.items.filter((item) => !item.permission || can(item.permission)),
+  })).filter((section) => section.items.length > 0);
+
+  return (
+    <>
+      {/* Mobile backdrop */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden
+        />
+      )}
+
+      <aside
+        className={cn(
+          'fixed inset-y-0 left-0 z-40 flex flex-col border-r border-border bg-card transition-[width,transform] duration-200 lg:static lg:translate-x-0',
+          collapsed ? 'w-[72px]' : 'w-64',
+          mobileOpen ? 'translate-x-0' : '-translate-x-full',
+        )}
+      >
+        <div className="flex h-16 items-center justify-between gap-2 border-b border-border px-4">
+          <div
+            className={cn('flex items-center gap-2 overflow-hidden', collapsed && 'justify-center')}
+          >
+            <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
+              <Sprout className="size-5" />
+            </span>
+            {!collapsed && <span className="truncate font-semibold">{APP_NAME}</span>}
+          </div>
+          <button
+            className="rounded-md p-1 text-muted-foreground hover:bg-muted lg:hidden"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close menu"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-4">
+          {visibleSections.map((section) => (
+            <div key={section.title} className="space-y-1">
+              {!collapsed && (
+                <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
+                  {section.title}
+                </p>
+              )}
+              {section.items.map((item) => (
+                <SidebarLink key={item.to} item={item} collapsed={collapsed} />
+              ))}
+            </div>
+          ))}
+        </nav>
+      </aside>
+    </>
+  );
+}
