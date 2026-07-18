@@ -44,10 +44,6 @@ export interface NavSection {
   items: NavItem[];
 }
 
-/**
- * Single source of truth for the sidebar. The router materializes pages from
- * each feature's `routes.ts`; this drives navigation + RBAC visibility.
- */
 export const NAVIGATION: NavSection[] = [
   {
     title: 'Overview',

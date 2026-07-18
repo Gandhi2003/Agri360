@@ -11,13 +11,20 @@ export const formatNumber = (value: number, locale = DEFAULT_LOCALE): string =>
   new Intl.NumberFormat(locale).format(value);
 
 export const formatDate = (
-  value: string | number | Date,
+  value: string | number | Date | null | undefined,
   options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: '2-digit' },
   locale = DEFAULT_LOCALE,
-): string => new Intl.DateTimeFormat(locale, options).format(new Date(value));
+): string => {
+  if (value == null) return '—';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '—';
+  return new Intl.DateTimeFormat(locale, options).format(date);
+};
 
-export const formatDateTime = (value: string | number | Date, locale = DEFAULT_LOCALE): string =>
-  formatDate(value, { dateStyle: 'medium', timeStyle: 'short' }, locale);
+export const formatDateTime = (
+  value: string | number | Date | null | undefined,
+  locale = DEFAULT_LOCALE,
+): string => formatDate(value, { dateStyle: 'medium', timeStyle: 'short' }, locale);
 
 export const formatInitials = (first?: string, last?: string): string =>
   `${first?.[0] ?? ''}${last?.[0] ?? ''}`.toUpperCase() || '?';

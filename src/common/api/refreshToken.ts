@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { env } from '@common/config';
-import type { AuthTokens } from '@common/types';
 import { tokenStore } from './token';
+
+/** Backend envelope for the refresh endpoint (snake_case tokens). */
+interface RefreshEnvelope {
+  data: { access_token: string; refresh_token: string };
+}
 
 /**
  * Single-flight refresh: concurrent 401s share ONE refresh request so we don't
@@ -17,13 +21,15 @@ export const refreshAccessToken = (): Promise<string | null> => {
     if (!refreshToken) return null;
     try {
       // Use a clean axios call (not the intercepted instance) to avoid recursion.
-      const { data } = await axios.post<AuthTokens>(
+      // Because it skips the interceptor, we unwrap the envelope ourselves.
+      const { data: envelope } = await axios.post<RefreshEnvelope>(
         `${env.apiBaseUrl}/auth/refresh`,
-        { refreshToken },
+        { refresh_token: refreshToken },
         { headers: { 'Content-Type': 'application/json' } },
       );
-      tokenStore.setTokens(data.accessToken, data.refreshToken);
-      return data.accessToken;
+      const { access_token, refresh_token } = envelope.data;
+      tokenStore.setTokens(access_token, refresh_token);
+      return access_token;
     } catch {
       tokenStore.clear();
       return null;

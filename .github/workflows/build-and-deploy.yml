@@ -1,0 +1,134 @@
+name: Build, Push, and Deploy Agri360 Web UI
+
+on:
+  push:
+    branches:
+      - main   # -> production
+      - stage  # -> staging
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-south-1
+  ECR_REGISTRY: 822608347701.dkr.ecr.ap-south-1.amazonaws.com
+  ECR_REPOSITORY: wealthified/agri360
+  AWS_ROLE_ARN: arn:aws:iam::822608347701:role/GitHubActionsECRRole
+  CLUSTER_NAME: wealthified-agri360-cluster
+  STAGE_SERVICE_NAME: wealthified-agri360-stage
+  PROD_SERVICE_NAME: wealthified-agri360-prod
+  STAGE_TASK_FAMILY: wealthified-agri360-stage
+  PROD_TASK_FAMILY: wealthified-agri360-prod
+  CONTAINER_NAME: wealthified-agri360
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Determine environment
+        id: meta
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            ENVIRONMENT=production
+            ENV_FILE=.env.prod
+            SERVICE=${{ env.PROD_SERVICE_NAME }}
+            TASK_FAMILY=${{ env.PROD_TASK_FAMILY }}
+            DOMAIN=crm.agri360.wealthified.in
+          else
+            ENVIRONMENT=stage
+            ENV_FILE=.env.stage
+            SERVICE=${{ env.STAGE_SERVICE_NAME }}
+            TASK_FAMILY=${{ env.STAGE_TASK_FAMILY }}
+            DOMAIN=stage.crm.agri360.wealthified.in
+          fi
+          echo "env_name=${ENVIRONMENT}" >> "$GITHUB_OUTPUT"
+          echo "env_file=${ENV_FILE}" >> "$GITHUB_OUTPUT"
+          echo "service=${SERVICE}" >> "$GITHUB_OUTPUT"
+          echo "task_family=${TASK_FAMILY}" >> "$GITHUB_OUTPUT"
+          echo "domain=${DOMAIN}" >> "$GITHUB_OUTPUT"
+          echo "timestamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+
+      - name: Export Environment Variables
+        run: |
+          ENV_FILE="${{ steps.meta.outputs.env_file }}"
+          if [ ! -f "${ENV_FILE}" ]; then
+            echo "::error title=Missing env file::${ENV_FILE} was not found."
+            exit 1
+          fi
+          # Read .env file and export variables to GITHUB_ENV
+          while IFS= read -r line; do
+            # Skip empty lines and comments
+            [ -z "$line" ] && continue
+            case "$line" in \#*) continue ;; esac
+
+            # Extract key and value
+            key="${line%%=*}"
+            value="${line#*=}"
+
+            # Export to GITHUB_ENV for next steps
+            printf '%s<<EOF\n%s\nEOF\n' "$key" "$value" >> "$GITHUB_ENV"
+          done < "${ENV_FILE}"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.meta.outputs.env_name }}-${{ steps.meta.outputs.timestamp }}
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.meta.outputs.env_name }}-latest
+          build-args: |
+            VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}
+            VITE_API_TIMEOUT=${{ env.VITE_API_TIMEOUT }}
+            VITE_APP_NAME=${{ env.VITE_APP_NAME }}
+            VITE_APP_VERSION=${{ env.VITE_APP_VERSION }}
+            VITE_APP_ENV=${{ env.VITE_APP_ENV }}
+            VITE_ENABLE_DEVTOOLS=${{ env.VITE_ENABLE_DEVTOOLS }}
+            VITE_ENABLE_MOCK_API=false
+            VITE_AUTH_STORAGE_KEY=${{ env.VITE_AUTH_STORAGE_KEY }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+      - name: Deploy to ECS
+        env:
+          IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.meta.outputs.env_name }}-${{ steps.meta.outputs.timestamp }}
+          ENVIRONMENT: ${{ steps.meta.outputs.env_name }}
+        run: |
+          chmod +x .github/scripts/update-task-definition.sh
+          .github/scripts/update-task-definition.sh \
+            "${IMAGE}" \
+            "${{ steps.meta.outputs.task_family }}" \
+            "${{ env.CLUSTER_NAME }}" \
+            "${{ steps.meta.outputs.service }}" \
+            "${{ env.AWS_REGION }}" \
+            "${ENVIRONMENT}" \
+            "${{ env.CONTAINER_NAME }}"
+
+      - name: ECS deployment status
+        run: |
+          echo "Deployment initiated. ECS Circuit Breaker will automatically rollback on failure."
+          aws ecs describe-services \
+            --cluster "${{ env.CLUSTER_NAME }}" \
+            --services "${{ steps.meta.outputs.service }}" \
+            --region "${{ env.AWS_REGION }}" \
+            --query 'services[0].{Deployments:deployments[*].{Status:status,RolloutState:rolloutState,RunningCount:runningCount,DesiredCount:desiredCount,FailedTasks:failedTasks},CircuitBreaker:deploymentConfiguration.deploymentCircuitBreaker}' \
+            --output json

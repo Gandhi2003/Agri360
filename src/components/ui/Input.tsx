@@ -24,13 +24,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               {leftIcon}
             </span>
           )}
+
           <input
             ref={ref}
             id={inputId}
             className={cn(
-              'focus-ring h-10 w-full rounded-md border border-input bg-card px-3 text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
+              'focus:ring-0 h-9.5 px-3 py-2 w-full font-medium rounded-md border border-gray5 bg-card text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed no-spinner',
               leftIcon && 'pl-9',
-              error && 'border-danger focus-visible:ring-danger',
+              !error
+                ? ' border-gray1 focus:border-green'
+                : 'border-danger focus-visible:ring-danger',
               className,
             )}
             aria-invalid={Boolean(error)}

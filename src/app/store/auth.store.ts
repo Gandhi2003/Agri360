@@ -46,5 +46,5 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   setInitializing: (value) => set({ isInitializing: value }),
 
-  hasRole: (role) => get().user?.roles.includes(role) ?? false,
+  hasRole: (role) => get().user?.roles?.includes(role) ?? false,
 }));

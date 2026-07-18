@@ -4,7 +4,6 @@ import { AuthProvider } from './AuthProvider';
 import { QueryProvider } from './QueryProvider';
 import { ToastProvider } from './ToastProvider';
 
-/** Composes every cross-cutting provider in the correct order. */
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <ErrorBoundary>

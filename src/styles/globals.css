@@ -1,8 +1,8 @@
+@import 'tailwindcss';
 @import './themes.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Class-based dark mode (v3 `darkMode: 'class'` equivalent). */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   * {
@@ -37,5 +37,24 @@
 @layer components {
   .focus-ring {
     @apply outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  /* Thin scrollbar for scrollable panels (sidebar, main content) */
+  .thin-scroll::-webkit-scrollbar {
+    width: 3px;
+  }
+  .thin-scroll::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    height: 20px;
+  }
+
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .no-spinner[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
   }
 }

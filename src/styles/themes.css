@@ -1,8 +1,613 @@
-/**
- * Design tokens — light & dark. Values are space-separated RGB channels so
- * Tailwind's `rgb(var(--token) / <alpha-value>)` can apply opacity.
- */
+@theme {
+  /* ─── GRID AUTO ROWS ─────────────────────────────────── */
+  --grid-auto-rows-2fr: minmax(0, 2fr);
 
+  /* ─── COLORS ─────────────────────────────────────────── */
+  --color-customBlue: rgba(193, 193, 255, 1);
+  --color-black10: #17181a;
+  --color-bb2230: #bb2230;
+  --color-444584: #444584;
+  --color-1e2e5a: #1e2e5a;
+  --color-black20: #464646;
+  --color-black5: #454545;
+  --color-black8: #383839;
+  --color-black14: #17181a;
+  --color-black15: #34343f;
+  --color-black16: #070716;
+  --color-red: #eb1414;
+  --color-primary: #2d3090;
+  --color-blue20: #474a9e;
+  --color-purple: #603d71;
+  --color-paleblue: #87a5fd;
+  --color-stroke: #c3d2fe;
+  --color-hover: #f4f8ff;
+  --color-gray-border: #c4c4c4;
+  --color-gray: #e5e5e5;
+  --color-gray0011: #404255;
+  --color-gray1: #eeeeee;
+  --color-gray2: #e7e7f3;
+  --color-gray3: #dcdcdc;
+  --color-gray4: #7e8494;
+  --color-gray5: #1d252d1a;
+  --color-gray6: #c7c7c7;
+  --color-gray7: #f1f3f6;
+  --color-gray8: #7e7e7e;
+  --color-gray9: #a4a4a4;
+  --color-gray10: #f1f1f1;
+  --color-gray11: #ededed;
+  --color-gray12: #ededfc;
+  --color-gray13: #464665;
+  --color-gray14: #e8e8f8;
+  --color-gray15: #30396e;
+  --color-gray16: #171b1a;
+  --color-gray17: #171b1a;
+  --color-gray18: #3c3c3c;
+  --color-gray19: #2f3036;
+  --color-gray20: #3b3c43;
+  --color-gray21: #f5f5f5;
+  --color-gray22: #e8e8e8;
+  --color-gray23: #dde0eb;
+  --color-gray24: #c7cbd6;
+  --color-gray25: #efeff8;
+  --color-gray26: #bdbdbd;
+  --color-gray27: #f3f3f4;
+  --color-gray28: #f9f9f9;
+  --color-gray30: #eff0f9;
+  --color-gray35: #f6f6f6;
+  --color-gray36: #65677b;
+  --color-gray40: #8a8c9f;
+  --color-gray41: #f7f7fd;
+  --color-gray42: #abafba;
+  --color-gray43: #eaeaf3;
+  --color-gray44: #5d5e60;
+  --color-gray45: #8e8e8e;
+  --color-gray50: #a4a4c6;
+  --color-gray60: #919191;
+  --color-gray70: #ebebeb;
+  --color-gray80: #d9daf5;
+  --color-gray90: #eff0fa;
+  --color-gray91: #e0e0e0;
+  --color-gray-700: #828282;
+  --color-gray-100: #eeeeee;
+  --color-gray100: #919598;
+  --color-gray200: #cccccc;
+  --color-gray250: #989898;
+  --color-gray300: #999999;
+  --color-gray350: #747474;
+  --color-gray400: #666666;
+  --color-gray600: #666666;
+  --color-gray800: #333333;
+  --color-gray900: #7d7d7d;
+  --color-dark: #202020;
+  --color-light: #fafafa;
+  --color-drover: #fdf7ad;
+  --color-cosmos: #ffd8d9;
+  --color-tequila: #ffe6c7;
+  --color-madang: #b7f0be;
+  --color-error-state: #eb1414;
+  --color-suceess-state: #2e7d32;
+  --color-B7C9FE: #b7c9fe;
+  --color-lightred: #fd9898;
+  --color-washedred: #fddad5;
+  --color-bronze: #f2e2da;
+  --color-strokeblue: #e0e5ff;
+  --color-lightpink: #ffd8d8;
+  --color-lightblue: #bfeaff;
+  --color-blackcurrent: #f2d8ff;
+  --color-lightgreen: #bfffca;
+  --color-mango: #ffeabf;
+  --color-strokegreen: #a5e99e;
+  --color-carmine: #d70040;
+  --color-ferngreen: #4f7942;
+  --color-warning: #ffcc00;
+  --color-success: #99cc33;
+  --color-successdark: #339900;
+  --color-failure: #ff9966;
+  --color-failuredark: #cc3300;
+  --color-verified: #18943c;
+  --color-notverified: #a00000;
+  --color-signred: #eb1414;
+  --color-lightViolet: #bfc1ff;
+  --color-washedgreen: #d4e9d2;
+  --color-babypink: #ffd8d8;
+  --color-crayolaorange: #f3603c;
+  --color-liner1: #bb2230;
+  --color-green: #0c8021;
+  --color-green40: #17803d;
+  --color-green30: #24d1ad;
+  --color-green20: #29ab65;
+  --color-green10: #e9fbf1;
+  --color-green5: #eefcf3;
+  --color-green6: #1bc59b;
+  --color-green7: #39bd1b;
+  --color-green8: #13a83d;
+  --color-lightgreen40: #81c9a8;
+  --color-lightgreen41: #eaf7ee;
+  --color-ligtblue: #e4f7f4;
+  --color-blue100: #1c987e;
+  --color-blue200: #5654d4;
+  --color-blue250: #20b3d0;
+  --color-blue400: #7facd7;
+  --color-orange20: #f3712b;
+  --color-orange21: #b45309;
+  --color-lightorange21: #fef6ec;
+  --color-lightred23: #fceeee;
+  --color-lightred24: #fbeded;
+  --color-ligtblue10: #e5faf0;
+  --color-ligtblue30: #4c4c9a;
+  --color-yellow5: #f5ae3d;
+  --color-yellow10: #fbf6c8;
+  --color-yellow15: #f0bd18;
+  --color-yellow20: #dc9440;
+  --color-yellow30: #d19a24;
+  --color-yellow40: #eec455;
+  --color-yellow100: #98661c;
+  --color-yellow101: #fff4e5;
+  --color-red102: #900b09;
+  --color-red100: #981c1c;
+  --color-red200: #dd4949;
+  --color-red10: #fde9ed;
+  --color-red20: #eb1e44;
+  --color-red30: #d12424;
+  --color-red50: #ee8d86;
+  --color-red60: #ce2323;
+  --color-red70: #f38a8a;
+  --color-Purple: #9f57bd;
+  --color-Pink: #da58c4;
+  --color-brone: #fff6ec;
+  --color-brone30: #ffebdd;
+  --color-brone10: #fbf8fa;
+  --color-brone20: #b178ed;
+  --color-brone21: #a1620a;
+  --color-brone40: #9992d5;
+  --color-blue40: #e2f9fd;
+  --color-blue10: #1a9ab3;
+  --color-blue11: #898dff;
+  --color-blue15: #203090;
+  --color-blue16: #3498db;
+  --color-blue50: #364d63;
+  --color-black1: #1a1a1a;
+  --color-black3: #2f2f2f;
+  --color-EBEBFF: #ebebff;
+  --color-D6BEEA: #d6beea;
+  --color-FCDFA1: #fcdfa1;
+  --color-EEFDA4: #eefda4;
+  --color-B3D6EB: #b3d6eb;
+  --color-A7A6A6: #a7a6a6;
+  --color-F2CDBA: #f2cdba;
+  --color-D9D9D9: #d9d9d9;
+  --color-custom-start: #bb2230;
+  --color-custom-middle: #444584;
+  --color-custom-end: #1e2e5a;
+  --color-boredres: rgba(229, 229, 229, 1);
+  --color-gray340: rgba(220, 220, 220, 1);
+  --color-char-1: rgba(243, 96, 60, 1);
+  --color-white-light: rgba(255, 255, 255, 0.72);
+  --color-gray-200: rgba(0, 0, 0, 0.6);
+  --color-gray-300: rgba(70, 70, 70, 0.72);
+  --color-gray-400: rgba(70, 70, 70, 0.55);
+  --color-gray-440: rgba(0, 0, 0, 0.04);
+  --color-gray750: rgba(0, 0, 0, 0.3);
+  --color-gray130: rgba(70, 70, 70, 0.47);
+  --color-gray110: rgba(0, 0, 0, 0.72);
+  --color-gray140: rgba(13, 13, 13, 1);
+  --color-gray141: rgba(240, 240, 240, 1);
+  --color-gray144: rgba(48, 57, 110, 0.18);
+  --color-gray145: rgba(204, 204, 204, 0.8);
+  --color-gray147: rgba(59, 60, 67, 0.84);
+  --color-gray148: rgba(0, 0, 0, 0.08);
+  --color-gray149: rgba(59, 60, 67, 0.64);
+  --color-gray150: rgba(189, 189, 189, 1);
+  --color-blue30: rgba(45, 48, 144, 0.44);
+  --color-gray222: rgba(0, 0, 0, 0.08);
+  --color-black111: #2f3e46;
+  --color-blue112: #239cdc;
+  --color-blue132: #5157bd;
+  --color-blue133: #aecbfa;
+  --color-yellow113: #d7a11e;
+  --color-green211: #64a450;
+  --color-green212: #b6e3b6;
+  --color-green213: #ecfeee;
+  --color-green33: #077412;
+  --color-blue120: #ecf3fe;
+  --color-blue121: #073073;
+  --color-red111: #f8b6b8;
+  --color-brone22: #72619e;
+  --color-rose123: #e9497f;
+  --color-red113: #feecec;
+  --color-red114: #74060a;
+
+  /* ─── FONT SIZES ─────────────────────────────────────── */
+  --text-displaylarge: 64px;
+  --text-displaylarge--line-height: 72px;
+  --text-displaylarge--letter-spacing: 0px;
+
+  --text-displaymedium: 56px;
+  --text-displaymedium--line-height: 64px;
+  --text-displaymedium--letter-spacing: 0px;
+
+  --text-displaysmall: 40px;
+  --text-displaysmall--line-height: 48px;
+  --text-displaysmall--letter-spacing: 0px;
+
+  --text-headingxlarge: 36px;
+  --text-headingxlarge--line-height: 44px;
+  --text-headingxlarge--letter-spacing: 0px;
+
+  --text-headinglarge: 30px;
+  --text-headinglarge--line-height: 36px;
+  --text-headinglarge--letter-spacing: 0px;
+
+  --text-headingmedium: 28px;
+  --text-headingmedium--line-height: 36px;
+  --text-headingmedium--letter-spacing: 0px;
+
+  --text-headingsmall: 24px;
+  --text-headingsmall--line-height: 32px;
+  --text-headingsmall--letter-spacing: 0px;
+
+  --text-titlelarge2: 20px;
+  --text-titlelarge2--line-height: 30px;
+  --text-titlelarge2--letter-spacing: 0px;
+
+  --text-titlelarge: 20px;
+  --text-titlelarge--line-height: 26px;
+  --text-titlelarge--letter-spacing: 0px;
+
+  --text-titlemedium: 16px;
+  --text-titlemedium--line-height: 24px;
+  --text-titlemedium--letter-spacing: 0.15px;
+
+  --text-textIputmedium: 12px;
+  --text-textIputmedium--line-height: 20px;
+  --text-textIputmedium--letter-spacing: 0.1px;
+
+  --text-labelextrasmall: 12px;
+  --text-labelextrasmall--line-height: 14px;
+  --text-labelextrasmall--letter-spacing: 0px;
+
+  --text-titlesmall: 14px;
+  --text-titlesmall--line-height: 20px;
+  --text-titlesmall--letter-spacing: 0.1px;
+
+  --text-titleextrasmall: 12px;
+  --text-titleextrasmall--line-height: 16px;
+  --text-titleextrasmall--letter-spacing: 0.25px;
+
+  --text-titledoubleextrasmall: 10px;
+  --text-titledoubleextrasmall--line-height: 14px;
+  --text-titledoubleextrasmall--letter-spacing: 0.25px;
+
+  --text-labelxrlarge: 18px;
+  --text-labelxrlarge--line-height: 20px;
+  --text-labelxrlarge--letter-spacing: 0.1px;
+
+  --text-labellarge: 16px;
+  --text-labellarge--line-height: 20px;
+  --text-labellarge--letter-spacing: 0px;
+
+  --text-labelmedium: 14px;
+  --text-labelmedium--line-height: 20px;
+  --text-labelmedium--letter-spacing: 0px;
+
+  --text-labelsmall: 12px;
+  --text-labelsmall--line-height: 16px;
+  --text-labelsmall--letter-spacing: 0.5px;
+
+  --text-labelsmall1: 12px;
+  --text-labelsmall1--line-height: 18px;
+  --text-labelsmall1--letter-spacing: 0px;
+
+  --text-labelxsmall: 12px;
+  --text-labelxsmall--line-height: 20px;
+  --text-labelxsmall--letter-spacing: 0px;
+
+  --text-buttonlarge: 16px;
+  --text-buttonlarge--line-height: 24px;
+  --text-buttonlarge--letter-spacing: 0.25px;
+
+  --text-buttonmedium: 14px;
+  --text-buttonmedium--line-height: 16px;
+  --text-buttonmedium--letter-spacing: 0px;
+
+  --text-buttonxsmall: 14px;
+  --text-buttonxsmall--line-height: 20px;
+  --text-buttonxsmall--letter-spacing: 0.1px;
+
+  --text-bodyextralarge: 18px;
+  --text-bodyextralarge--line-height: 26px;
+  --text-bodyextralarge--letter-spacing: 0.15px;
+
+  --text-bodylarge: 16px;
+  --text-bodylarge--line-height: 24px;
+  --text-bodylarge--letter-spacing: 0.15px;
+
+  --text-bodymedium: 14px;
+  --text-bodymedium--line-height: 20px;
+  --text-bodymedium--letter-spacing: 0.08px;
+
+  --text-bodysmall: 12px;
+  --text-bodysmall--line-height: 16px;
+  --text-bodysmall--letter-spacing: 0px;
+
+  --text-bodyextrasmall: 10px;
+  --text-bodyextrasmall--line-height: 14px;
+  --text-bodyextrasmall--letter-spacing: 0.25px;
+
+  --text-plarge: 16px;
+  --text-plarge--line-height: 26px;
+  --text-plarge--letter-spacing: 0px;
+
+  --text-psmall: 14px;
+  --text-psmall--line-height: 24px;
+  --text-psmall--letter-spacing: 0px;
+
+  --text-pxsmall: 12px;
+  --text-pxsmall--line-height: 24px;
+  --text-pxsmall--letter-spacing: 0px;
+
+  --text-numberpsmall: 9px;
+  --text-numberpsmall--line-height: 16px;
+  --text-numberpsmall--letter-spacing: 0px;
+
+  --text-pxlsmall: 12px;
+  --text-pxlsmall--line-height: 20px;
+  --text-pxlsmall--letter-spacing: 0.1px;
+
+  --text-Avsmall: 10px;
+  --text-Avsmall--line-height: 18px;
+  --text-Avsmall--letter-spacing: 0px;
+
+  --text-buttonlarge: 18px;
+  --text-buttonlarge--line-height: 28px;
+  --text-buttonlarge--letter-spacing: 0px;
+
+  /* ─── BACKGROUND IMAGES (vars only — not a v4 utility namespace) ── */
+  --background-image-linergreen: linear-gradient(128deg, #778e1f 16.61%, #c4dd64 107.02%);
+  --background-image-linerblue20: linear-gradient(117.26deg, #28aeac 23.28%, #3adfdc 74.98%);
+  --background-image-linerblue30: linear-gradient(213.5deg, #4c36c3 34.5%, #7f6af8 71.66%);
+  --background-image-linerblue40: linear-gradient(128.16deg, #0489be -5.67%, #6ed4fc 100%);
+  --background-image-linerorange: linear-gradient(125.54deg, #f2530f 18.1%, #f29b36 85.55%);
+  --background-image-linerbrone: linear-gradient(128.16deg, #9a05f5 -5.67%, #eb9cfc 100%);
+  --background-image-customline-gradient: linear-gradient(
+    36deg,
+    #1e2e5a 0%,
+    #444584 30%,
+    #bb2230 100%
+  );
+  --background-image-customline-gradients: linear-gradient(
+    19deg,
+    #1e2e5a 0%,
+    #444584 30%,
+    #bb2230 100%
+  );
+  --background-image-box-gradients: linear-gradient(32deg, #1e2e5a 0%, #444584 30%, #bb2230 100%);
+  --background-image-customline: linear-gradient(174deg, #1e2e5a 0%, #444584 30%, #bb2230 100%);
+  --background-image-liner: linear-gradient(2deg, #1e2e5a 0%, #444584 30%, #bb2230 100%);
+  --background-image-customermeg: linear-gradient(270deg, #6dd1a2 0%, #1b8d55 100%);
+  --background-image-save-button: linear-gradient(157deg, #824261 0%, #4f5599 100%);
+  --background-image-backgroundchartline: linear-gradient(180deg, #2cc1be 0%, #67e6e4 100%);
+  --background-image-inr: url(https://static.wealthified.in/crm/assets/images/inr.png);
+  --background-image-percent: url(https://static.wealthified.in/crm/assets/images/percent.png);
+  --background-image-search: url(https://static.wealthified.in/crm/assets/svg/search.svg);
+
+  /* ─── BACKGROUND POSITIONS (vars only) ───────────────── */
+  --background-position-left8: center left 8px;
+  --background-position-right8: center right 8px;
+
+  /* ─── FONT WEIGHTS ───────────────────────────────────── */
+  --font-weight-extra-light: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* ─── LETTER SPACING ─────────────────────────────────── */
+  --tracking-0_5: 0.5px;
+  --tracking-0_10: 0.1px;
+  --tracking-0_15: 0.15px;
+  --tracking-0_25: 0.25px;
+  --tracking-0_50: 0.5px;
+
+  /* ─── SPACING ────────────────────────────────────────── */
+  --spacing-0px: 0px;
+  --spacing-1px: 1px;
+  --spacing-1_5px: 1.5px;
+  --spacing-2px: 2px;
+  --spacing-3px: 3px;
+  --spacing-4px: 4px;
+  --spacing-5px: 5px;
+  --spacing-6px: 6px;
+  --spacing-7px: 7px;
+  --spacing-8px: 8px;
+  --spacing-9px: 9px;
+  --spacing-10px: 10px;
+  --spacing-11px: 11px;
+  --spacing-12px: 12px;
+  --spacing-14px: 14px;
+  --spacing-15px: 15px;
+  --spacing-16px: 16px;
+  --spacing-17px: 17px;
+  --spacing-18px: 18px;
+  --spacing-20px: 20px;
+  --spacing-22px: 22px;
+  --spacing-24px: 24px;
+  --spacing-28px: 28px;
+  --spacing-32px: 32px;
+  --spacing-36px: 36px;
+  --spacing-38px: 38px;
+  --spacing-40px: 40px;
+  --spacing-44px: 44px;
+  --spacing-48px: 48px;
+  --spacing-70px: 70px;
+  --spacing-100px: 100px;
+  --spacing-24rem: 24rem;
+
+  /* ─── INSET (vars only) ──────────────────────────────── */
+  --inset-20px: 20px;
+
+  /* ─── BORDER RADIUS ──────────────────────────────────── */
+  --radius-2px: 2px;
+  --radius-4px: 4px;
+  --radius-6px: 6px;
+  --radius-8px: 8px;
+  --radius-100px: 100px;
+
+  /* ─── BORDER WIDTH (vars only) ───────────────────────── */
+  --border-width-0: 0px;
+  --border-width-2: 2px;
+  --border-width-4: 4px;
+  --border-width-8: 8px;
+  --border-width-9: 9px;
+
+  /* ─── WIDTH (vars only) ──────────────────────────────── */
+  --width-body-content: calc(100% - 24rem);
+  --width-2px: 2px;
+  --width-44px: 44px;
+  --width-122px: 122px;
+  --width-205px: 205px;
+
+  /* ─── BOX SHADOWS ────────────────────────────────────── */
+  --shadow-2xsl: 0px 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-cards: 0px 4px 10px 0px rgba(214, 214, 214, 0.35);
+  --shadow-cardslist: 0px 4px 6px 0px rgba(214, 214, 214, 0.12);
+  --shadow-filtermenu: 0px 0px 10.3px 0px rgba(0, 0, 0, 0.14);
+  --shadow-dropmenu: 0px 0px 8px 0px rgba(0, 0, 0, 0.11);
+  --shadow-report: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+  --shadow-custom: 0px 0px 9.1px 0px rgba(0, 0, 0, 0.1);
+  --shadow-custom1: 0px 0px 26px 0px rgba(190, 190, 190, 0.25);
+  --shadow-inbox: 0px 0px 10px 0px rgba(214, 214, 214, 0.61);
+  --shadow-customTable: 1px 0px 7px 0px rgba(0, 0, 0, 0.1);
+  --shadow-boxsetting: 0px 0px 26px 0px rgba(190, 190, 190, 0.25);
+  --shadow-buttonOn: 0px 4px 4px 0px rgba(137, 141, 255, 0.24);
+  --shadow-buttonOFF: 0px 4px 4px 0px rgba(185, 155, 217, 0.24);
+  --shadow-orderBox: 0px 4px 7px 0px rgba(0, 0, 0, 0.2);
+
+  /* ─── Z-INDEX (vars only) ────────────────────────────── */
+  --z--1: -1;
+  --z-1: 1;
+  --z-9: 9;
+  --z-999: 999;
+
+  /* ─── HEIGHT (vars only) ─────────────────────────────── */
+  --height-body: calc(100vh - 56px);
+  --height-body1: calc(100vh - 218px);
+  --height-body2: calc(100vh - 100px);
+  --height-chat: calc(100vh - 57px - 85px);
+  --height-feedChat: calc(100% - 44px - 28px - 17px - 25px);
+  --height-comment: calc(100vh - 57px - 85px - 151px);
+  --height-userFeed: calc(100vh - 50px - 200px - 42px);
+  --height-historyDrawer: calc(100vh - 51px - 51px);
+  --height-historyDrawerReminder: calc(100vh - 51px);
+  --height-historyDrawerFunds: calc(100vh - 240px);
+  --height-OverflowYHeight: calc(100vh - 140px);
+  --height-OverflowRemiderYHeight: calc(100vh - 140px);
+  --height-historyDrawerChat: calc(100vh - 140px);
+  --height-archiveDrawerChat: calc(100vh - 60px);
+  --height-ConversationDrawerChat: calc(100vh - 90px);
+  --height-BanKTimellineOverflow: calc(100vh - 366px);
+  --height-KYChistoryDrawer: calc(100vh - 110px);
+  --height-historyDrawerCart: calc(100vh - 195px);
+
+  /* ─── MIN HEIGHT (vars only) ─────────────────────────── */
+  --min-height-minbank: 65px;
+
+  /* ─── BREAKPOINTS ────────────────────────────────────── */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* =========================================================================
+   * App "chrome" semantic tokens — kept from the original Agri360 scaffold so
+   * existing utilities (bg-background, text-foreground, border-border, bg-card,
+   * bg-muted, ring-ring, bg-danger/info, brand-*, etc.) keep working and stay
+   * theme-able via the :root / .dark runtime variables below.
+   *
+   * Placed AFTER the design-system block so the status set (success/warning/
+   * danger/info) stays internally consistent — `--color-success` and
+   * `--color-warning` here intentionally override the generic palette values
+   * above for the app's status colours. `--color-primary` is NOT redefined, so
+   * the design-system indigo (#2d3090) wins.
+   * ====================================================================== */
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-border: rgb(var(--border));
+  --color-input: rgb(var(--input));
+  --color-ring: rgb(var(--ring));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-success: rgb(var(--success));
+  --color-warning: rgb(var(--warning));
+  --color-danger: rgb(var(--danger));
+  --color-info: rgb(var(--info));
+
+  --color-brand-50: rgb(var(--brand-50));
+  --color-brand-100: rgb(var(--brand-100));
+  --color-brand-200: rgb(var(--brand-200));
+  --color-brand-300: rgb(var(--brand-300));
+  --color-brand-400: rgb(var(--brand-400));
+  --color-brand-500: rgb(var(--brand-500));
+  --color-brand-600: rgb(var(--brand-600));
+  --color-brand-700: rgb(var(--brand-700));
+  --color-brand-800: rgb(var(--brand-800));
+  --color-brand-900: rgb(var(--brand-900));
+  --color-brand-950: rgb(var(--brand-950));
+
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  /* Radius scale used by rounded-sm/md/lg (was borderRadius in JS config). */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+
+  /* Animations (was keyframes + animation in JS config). */
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-slide-in-right: slide-in-right 0.25s ease-out;
+  --animate-scale-in: scale-in 0.15s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+ * Runtime theme variables (space-separated RGB channels). The semantic
+ * `--color-*` tokens above resolve these at runtime, so swapping them under
+ * `.dark` re-themes the app.
+ * ========================================================================== */
 :root {
   --radius: 0.625rem;
 
@@ -28,7 +633,7 @@
   --muted-foreground: 100 116 139;
   --border: 226 232 240;
   --input: 226 232 240;
-  --ring: 22 163 74;
+  --ring: 45 48 144; /* brand indigo #2d3090 — focus ring on inputs & buttons */
   --primary: 22 163 74;
   --primary-foreground: 255 255 255;
   --success: 22 163 74;
@@ -46,7 +651,7 @@
   --muted-foreground: 148 163 184;
   --border: 39 51 47;
   --input: 39 51 47;
-  --ring: 34 197 94;
+  --ring: 135 165 253; /* lighter brand indigo (paleblue) for contrast on dark */
   --primary: 34 197 94;
   --primary-foreground: 5 20 10;
   --success: 34 197 94;

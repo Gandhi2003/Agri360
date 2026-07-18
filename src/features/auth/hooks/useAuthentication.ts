@@ -6,7 +6,6 @@ import { useAuthStore } from '@app/store';
 import type { ForgotPasswordPayload, LoginPayload, ResetPasswordPayload } from '@common/types';
 import { authApi } from '../api/authentication.api';
 
-/** Authenticate, persist the session, then route to the dashboard (or `redirectTo`). */
 export const useLogin = (redirectTo: string = ROUTES.DASHBOARD) => {
   const navigate = useNavigate();
   const setSession = useAuthStore((s) => s.setSession);
@@ -21,7 +20,6 @@ export const useLogin = (redirectTo: string = ROUTES.DASHBOARD) => {
   });
 };
 
-/** Clear the server session + local state, then return to login. */
 export const useLogout = () => {
   const navigate = useNavigate();
   const clearSession = useAuthStore((s) => s.clearSession);

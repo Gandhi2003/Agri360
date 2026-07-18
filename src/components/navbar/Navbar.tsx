@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { Bell, LogOut, Menu, PanelLeftClose, PanelLeft, Settings, User } from 'lucide-react';
+import { Bell, LogOut, Menu, Settings, User } from 'lucide-react';
 import { ROUTES } from '@common/constants';
 import { useAuth } from '@common/hooks';
-import { useAuthStore, useUiStore } from '@app/store';
+import { useLogout } from '@features/auth';
+import { useUiStore } from '@app/store';
 import { Avatar } from '@components/ui/Avatar';
 import { Button } from '@components/ui/Button';
 import { Dropdown } from '@components/ui/Dropdown';
@@ -12,18 +13,13 @@ import { ThemeToggle } from '@components/shared/ThemeToggle';
 export function Navbar() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const clearSession = useAuthStore((s) => s.clearSession);
-  const toggleSidebar = useUiStore((s) => s.toggleSidebar);
-  const collapsed = useUiStore((s) => s.sidebarCollapsed);
+  const { mutate: logout } = useLogout();
+  // const toggleSidebar = useUiStore((s) => s.toggleSidebar);
+  // const collapsed = useUiStore((s) => s.sidebarCollapsed);
   const setMobileOpen = useUiStore((s) => s.setMobileSidebarOpen);
 
-  const logout = () => {
-    clearSession();
-    navigate(ROUTES.LOGIN);
-  };
-
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-border bg-card/80 px-4 backdrop-blur">
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-border border-[#e5e5e5] bg-card/80 px-4 backdrop-blur">
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
@@ -34,7 +30,7 @@ export function Navbar() {
         >
           <Menu className="size-5" />
         </Button>
-        <Button
+        {/* <Button
           variant="ghost"
           size="icon"
           className="hidden lg:inline-flex"
@@ -42,7 +38,7 @@ export function Navbar() {
           aria-label="Toggle sidebar"
         >
           {collapsed ? <PanelLeft className="size-5" /> : <PanelLeftClose className="size-5" />}
-        </Button>
+        </Button> */}
         <div className="hidden md:block">
           <Breadcrumb />
         </div>

@@ -48,7 +48,12 @@ export default function ResetPasswordPage() {
           error={errors.confirmPassword?.message}
           {...register('confirmPassword')}
         />
-        <Button type="submit" fullWidth isLoading={reset.isPending}>
+        <Button
+          type="submit"
+          fullWidth
+          isLoading={reset.isPending}
+          className="rounded-lg  px-6 py-2 text-buttonlarge font-bold cursor-pointer text-white transition duration-300 ease-in-out hover:border hover:bg-white! hover:text-primary! hover:boredr-primary border-primary"
+        >
           Reset password
         </Button>
       </form>

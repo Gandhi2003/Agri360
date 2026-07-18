@@ -1,1 +1,16 @@
+# Run type checking on the whole project
+echo "Running type check..."
+pnpm type-check:staged
+
+# Run lint-staged for formatting and linting
+echo "Running lint-staged..."
 pnpm exec lint-staged
+
+# Bump patch version before commit
+echo "Bumping patch version..."
+node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));const v=p.version.split('.');v[2]=String(+v[2]+1);p.version=v.join('.');fs.writeFileSync('package.json',JSON.stringify(p,null,2)+'\n');"
+
+# Add the updated package.json to the commit
+git add package.json
+
+echo "Linting, formatting, and version bump completed"

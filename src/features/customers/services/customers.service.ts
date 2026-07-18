@@ -2,11 +2,6 @@ import type { PaginationParams } from '@common/types';
 import { customersApi } from '../api/customers.api';
 import type { CreateCustomerDto, CustomerFilters, CustomerId, UpdateCustomerDto } from '../types';
 
-/**
- * Application/service layer for Customer Management.
- * Encapsulates orchestration & business rules, keeping the API layer thin
- * and the UI/hooks layer free of domain logic (Clean Architecture).
- */
 export const customersService = {
   getList: (params: PaginationParams & CustomerFilters) => customersApi.list(params),
   getOne: (id: CustomerId) => customersApi.getById(id),

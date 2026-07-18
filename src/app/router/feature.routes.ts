@@ -1,7 +1,7 @@
 // AUTO-AGGREGATED feature route table. Regenerate via scripts/generate.mjs.
 import type { FeatureRoute } from '@common/types';
 import { dashboardRoutes } from '@features/dashboard/routes';
-import { authenticationRoutes } from '@features/authentication/routes';
+import { authenticationRoutes } from '@features/auth/routes';
 import { usersRoutes } from '@features/users/routes';
 import { rolesRoutes } from '@features/roles/routes';
 import { permissionsRoutes } from '@features/permissions/routes';
@@ -28,7 +28,6 @@ import { notificationsRoutes } from '@features/notifications/routes';
 import { settingsRoutes } from '@features/settings/routes';
 import { profileRoutes } from '@features/profile/routes';
 
-/** Flattened list of every feature's protected routes. */
 export const featureRoutes: FeatureRoute[] = [
   ...dashboardRoutes,
   ...authenticationRoutes,

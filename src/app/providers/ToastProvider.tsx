@@ -1,7 +1,6 @@
 import { Toaster } from 'react-hot-toast';
 import { TOAST_DURATION_MS } from '@common/constants';
 
-/** Global toast portal, themed against the design tokens. */
 export function ToastProvider() {
   return (
     <Toaster

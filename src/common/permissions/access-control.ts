@@ -3,14 +3,15 @@ import { ROLE_PERMISSIONS } from './permission.registry';
 
 /** True if any of the user's roles is granted a wildcard (`*`) — e.g. SuperAdmin. */
 const hasWildcard = (roles: Role[]): boolean =>
-  roles.some((role) => ROLE_PERMISSIONS[role] === '*');
+  Array.isArray(roles) && roles.some((role) => ROLE_PERMISSIONS[role] === '*');
 
 /** Resolve the effective permission set for a user (own grants ∪ role grants). */
 export const resolvePermissions = (
   user: Pick<AuthUser, 'roles' | 'permissions'>,
 ): Set<Permission> => {
-  const set = new Set<Permission>(user.permissions);
-  for (const role of user.roles) {
+  const roles = Array.isArray(user.roles) ? user.roles : [];
+  const set = new Set<Permission>(Array.isArray(user.permissions) ? user.permissions : []);
+  for (const role of roles) {
     const granted = ROLE_PERMISSIONS[role];
     if (granted === '*') continue;
     granted?.forEach((p) => set.add(p));
@@ -44,5 +45,5 @@ export const canAny = (
 export const hasRole = (user: Pick<AuthUser, 'roles'> | null, roles: Role[]): boolean => {
   if (!user) return false;
   if (roles.length === 0) return true;
-  return user.roles.some((r) => roles.includes(r));
+  return Array.isArray(user.roles) && user.roles.some((r) => roles.includes(r));
 };

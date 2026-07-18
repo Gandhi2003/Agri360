@@ -1,4 +1,3 @@
-// Authentication relies on the shared auth contracts in `@common/types`.
 export type {
   AuthTokens,
   AuthUser,
@@ -7,3 +6,9 @@ export type {
   LoginResponse,
   ResetPasswordPayload,
 } from '@common/types';
+
+export type TokenResponse = {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+};

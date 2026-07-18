@@ -11,9 +11,9 @@ const NotFoundPage = lazy(() => import('@/routes/NotFoundPage'));
 const ForbiddenPage = lazy(() => import('@/routes/ForbiddenPage'));
 
 // Public auth pages (no protected aggregation).
-const LoginPage = lazy(() => import('@features/authentication/pages/LoginPage'));
-const ForgotPasswordPage = lazy(() => import('@features/authentication/pages/ForgotPasswordPage'));
-const ResetPasswordPage = lazy(() => import('@features/authentication/pages/ResetPasswordPage'));
+const LoginPage = lazy(() => import('@features/auth/pages/LoginPage'));
+const ForgotPasswordPage = lazy(() => import('@features/auth/pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('@features/auth/pages/ResetPasswordPage'));
 
 const withSuspense = (Component: ComponentType) => (
   <Suspense fallback={<Loader />}>
@@ -21,7 +21,6 @@ const withSuspense = (Component: ComponentType) => (
   </Suspense>
 );
 
-/** Materialize a declarative FeatureRoute into a guarded React Router object. */
 const toRouteObject = (route: FeatureRoute): RouteObject => {
   const Component = lazy(route.component);
   return {

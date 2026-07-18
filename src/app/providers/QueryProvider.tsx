@@ -4,7 +4,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { env } from '@common/config';
 import { handleApiError } from '@common/api';
 
-/** Creates a QueryClient with sane enterprise defaults + centralized error toasts. */
 const createQueryClient = (): QueryClient =>
   new QueryClient({
     defaultOptions: {
@@ -21,7 +20,6 @@ const createQueryClient = (): QueryClient =>
   });
 
 export function QueryProvider({ children }: { children: ReactNode }) {
-  // One client per app instance (kept in state so HMR doesn't recreate it).
   const [queryClient] = useState(createQueryClient);
 
   return (

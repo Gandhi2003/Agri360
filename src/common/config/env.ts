@@ -17,7 +17,6 @@ export const env = {
   appName: import.meta.env.VITE_APP_NAME ?? 'Agri360 CRM',
   appVersion: import.meta.env.VITE_APP_VERSION ?? '0.0.0',
   appEnv: import.meta.env.VITE_APP_ENV ?? 'development',
-  enableMockApi: toBool(import.meta.env.VITE_ENABLE_MOCK_API),
   enableDevtools: toBool(import.meta.env.VITE_ENABLE_DEVTOOLS),
   authStorageKey: import.meta.env.VITE_AUTH_STORAGE_KEY ?? 'agri360.auth',
   isProd: import.meta.env.PROD,

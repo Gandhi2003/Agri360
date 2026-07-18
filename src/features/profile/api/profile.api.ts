@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/profile';
 
-/** Pure data-access layer for the Profile feature. No business logic here. */
 export const profileApi = {
   list: (params: PaginationParams & ProfileFilters) =>
     apiClient.get<PaginatedResponse<Profile>>(RESOURCE, { params }),

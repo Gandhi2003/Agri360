@@ -75,7 +75,7 @@ export function Sidebar() {
           </button>
         </div>
 
-        <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-4">
+        <nav className="thin-scroll flex-1 space-y-6 overflow-y-auto px-3 py-4">
           {visibleSections.map((section) => (
             <div key={section.title} className="space-y-1">
               {!collapsed && (
