@@ -7,7 +7,6 @@ import { usePayments } from '../hooks/usePayments';
 import { usePaymentsStore } from '../store/payments.store';
 import type { Payment } from '../types';
 
-/** Payments — paginated list view. */
 export default function PaymentsListPage() {
   const { page, pageSize, setPage } = usePaymentsStore();
   const [search, setSearch] = useState('');

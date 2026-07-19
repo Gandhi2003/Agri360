@@ -10,7 +10,6 @@ import type {
   UpdateInventoryDto,
 } from '../types';
 
-/** Paginated, filtered list of Inventory. */
 export const useInventory = (params: PaginationParams & InventoryFilters) =>
   useQuery({
     queryKey: [INVENTORY_QUERY_KEY, 'list', params],
@@ -18,7 +17,6 @@ export const useInventory = (params: PaginationParams & InventoryFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Inventory by id. */
 export const useInventoryDetail = (id: InventoryId | undefined) =>
   useQuery({
     queryKey: [INVENTORY_QUERY_KEY, 'detail', id],
@@ -26,7 +24,6 @@ export const useInventoryDetail = (id: InventoryId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Inventory. */
 export const useCreateInventory = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -38,7 +35,6 @@ export const useCreateInventory = () => {
   });
 };
 
-/** Update a Inventory. */
 export const useUpdateInventory = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -51,7 +47,6 @@ export const useUpdateInventory = () => {
   });
 };
 
-/** Delete a Inventory. */
 export const useDeleteInventory = () => {
   const queryClient = useQueryClient();
   return useMutation({

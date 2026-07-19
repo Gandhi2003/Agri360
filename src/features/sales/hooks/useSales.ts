@@ -5,7 +5,6 @@ import { salesService } from '../services/sales.service';
 import { SALES_QUERY_KEY } from '../constants';
 import type { CreateSaleDto, SaleFilters, SaleId, UpdateSaleDto } from '../types';
 
-/** Paginated, filtered list of Sales. */
 export const useSales = (params: PaginationParams & SaleFilters) =>
   useQuery({
     queryKey: [SALES_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useSales = (params: PaginationParams & SaleFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Sale by id. */
 export const useSaleDetail = (id: SaleId | undefined) =>
   useQuery({
     queryKey: [SALES_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useSaleDetail = (id: SaleId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Sale. */
 export const useCreateSale = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateSale = () => {
   });
 };
 
-/** Update a Sale. */
 export const useUpdateSale = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -45,7 +41,6 @@ export const useUpdateSale = () => {
   });
 };
 
-/** Delete a Sale. */
 export const useDeleteSale = () => {
   const queryClient = useQueryClient();
   return useMutation({

@@ -13,7 +13,6 @@ interface UsersUiState {
 
 const initial = { filters: {} as UserFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for User Management. */
 export const useUsersStore = create<UsersUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

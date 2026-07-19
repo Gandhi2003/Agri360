@@ -13,7 +13,6 @@ interface QuotationsUiState {
 
 const initial = { filters: {} as QuotationFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Quotations. */
 export const useQuotationsStore = create<QuotationsUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

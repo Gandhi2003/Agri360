@@ -22,7 +22,6 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-/** Slide-over panel presenting the full details of a single Profile record. */
 export function ProfileDetailDrawer({
   profile,
   isOpen,

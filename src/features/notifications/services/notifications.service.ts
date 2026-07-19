@@ -7,11 +7,6 @@ import type {
   UpdateNotificationDto,
 } from '../types';
 
-/**
- * Application/service layer for Notifications.
- * Encapsulates orchestration & business rules, keeping the API layer thin
- * and the UI/hooks layer free of domain logic (Clean Architecture).
- */
 export const notificationsService = {
   getList: (params: PaginationParams & NotificationFilters) => notificationsApi.list(params),
   getOne: (id: NotificationId) => notificationsApi.getById(id),

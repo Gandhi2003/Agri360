@@ -13,7 +13,6 @@ interface PermissionsUiState {
 
 const initial = { filters: {} as PermissionFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Permission Management. */
 export const usePermissionsStore = create<PermissionsUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

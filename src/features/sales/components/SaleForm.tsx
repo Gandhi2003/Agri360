@@ -16,7 +16,6 @@ const statusOptions = Object.values(SaleStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Sales. */
 export function SaleForm({
   defaultValues,
   onSubmit,

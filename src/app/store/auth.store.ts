@@ -8,7 +8,6 @@ import type { AuthTokens, AuthUser, Permission, Role } from '@common/types';
 interface AuthState {
   user: AuthUser | null;
   isAuthenticated: boolean;
-  /** True until the initial token/user hydration completes. */
   isInitializing: boolean;
   permissions: Set<Permission>;
 

@@ -13,7 +13,6 @@ interface InventoryUiState {
 
 const initial = { filters: {} as InventoryFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Inventory. */
 export const useInventoryStore = create<InventoryUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

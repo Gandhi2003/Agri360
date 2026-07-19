@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { FarmerStatus } from '../types';
 
-/** Zod schema mirroring Create/Update Farmer payloads. */
 export const farmerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(120),
   code: z.string().min(1, 'Code is required').max(40),

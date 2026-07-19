@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/farm-visits';
 
-/** Pure data-access layer for the Farm Visits feature. No business logic here. */
 export const farmVisitsApi = {
   list: (params: PaginationParams & FarmVisitFilters) =>
     apiClient.get<PaginatedResponse<FarmVisit>>(RESOURCE, { params }),

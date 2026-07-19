@@ -7,10 +7,6 @@ interface UseInfiniteScrollOptions {
   rootMargin?: string;
 }
 
-/**
- * Returns a ref callback to attach to a sentinel element; invokes `onLoadMore`
- * when it scrolls into view (IntersectionObserver based).
- */
 export function useInfiniteScroll({
   hasMore,
   isLoading,

@@ -1,6 +1,5 @@
 import type { BaseEntity } from './common.types';
 
-/** Coarse-grained roles for RBAC. */
 export enum Role {
   SuperAdmin = 'super_admin',
   Admin = 'admin',
@@ -10,10 +9,8 @@ export enum Role {
   Viewer = 'viewer',
 }
 
-/** A fine-grained permission string, e.g. `farmers:create`. */
 export type Permission = string;
 
-/** Authenticated user profile. */
 export interface AuthUser extends BaseEntity {
   email: string;
   firstName: string;
@@ -24,7 +21,6 @@ export interface AuthUser extends BaseEntity {
   isActive: boolean;
 }
 
-/** Token pair returned by the auth endpoints. */
 export interface AuthTokens {
   accessToken: string;
   refreshToken: string;

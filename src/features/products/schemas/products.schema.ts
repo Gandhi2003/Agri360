@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { ProductStatus } from '../types';
 
-/** Zod schema mirroring Create/Update Product payloads. */
 export const productSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(120),
   code: z.string().min(1, 'Code is required').max(40),

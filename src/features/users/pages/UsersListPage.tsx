@@ -7,7 +7,6 @@ import { useUsers } from '../hooks/useUsers';
 import { useUsersStore } from '../store/users.store';
 import type { User } from '../types';
 
-/** User Management — paginated list view. */
 export default function UsersListPage() {
   const { page, pageSize, setPage } = useUsersStore();
   const [search, setSearch] = useState('');

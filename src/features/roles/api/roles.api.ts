@@ -4,7 +4,6 @@ import type { CreateRoleDto, Role, RoleFilters, RoleId, UpdateRoleDto } from '..
 
 const RESOURCE = '/roles';
 
-/** Pure data-access layer for the Role Management feature. No business logic here. */
 export const rolesApi = {
   list: (params: PaginationParams & RoleFilters) =>
     apiClient.get<PaginatedResponse<Role>>(RESOURCE, { params }),

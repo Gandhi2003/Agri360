@@ -7,11 +7,6 @@ import type {
   UpdateFarmVisitDto,
 } from '../types';
 
-/**
- * Application/service layer for Farm Visits.
- * Encapsulates orchestration & business rules, keeping the API layer thin
- * and the UI/hooks layer free of domain logic (Clean Architecture).
- */
 export const farmVisitsService = {
   getList: (params: PaginationParams & FarmVisitFilters) => farmVisitsApi.list(params),
   getOne: (id: FarmVisitId) => farmVisitsApi.getById(id),

@@ -16,7 +16,6 @@ const statusOptions = Object.values(ProductStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Products. */
 export function ProductForm({
   defaultValues,
   onSubmit,

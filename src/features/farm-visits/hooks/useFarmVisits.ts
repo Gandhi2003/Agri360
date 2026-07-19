@@ -10,7 +10,6 @@ import type {
   UpdateFarmVisitDto,
 } from '../types';
 
-/** Paginated, filtered list of FarmVisits. */
 export const useFarmVisits = (params: PaginationParams & FarmVisitFilters) =>
   useQuery({
     queryKey: [FARM_VISITS_QUERY_KEY, 'list', params],
@@ -18,7 +17,6 @@ export const useFarmVisits = (params: PaginationParams & FarmVisitFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single FarmVisit by id. */
 export const useFarmVisitDetail = (id: FarmVisitId | undefined) =>
   useQuery({
     queryKey: [FARM_VISITS_QUERY_KEY, 'detail', id],
@@ -26,7 +24,6 @@ export const useFarmVisitDetail = (id: FarmVisitId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a FarmVisit. */
 export const useCreateFarmVisit = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -38,7 +35,6 @@ export const useCreateFarmVisit = () => {
   });
 };
 
-/** Update a FarmVisit. */
 export const useUpdateFarmVisit = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -51,7 +47,6 @@ export const useUpdateFarmVisit = () => {
   });
 };
 
-/** Delete a FarmVisit. */
 export const useDeleteFarmVisit = () => {
   const queryClient = useQueryClient();
   return useMutation({

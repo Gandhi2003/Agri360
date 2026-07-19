@@ -16,7 +16,6 @@ const statusOptions = Object.values(CustomerStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Customer Management. */
 export function CustomerForm({
   defaultValues,
   onSubmit,

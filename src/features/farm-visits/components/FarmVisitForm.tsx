@@ -16,7 +16,6 @@ const statusOptions = Object.values(FarmVisitStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Farm Visits. */
 export function FarmVisitForm({
   defaultValues,
   onSubmit,

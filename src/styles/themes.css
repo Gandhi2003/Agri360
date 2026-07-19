@@ -522,18 +522,6 @@
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
 
-  /* =========================================================================
-   * App "chrome" semantic tokens — kept from the original Agri360 scaffold so
-   * existing utilities (bg-background, text-foreground, border-border, bg-card,
-   * bg-muted, ring-ring, bg-danger/info, brand-*, etc.) keep working and stay
-   * theme-able via the :root / .dark runtime variables below.
-   *
-   * Placed AFTER the design-system block so the status set (success/warning/
-   * danger/info) stays internally consistent — `--color-success` and
-   * `--color-warning` here intentionally override the generic palette values
-   * above for the app's status colours. `--color-primary` is NOT redefined, so
-   * the design-system indigo (#2d3090) wins.
-   * ====================================================================== */
   --color-background: rgb(var(--background));
   --color-foreground: rgb(var(--foreground));
   --color-card: rgb(var(--card));
@@ -563,12 +551,11 @@
 
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 
-  /* Radius scale used by rounded-sm/md/lg (was borderRadius in JS config). */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
 
-  /* Animations (was keyframes + animation in JS config). */
+  /* Animations  */
   --animate-fade-in: fade-in 0.2s ease-out;
   --animate-slide-in-right: slide-in-right 0.25s ease-out;
   --animate-scale-in: scale-in 0.15s ease-out;
@@ -603,11 +590,6 @@
   }
 }
 
-/* =============================================================================
- * Runtime theme variables (space-separated RGB channels). The semantic
- * `--color-*` tokens above resolve these at runtime, so swapping them under
- * `.dark` re-themes the app.
- * ========================================================================== */
 :root {
   --radius: 0.625rem;
 

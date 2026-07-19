@@ -5,7 +5,6 @@ import { suppliersService } from '../services/suppliers.service';
 import { SUPPLIERS_QUERY_KEY } from '../constants';
 import type { CreateSupplierDto, SupplierFilters, SupplierId, UpdateSupplierDto } from '../types';
 
-/** Paginated, filtered list of Suppliers. */
 export const useSuppliers = (params: PaginationParams & SupplierFilters) =>
   useQuery({
     queryKey: [SUPPLIERS_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useSuppliers = (params: PaginationParams & SupplierFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Supplier by id. */
 export const useSupplierDetail = (id: SupplierId | undefined) =>
   useQuery({
     queryKey: [SUPPLIERS_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useSupplierDetail = (id: SupplierId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Supplier. */
 export const useCreateSupplier = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateSupplier = () => {
   });
 };
 
-/** Update a Supplier. */
 export const useUpdateSupplier = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateSupplier = () => {
   });
 };
 
-/** Delete a Supplier. */
 export const useDeleteSupplier = () => {
   const queryClient = useQueryClient();
   return useMutation({

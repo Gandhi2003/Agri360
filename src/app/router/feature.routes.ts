@@ -1,4 +1,3 @@
-// AUTO-AGGREGATED feature route table. Regenerate via scripts/generate.mjs.
 import type { FeatureRoute } from '@common/types';
 import { dashboardRoutes } from '@features/dashboard/routes';
 import { authenticationRoutes } from '@features/auth/routes';

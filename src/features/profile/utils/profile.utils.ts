@@ -1,7 +1,6 @@
 import type { BadgeProps } from '@components';
 import { ProfileStatus } from '../types';
 
-/** Maps a Profile lifecycle status to a Badge variant for consistent color coding. */
 export const getProfileStatusVariant = (status: ProfileStatus): BadgeProps['variant'] => {
   switch (status) {
     case ProfileStatus.Active:

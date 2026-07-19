@@ -16,7 +16,6 @@ const statusOptions = Object.values(FarmerStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Farmer Management. */
 export function FarmerForm({
   defaultValues,
   onSubmit,

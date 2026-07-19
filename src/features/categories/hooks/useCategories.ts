@@ -5,7 +5,6 @@ import { categoriesService } from '../services/categories.service';
 import { CATEGORIES_QUERY_KEY } from '../constants';
 import type { CreateCategoryDto, CategoryFilters, CategoryId, UpdateCategoryDto } from '../types';
 
-/** Paginated, filtered list of Categories. */
 export const useCategories = (params: PaginationParams & CategoryFilters) =>
   useQuery({
     queryKey: [CATEGORIES_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useCategories = (params: PaginationParams & CategoryFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Category by id. */
 export const useCategoryDetail = (id: CategoryId | undefined) =>
   useQuery({
     queryKey: [CATEGORIES_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useCategoryDetail = (id: CategoryId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Category. */
 export const useCreateCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateCategory = () => {
   });
 };
 
-/** Update a Category. */
 export const useUpdateCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateCategory = () => {
   });
 };
 
-/** Delete a Category. */
 export const useDeleteCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({

@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/notifications';
 
-/** Pure data-access layer for the Notifications feature. No business logic here. */
 export const notificationsApi = {
   list: (params: PaginationParams & NotificationFilters) =>
     apiClient.get<PaginatedResponse<Notification>>(RESOURCE, { params }),

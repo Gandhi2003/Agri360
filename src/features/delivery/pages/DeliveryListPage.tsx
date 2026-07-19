@@ -7,7 +7,6 @@ import { useDelivery } from '../hooks/useDelivery';
 import { useDeliveryStore } from '../store/delivery.store';
 import type { Delivery } from '../types';
 
-/** Delivery — paginated list view. */
 export default function DeliveryListPage() {
   const { page, pageSize, setPage } = useDeliveryStore();
   const [search, setSearch] = useState('');

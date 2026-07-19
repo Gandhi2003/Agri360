@@ -5,7 +5,6 @@ import { rolesService } from '../services/roles.service';
 import { ROLES_QUERY_KEY } from '../constants';
 import type { CreateRoleDto, RoleFilters, RoleId, UpdateRoleDto } from '../types';
 
-/** Paginated, filtered list of Roles. */
 export const useRoles = (params: PaginationParams & RoleFilters) =>
   useQuery({
     queryKey: [ROLES_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useRoles = (params: PaginationParams & RoleFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Role by id. */
 export const useRoleDetail = (id: RoleId | undefined) =>
   useQuery({
     queryKey: [ROLES_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useRoleDetail = (id: RoleId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Role. */
 export const useCreateRole = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateRole = () => {
   });
 };
 
-/** Update a Role. */
 export const useUpdateRole = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -45,7 +41,6 @@ export const useUpdateRole = () => {
   });
 };
 
-/** Delete a Role. */
 export const useDeleteRole = () => {
   const queryClient = useQueryClient();
   return useMutation({

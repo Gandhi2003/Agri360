@@ -10,7 +10,6 @@ import type {
   UpdateWarehouseDto,
 } from '../types';
 
-/** Paginated, filtered list of Warehouse. */
 export const useWarehouse = (params: PaginationParams & WarehouseFilters) =>
   useQuery({
     queryKey: [WAREHOUSE_QUERY_KEY, 'list', params],
@@ -18,7 +17,6 @@ export const useWarehouse = (params: PaginationParams & WarehouseFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Warehouse by id. */
 export const useWarehouseDetail = (id: WarehouseId | undefined) =>
   useQuery({
     queryKey: [WAREHOUSE_QUERY_KEY, 'detail', id],
@@ -26,7 +24,6 @@ export const useWarehouseDetail = (id: WarehouseId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Warehouse. */
 export const useCreateWarehouse = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -38,7 +35,6 @@ export const useCreateWarehouse = () => {
   });
 };
 
-/** Update a Warehouse. */
 export const useUpdateWarehouse = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -51,7 +47,6 @@ export const useUpdateWarehouse = () => {
   });
 };
 
-/** Delete a Warehouse. */
 export const useDeleteWarehouse = () => {
   const queryClient = useQueryClient();
   return useMutation({

@@ -1,6 +1,5 @@
 export const DASHBOARD_QUERY_KEY = 'dashboard' as const;
 
-/** Sample data so the dashboard renders before a backend is wired up. */
 export const SAMPLE_OVERVIEW = {
   metrics: {
     totalFarmers: 4820,

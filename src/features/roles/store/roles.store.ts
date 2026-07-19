@@ -13,7 +13,6 @@ interface RolesUiState {
 
 const initial = { filters: {} as RoleFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Role Management. */
 export const useRolesStore = create<RolesUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

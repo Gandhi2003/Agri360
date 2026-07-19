@@ -13,7 +13,6 @@ interface CustomersUiState {
 
 const initial = { filters: {} as CustomerFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Customer Management. */
 export const useCustomersStore = create<CustomersUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

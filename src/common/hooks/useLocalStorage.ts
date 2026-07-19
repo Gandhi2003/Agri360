@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { storage } from '@common/helpers';
 
-/** useState mirrored to localStorage under `key`. */
 export function useLocalStorage<T>(key: string, initialValue: T) {
   const [value, setValue] = useState<T>(() => storage.get<T>(key) ?? initialValue);
 

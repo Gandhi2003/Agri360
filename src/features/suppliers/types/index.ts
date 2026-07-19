@@ -1,6 +1,5 @@
 import type { BaseEntity, ID } from '@common/types';
 
-/** Lifecycle status for a Supplier. */
 export enum SupplierStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -8,7 +7,6 @@ export enum SupplierStatus {
   Archived = 'archived',
 }
 
-/** Core Supplier domain entity. */
 export interface Supplier extends BaseEntity {
   name: string;
   code: string;
@@ -16,7 +14,6 @@ export interface Supplier extends BaseEntity {
   description?: string;
 }
 
-/** Payload to create a Supplier. */
 export interface CreateSupplierDto {
   name: string;
   code: string;
@@ -24,10 +21,8 @@ export interface CreateSupplierDto {
   description?: string;
 }
 
-/** Payload to update a Supplier (all fields optional). */
 export type UpdateSupplierDto = Partial<CreateSupplierDto>;
 
-/** Server/UI filters for listing Suppliers. */
 export interface SupplierFilters {
   search?: string;
   status?: SupplierStatus;

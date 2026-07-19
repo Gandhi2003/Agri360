@@ -4,7 +4,6 @@ import type { CreateSaleDto, Sale, SaleFilters, SaleId, UpdateSaleDto } from '..
 
 const RESOURCE = '/sales';
 
-/** Pure data-access layer for the Sales feature. No business logic here. */
 export const salesApi = {
   list: (params: PaginationParams & SaleFilters) =>
     apiClient.get<PaginatedResponse<Sale>>(RESOURCE, { params }),

@@ -13,7 +13,6 @@ interface FarmVisitsUiState {
 
 const initial = { filters: {} as FarmVisitFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Farm Visits. */
 export const useFarmVisitsStore = create<FarmVisitsUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

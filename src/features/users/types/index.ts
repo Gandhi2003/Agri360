@@ -1,6 +1,5 @@
 import type { BaseEntity, ID } from '@common/types';
 
-/** Lifecycle status for a User. */
 export enum UserStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -8,7 +7,6 @@ export enum UserStatus {
   Archived = 'archived',
 }
 
-/** Core User domain entity. */
 export interface User extends BaseEntity {
   name: string;
   code: string;
@@ -16,7 +14,6 @@ export interface User extends BaseEntity {
   description?: string;
 }
 
-/** Payload to create a User. */
 export interface CreateUserDto {
   name: string;
   code: string;
@@ -24,10 +21,8 @@ export interface CreateUserDto {
   description?: string;
 }
 
-/** Payload to update a User (all fields optional). */
 export type UpdateUserDto = Partial<CreateUserDto>;
 
-/** Server/UI filters for listing Users. */
 export interface UserFilters {
   search?: string;
   status?: UserStatus;

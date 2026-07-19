@@ -32,10 +32,8 @@ import type { Permission } from '@common/types';
 
 export interface NavItem {
   label: string;
-  /** Absolute route path. */
   to: string;
   icon: LucideIcon;
-  /** Permission required to see this item (omit = always visible). */
   permission?: Permission;
 }
 

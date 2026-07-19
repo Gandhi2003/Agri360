@@ -13,7 +13,6 @@ interface PaymentsUiState {
 
 const initial = { filters: {} as PaymentFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Payments. */
 export const usePaymentsStore = create<PaymentsUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

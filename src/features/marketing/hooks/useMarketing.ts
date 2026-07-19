@@ -10,7 +10,6 @@ import type {
   UpdateMarketingDto,
 } from '../types';
 
-/** Paginated, filtered list of Marketing. */
 export const useMarketing = (params: PaginationParams & MarketingFilters) =>
   useQuery({
     queryKey: [MARKETING_QUERY_KEY, 'list', params],
@@ -18,7 +17,6 @@ export const useMarketing = (params: PaginationParams & MarketingFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Marketing by id. */
 export const useMarketingDetail = (id: MarketingId | undefined) =>
   useQuery({
     queryKey: [MARKETING_QUERY_KEY, 'detail', id],
@@ -26,7 +24,6 @@ export const useMarketingDetail = (id: MarketingId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Marketing. */
 export const useCreateMarketing = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -38,7 +35,6 @@ export const useCreateMarketing = () => {
   });
 };
 
-/** Update a Marketing. */
 export const useUpdateMarketing = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -51,7 +47,6 @@ export const useUpdateMarketing = () => {
   });
 };
 
-/** Delete a Marketing. */
 export const useDeleteMarketing = () => {
   const queryClient = useQueryClient();
   return useMutation({

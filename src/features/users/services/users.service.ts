@@ -2,11 +2,6 @@ import type { PaginationParams } from '@common/types';
 import { usersApi } from '../api/users.api';
 import type { CreateUserDto, UserFilters, UserId, UpdateUserDto } from '../types';
 
-/**
- * Application/service layer for User Management.
- * Encapsulates orchestration & business rules, keeping the API layer thin
- * and the UI/hooks layer free of domain logic (Clean Architecture).
- */
 export const usersService = {
   getList: (params: PaginationParams & UserFilters) => usersApi.list(params),
   getOne: (id: UserId) => usersApi.getById(id),

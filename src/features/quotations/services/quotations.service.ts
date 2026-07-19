@@ -7,11 +7,6 @@ import type {
   UpdateQuotationDto,
 } from '../types';
 
-/**
- * Application/service layer for Quotations.
- * Encapsulates orchestration & business rules, keeping the API layer thin
- * and the UI/hooks layer free of domain logic (Clean Architecture).
- */
 export const quotationsService = {
   getList: (params: PaginationParams & QuotationFilters) => quotationsApi.list(params),
   getOne: (id: QuotationId) => quotationsApi.getById(id),

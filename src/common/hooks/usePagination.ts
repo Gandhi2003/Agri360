@@ -6,7 +6,6 @@ interface UsePaginationOptions {
   initialPageSize?: number;
 }
 
-/** Local pagination state machine for tables/lists. */
 export function usePagination({
   initialPage = 1,
   initialPageSize = DEFAULT_PAGE_SIZE,

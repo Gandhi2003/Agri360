@@ -5,7 +5,6 @@ import { cropService } from '../services/crop.service';
 import { CROP_QUERY_KEY } from '../constants';
 import type { CreateCropDto, CropFilters, CropId, UpdateCropDto } from '../types';
 
-/** Paginated, filtered list of Crop. */
 export const useCrop = (params: PaginationParams & CropFilters) =>
   useQuery({
     queryKey: [CROP_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useCrop = (params: PaginationParams & CropFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Crop by id. */
 export const useCropDetail = (id: CropId | undefined) =>
   useQuery({
     queryKey: [CROP_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useCropDetail = (id: CropId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Crop. */
 export const useCreateCrop = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateCrop = () => {
   });
 };
 
-/** Update a Crop. */
 export const useUpdateCrop = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -45,7 +41,6 @@ export const useUpdateCrop = () => {
   });
 };
 
-/** Delete a Crop. */
 export const useDeleteCrop = () => {
   const queryClient = useQueryClient();
   return useMutation({

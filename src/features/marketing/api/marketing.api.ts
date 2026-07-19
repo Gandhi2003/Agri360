@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/marketing';
 
-/** Pure data-access layer for the Marketing feature. No business logic here. */
 export const marketingApi = {
   list: (params: PaginationParams & MarketingFilters) =>
     apiClient.get<PaginatedResponse<Marketing>>(RESOURCE, { params }),

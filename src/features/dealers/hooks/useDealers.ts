@@ -5,7 +5,6 @@ import { dealersService } from '../services/dealers.service';
 import { DEALERS_QUERY_KEY } from '../constants';
 import type { CreateDealerDto, DealerFilters, DealerId, UpdateDealerDto } from '../types';
 
-/** Paginated, filtered list of Dealers. */
 export const useDealers = (params: PaginationParams & DealerFilters) =>
   useQuery({
     queryKey: [DEALERS_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useDealers = (params: PaginationParams & DealerFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Dealer by id. */
 export const useDealerDetail = (id: DealerId | undefined) =>
   useQuery({
     queryKey: [DEALERS_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useDealerDetail = (id: DealerId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Dealer. */
 export const useCreateDealer = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateDealer = () => {
   });
 };
 
-/** Update a Dealer. */
 export const useUpdateDealer = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateDealer = () => {
   });
 };
 
-/** Delete a Dealer. */
 export const useDeleteDealer = () => {
   const queryClient = useQueryClient();
   return useMutation({

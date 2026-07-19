@@ -5,7 +5,6 @@ import { usersService } from '../services/users.service';
 import { USERS_QUERY_KEY } from '../constants';
 import type { CreateUserDto, UserFilters, UserId, UpdateUserDto } from '../types';
 
-/** Paginated, filtered list of Users. */
 export const useUsers = (params: PaginationParams & UserFilters) =>
   useQuery({
     queryKey: [USERS_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useUsers = (params: PaginationParams & UserFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single User by id. */
 export const useUserDetail = (id: UserId | undefined) =>
   useQuery({
     queryKey: [USERS_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useUserDetail = (id: UserId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a User. */
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateUser = () => {
   });
 };
 
-/** Update a User. */
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -45,7 +41,6 @@ export const useUpdateUser = () => {
   });
 };
 
-/** Delete a User. */
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({

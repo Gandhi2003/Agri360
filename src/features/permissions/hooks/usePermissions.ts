@@ -10,7 +10,6 @@ import type {
   UpdatePermissionDto,
 } from '../types';
 
-/** Paginated, filtered list of Permissions. */
 export const usePermissions = (params: PaginationParams & PermissionFilters) =>
   useQuery({
     queryKey: [PERMISSIONS_QUERY_KEY, 'list', params],
@@ -18,7 +17,6 @@ export const usePermissions = (params: PaginationParams & PermissionFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Permission by id. */
 export const usePermissionDetail = (id: PermissionId | undefined) =>
   useQuery({
     queryKey: [PERMISSIONS_QUERY_KEY, 'detail', id],
@@ -26,7 +24,6 @@ export const usePermissionDetail = (id: PermissionId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Permission. */
 export const useCreatePermission = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -38,7 +35,6 @@ export const useCreatePermission = () => {
   });
 };
 
-/** Update a Permission. */
 export const useUpdatePermission = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -51,7 +47,6 @@ export const useUpdatePermission = () => {
   });
 };
 
-/** Delete a Permission. */
 export const useDeletePermission = () => {
   const queryClient = useQueryClient();
   return useMutation({

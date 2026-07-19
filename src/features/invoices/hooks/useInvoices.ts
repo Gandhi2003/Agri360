@@ -5,7 +5,6 @@ import { invoicesService } from '../services/invoices.service';
 import { INVOICES_QUERY_KEY } from '../constants';
 import type { CreateInvoiceDto, InvoiceFilters, InvoiceId, UpdateInvoiceDto } from '../types';
 
-/** Paginated, filtered list of Invoices. */
 export const useInvoices = (params: PaginationParams & InvoiceFilters) =>
   useQuery({
     queryKey: [INVOICES_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useInvoices = (params: PaginationParams & InvoiceFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Invoice by id. */
 export const useInvoiceDetail = (id: InvoiceId | undefined) =>
   useQuery({
     queryKey: [INVOICES_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useInvoiceDetail = (id: InvoiceId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Invoice. */
 export const useCreateInvoice = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateInvoice = () => {
   });
 };
 
-/** Update a Invoice. */
 export const useUpdateInvoice = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateInvoice = () => {
   });
 };
 
-/** Delete a Invoice. */
 export const useDeleteInvoice = () => {
   const queryClient = useQueryClient();
   return useMutation({

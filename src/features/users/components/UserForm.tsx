@@ -16,7 +16,6 @@ const statusOptions = Object.values(UserStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for User Management. */
 export function UserForm({
   defaultValues,
   onSubmit,

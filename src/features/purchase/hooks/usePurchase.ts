@@ -5,7 +5,6 @@ import { purchaseService } from '../services/purchase.service';
 import { PURCHASE_QUERY_KEY } from '../constants';
 import type { CreatePurchaseDto, PurchaseFilters, PurchaseId, UpdatePurchaseDto } from '../types';
 
-/** Paginated, filtered list of Purchase. */
 export const usePurchase = (params: PaginationParams & PurchaseFilters) =>
   useQuery({
     queryKey: [PURCHASE_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const usePurchase = (params: PaginationParams & PurchaseFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Purchase by id. */
 export const usePurchaseDetail = (id: PurchaseId | undefined) =>
   useQuery({
     queryKey: [PURCHASE_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const usePurchaseDetail = (id: PurchaseId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Purchase. */
 export const useCreatePurchase = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreatePurchase = () => {
   });
 };
 
-/** Update a Purchase. */
 export const useUpdatePurchase = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdatePurchase = () => {
   });
 };
 
-/** Delete a Purchase. */
 export const useDeletePurchase = () => {
   const queryClient = useQueryClient();
   return useMutation({

@@ -5,7 +5,6 @@ import { settingsService } from '../services/settings.service';
 import { SETTINGS_QUERY_KEY } from '../constants';
 import type { CreateSettingDto, SettingFilters, SettingId, UpdateSettingDto } from '../types';
 
-/** Paginated, filtered list of Settings. */
 export const useSettings = (params: PaginationParams & SettingFilters) =>
   useQuery({
     queryKey: [SETTINGS_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useSettings = (params: PaginationParams & SettingFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Setting by id. */
 export const useSettingDetail = (id: SettingId | undefined) =>
   useQuery({
     queryKey: [SETTINGS_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useSettingDetail = (id: SettingId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Setting. */
 export const useCreateSetting = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateSetting = () => {
   });
 };
 
-/** Update a Setting. */
 export const useUpdateSetting = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateSetting = () => {
   });
 };
 
-/** Delete a Setting. */
 export const useDeleteSetting = () => {
   const queryClient = useQueryClient();
   return useMutation({

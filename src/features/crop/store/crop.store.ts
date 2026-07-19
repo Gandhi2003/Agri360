@@ -13,7 +13,6 @@ interface CropUiState {
 
 const initial = { filters: {} as CropFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Crop Management. */
 export const useCropStore = create<CropUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

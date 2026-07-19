@@ -7,7 +7,6 @@ import { useProducts } from '../hooks/useProducts';
 import { useProductsStore } from '../store/products.store';
 import type { Product } from '../types';
 
-/** Products — paginated list view. */
 export default function ProductsListPage() {
   const { page, pageSize, setPage } = useProductsStore();
   const [search, setSearch] = useState('');

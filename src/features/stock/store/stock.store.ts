@@ -13,7 +13,6 @@ interface StockUiState {
 
 const initial = { filters: {} as StockFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Stock. */
 export const useStockStore = create<StockUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

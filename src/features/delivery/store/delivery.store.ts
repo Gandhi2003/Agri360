@@ -13,7 +13,6 @@ interface DeliveryUiState {
 
 const initial = { filters: {} as DeliveryFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Delivery. */
 export const useDeliveryStore = create<DeliveryUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

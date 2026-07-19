@@ -10,7 +10,6 @@ import { featureRoutes } from './feature.routes';
 const NotFoundPage = lazy(() => import('@/routes/NotFoundPage'));
 const ForbiddenPage = lazy(() => import('@/routes/ForbiddenPage'));
 
-// Public auth pages (no protected aggregation).
 const LoginPage = lazy(() => import('@features/auth/pages/LoginPage'));
 const ForgotPasswordPage = lazy(() => import('@features/auth/pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('@features/auth/pages/ResetPasswordPage'));
@@ -39,7 +38,6 @@ export const router = createBrowserRouter([
     path: ROUTES.ROOT,
     element: <Navigate to={ROUTES.DASHBOARD} replace />,
   },
-  // ── Public / auth ──
   {
     element: <AuthLayout />,
     children: [
@@ -48,7 +46,6 @@ export const router = createBrowserRouter([
       { path: ROUTES.RESET_PASSWORD, element: withSuspense(ResetPasswordPage) },
     ],
   },
-  // ── Protected app ──
   {
     element: (
       <ProtectedRoute>
@@ -57,7 +54,6 @@ export const router = createBrowserRouter([
     ),
     children: featureRoutes.map(toRouteObject),
   },
-  // ── Errors ──
   { path: ROUTES.UNAUTHORIZED, element: withSuspense(ForbiddenPage) },
   { path: '*', element: withSuspense(NotFoundPage) },
 ]);

@@ -7,7 +7,6 @@ import { useSales } from '../hooks/useSales';
 import { useSalesStore } from '../store/sales.store';
 import type { Sale } from '../types';
 
-/** Sales — paginated list view. */
 export default function SalesListPage() {
   const { page, pageSize, setPage } = useSalesStore();
   const [search, setSearch] = useState('');

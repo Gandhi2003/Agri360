@@ -1,10 +1,6 @@
 import { STORAGE_KEYS } from '@common/constants';
 import { storage } from '@common/helpers';
 
-/**
- * Token storage abstraction. Centralizes where/how JWTs are persisted so the
- * strategy (localStorage today, httpOnly cookie tomorrow) can change in one place.
- */
 export const tokenStore = {
   getAccessToken: (): string | null => storage.get<string>(STORAGE_KEYS.ACCESS_TOKEN),
   getRefreshToken: (): string | null => storage.get<string>(STORAGE_KEYS.REFRESH_TOKEN),
@@ -20,7 +16,6 @@ export const tokenStore = {
     storage.remove(STORAGE_KEYS.USER);
   },
 
-  /** Decode a JWT payload without verifying the signature (client display only). */
   decode: <T = Record<string, unknown>>(token: string): T | null => {
     try {
       const [, payload] = token.split('.');
@@ -30,7 +25,6 @@ export const tokenStore = {
     }
   },
 
-  /** True if the access token is expired (or unparsable). */
   isExpired: (token: string | null): boolean => {
     if (!token) return true;
     const payload = tokenStore.decode<{ exp?: number }>(token);

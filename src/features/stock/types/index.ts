@@ -1,6 +1,5 @@
 import type { BaseEntity, ID } from '@common/types';
 
-/** Lifecycle status for a Stock. */
 export enum StockStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -8,7 +7,6 @@ export enum StockStatus {
   Archived = 'archived',
 }
 
-/** Core Stock domain entity. */
 export interface Stock extends BaseEntity {
   name: string;
   code: string;
@@ -16,7 +14,6 @@ export interface Stock extends BaseEntity {
   description?: string;
 }
 
-/** Payload to create a Stock. */
 export interface CreateStockDto {
   name: string;
   code: string;
@@ -24,10 +21,8 @@ export interface CreateStockDto {
   description?: string;
 }
 
-/** Payload to update a Stock (all fields optional). */
 export type UpdateStockDto = Partial<CreateStockDto>;
 
-/** Server/UI filters for listing Stock. */
 export interface StockFilters {
   search?: string;
   status?: StockStatus;

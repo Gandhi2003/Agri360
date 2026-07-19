@@ -16,7 +16,6 @@ const statusOptions = Object.values(CropStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Crop Management. */
 export function CropForm({
   defaultValues,
   onSubmit,

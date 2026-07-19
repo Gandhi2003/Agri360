@@ -1,9 +1,5 @@
 import { Role, type Permission } from '@common/types';
 
-/**
- * Canonical registry of every fine-grained permission in the system.
- * Convention: `<resource>:<action>`. Keep in sync with the backend policy.
- */
 export const PERMISSIONS = {
   // Farmer / partner management
   FARMERS_VIEW: 'farmers:view',
@@ -44,12 +40,6 @@ export const PERMISSIONS = {
 } as const;
 
 export type AppPermission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
-
-/**
- * Static role → permission grants used as a client-side fallback / for
- * super-admin shortcutting. The server remains the source of truth: the
- * authenticated user's own `permissions[]` always takes precedence.
- */
 export const ROLE_PERMISSIONS: Record<Role, Permission[] | '*'> = {
   [Role.SuperAdmin]: '*',
   [Role.Admin]: Object.values(PERMISSIONS),

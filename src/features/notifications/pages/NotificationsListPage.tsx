@@ -7,7 +7,6 @@ import { useNotifications } from '../hooks/useNotifications';
 import { useNotificationsStore } from '../store/notifications.store';
 import type { Notification } from '../types';
 
-/** Notifications — paginated list view. */
 export default function NotificationsListPage() {
   const { page, pageSize, setPage } = useNotificationsStore();
   const [search, setSearch] = useState('');

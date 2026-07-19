@@ -13,7 +13,6 @@ interface ProfileUiState {
 
 const initial = { filters: {} as ProfileFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Profile. */
 export const useProfileStore = create<ProfileUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

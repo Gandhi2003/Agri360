@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/delivery';
 
-/** Pure data-access layer for the Delivery feature. No business logic here. */
 export const deliveryApi = {
   list: (params: PaginationParams & DeliveryFilters) =>
     apiClient.get<PaginatedResponse<Delivery>>(RESOURCE, { params }),

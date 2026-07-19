@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/inventory';
 
-/** Pure data-access layer for the Inventory feature. No business logic here. */
 export const inventoryApi = {
   list: (params: PaginationParams & InventoryFilters) =>
     apiClient.get<PaginatedResponse<Inventory>>(RESOURCE, { params }),

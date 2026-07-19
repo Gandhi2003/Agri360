@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/invoices';
 
-/** Pure data-access layer for the Invoices feature. No business logic here. */
 export const invoicesApi = {
   list: (params: PaginationParams & InvoiceFilters) =>
     apiClient.get<PaginatedResponse<Invoice>>(RESOURCE, { params }),

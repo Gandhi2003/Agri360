@@ -16,7 +16,6 @@ const statusOptions = Object.values(PurchaseStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Purchase. */
 export function PurchaseForm({
   defaultValues,
   onSubmit,

@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/settings';
 
-/** Pure data-access layer for the Settings feature. No business logic here. */
 export const settingsApi = {
   list: (params: PaginationParams & SettingFilters) =>
     apiClient.get<PaginatedResponse<Setting>>(RESOURCE, { params }),

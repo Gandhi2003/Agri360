@@ -16,7 +16,6 @@ const statusOptions = Object.values(ReportStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Reports. */
 export function ReportForm({
   defaultValues,
   onSubmit,

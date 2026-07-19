@@ -1,8 +1,3 @@
-/**
- * Centralized, type-safe access to environment variables.
- * Read env vars ONLY through this module — never via `import.meta.env` directly.
- */
-
 const toBool = (value: string | undefined, fallback = false): boolean =>
   value == null ? fallback : value === 'true' || value === '1';
 

@@ -4,7 +4,6 @@ import type { CreateFarmerDto, Farmer, FarmerFilters, FarmerId, UpdateFarmerDto 
 
 const RESOURCE = '/farmers';
 
-/** Pure data-access layer for the Farmer Management feature. No business logic here. */
 export const farmersApi = {
   list: (params: PaginationParams & FarmerFilters) =>
     apiClient.get<PaginatedResponse<Farmer>>(RESOURCE, { params }),

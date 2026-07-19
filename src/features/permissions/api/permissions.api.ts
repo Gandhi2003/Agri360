@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/permissions';
 
-/** Pure data-access layer for the Permission Management feature. No business logic here. */
 export const permissionsApi = {
   list: (params: PaginationParams & PermissionFilters) =>
     apiClient.get<PaginatedResponse<Permission>>(RESOURCE, { params }),

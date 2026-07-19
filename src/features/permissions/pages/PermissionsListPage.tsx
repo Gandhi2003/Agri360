@@ -7,7 +7,6 @@ import { usePermissions } from '../hooks/usePermissions';
 import { usePermissionsStore } from '../store/permissions.store';
 import type { Permission } from '../types';
 
-/** Permission Management — paginated list view. */
 export default function PermissionsListPage() {
   const { page, pageSize, setPage } = usePermissionsStore();
   const [search, setSearch] = useState('');

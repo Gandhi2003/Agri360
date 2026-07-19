@@ -7,7 +7,6 @@ import { useSuppliers } from '../hooks/useSuppliers';
 import { useSuppliersStore } from '../store/suppliers.store';
 import type { Supplier } from '../types';
 
-/** Supplier Management — paginated list view. */
 export default function SuppliersListPage() {
   const { page, pageSize, setPage } = useSuppliersStore();
   const [search, setSearch] = useState('');

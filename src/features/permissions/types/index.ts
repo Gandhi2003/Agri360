@@ -1,6 +1,5 @@
 import type { BaseEntity, ID } from '@common/types';
 
-/** Lifecycle status for a Permission. */
 export enum PermissionStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -8,7 +7,6 @@ export enum PermissionStatus {
   Archived = 'archived',
 }
 
-/** Core Permission domain entity. */
 export interface Permission extends BaseEntity {
   name: string;
   code: string;
@@ -16,7 +14,6 @@ export interface Permission extends BaseEntity {
   description?: string;
 }
 
-/** Payload to create a Permission. */
 export interface CreatePermissionDto {
   name: string;
   code: string;
@@ -24,10 +21,8 @@ export interface CreatePermissionDto {
   description?: string;
 }
 
-/** Payload to update a Permission (all fields optional). */
 export type UpdatePermissionDto = Partial<CreatePermissionDto>;
 
-/** Server/UI filters for listing Permissions. */
 export interface PermissionFilters {
   search?: string;
   status?: PermissionStatus;

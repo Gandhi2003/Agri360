@@ -16,7 +16,6 @@ const statusOptions = Object.values(PermissionStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Permission Management. */
 export function PermissionForm({
   defaultValues,
   onSubmit,

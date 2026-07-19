@@ -7,7 +7,6 @@ import { useCustomers } from '../hooks/useCustomers';
 import { useCustomersStore } from '../store/customers.store';
 import type { Customer } from '../types';
 
-/** Customer Management — paginated list view. */
 export default function CustomersListPage() {
   const { page, pageSize, setPage } = useCustomersStore();
   const [search, setSearch] = useState('');

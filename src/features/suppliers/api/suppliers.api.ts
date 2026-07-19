@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/suppliers';
 
-/** Pure data-access layer for the Supplier Management feature. No business logic here. */
 export const suppliersApi = {
   list: (params: PaginationParams & SupplierFilters) =>
     apiClient.get<PaginatedResponse<Supplier>>(RESOURCE, { params }),

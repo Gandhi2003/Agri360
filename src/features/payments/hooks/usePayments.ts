@@ -5,7 +5,6 @@ import { paymentsService } from '../services/payments.service';
 import { PAYMENTS_QUERY_KEY } from '../constants';
 import type { CreatePaymentDto, PaymentFilters, PaymentId, UpdatePaymentDto } from '../types';
 
-/** Paginated, filtered list of Payments. */
 export const usePayments = (params: PaginationParams & PaymentFilters) =>
   useQuery({
     queryKey: [PAYMENTS_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const usePayments = (params: PaginationParams & PaymentFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Payment by id. */
 export const usePaymentDetail = (id: PaymentId | undefined) =>
   useQuery({
     queryKey: [PAYMENTS_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const usePaymentDetail = (id: PaymentId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Payment. */
 export const useCreatePayment = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreatePayment = () => {
   });
 };
 
-/** Update a Payment. */
 export const useUpdatePayment = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdatePayment = () => {
   });
 };
 
-/** Delete a Payment. */
 export const useDeletePayment = () => {
   const queryClient = useQueryClient();
   return useMutation({

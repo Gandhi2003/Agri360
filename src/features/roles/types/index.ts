@@ -1,6 +1,5 @@
 import type { BaseEntity, ID } from '@common/types';
 
-/** Lifecycle status for a Role. */
 export enum RoleStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -8,7 +7,6 @@ export enum RoleStatus {
   Archived = 'archived',
 }
 
-/** Core Role domain entity. */
 export interface Role extends BaseEntity {
   name: string;
   code: string;
@@ -16,7 +14,6 @@ export interface Role extends BaseEntity {
   description?: string;
 }
 
-/** Payload to create a Role. */
 export interface CreateRoleDto {
   name: string;
   code: string;
@@ -24,10 +21,8 @@ export interface CreateRoleDto {
   description?: string;
 }
 
-/** Payload to update a Role (all fields optional). */
 export type UpdateRoleDto = Partial<CreateRoleDto>;
 
-/** Server/UI filters for listing Roles. */
 export interface RoleFilters {
   search?: string;
   status?: RoleStatus;

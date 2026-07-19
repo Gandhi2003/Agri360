@@ -19,7 +19,6 @@ const statusOptions = Object.values(CategoryStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Field wrapper: icon + uppercase label above the control. */
 function Field({
   icon,
   label,
@@ -45,7 +44,6 @@ function Field({
   );
 }
 
-/** Reusable create/edit form for Categories. */
 export function CategoryForm({
   defaultValues,
   onSubmit,

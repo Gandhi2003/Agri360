@@ -5,7 +5,6 @@ import { stockService } from '../services/stock.service';
 import { STOCK_QUERY_KEY } from '../constants';
 import type { CreateStockDto, StockFilters, StockId, UpdateStockDto } from '../types';
 
-/** Paginated, filtered list of Stock. */
 export const useStock = (params: PaginationParams & StockFilters) =>
   useQuery({
     queryKey: [STOCK_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useStock = (params: PaginationParams & StockFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Stock by id. */
 export const useStockDetail = (id: StockId | undefined) =>
   useQuery({
     queryKey: [STOCK_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useStockDetail = (id: StockId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Stock. */
 export const useCreateStock = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateStock = () => {
   });
 };
 
-/** Update a Stock. */
 export const useUpdateStock = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -45,7 +41,6 @@ export const useUpdateStock = () => {
   });
 };
 
-/** Delete a Stock. */
 export const useDeleteStock = () => {
   const queryClient = useQueryClient();
   return useMutation({

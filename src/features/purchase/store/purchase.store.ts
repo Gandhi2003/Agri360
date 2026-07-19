@@ -13,7 +13,6 @@ interface PurchaseUiState {
 
 const initial = { filters: {} as PurchaseFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Purchase. */
 export const usePurchaseStore = create<PurchaseUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

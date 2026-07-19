@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/products';
 
-/** Pure data-access layer for the Products feature. No business logic here. */
 export const productsApi = {
   list: (params: PaginationParams & ProductFilters) =>
     apiClient.get<PaginatedResponse<Product>>(RESOURCE, { params }),

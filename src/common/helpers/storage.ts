@@ -1,4 +1,3 @@
-/** Safe, typed localStorage wrapper — tolerates SSR/quota/JSON errors. */
 export const storage = {
   get<T>(key: string): T | null {
     try {

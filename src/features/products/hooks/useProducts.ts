@@ -5,7 +5,6 @@ import { productsService } from '../services/products.service';
 import { PRODUCTS_QUERY_KEY } from '../constants';
 import type { CreateProductDto, ProductFilters, ProductId, UpdateProductDto } from '../types';
 
-/** Paginated, filtered list of Products. */
 export const useProducts = (params: PaginationParams & ProductFilters) =>
   useQuery({
     queryKey: [PRODUCTS_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useProducts = (params: PaginationParams & ProductFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Product by id. */
 export const useProductDetail = (id: ProductId | undefined) =>
   useQuery({
     queryKey: [PRODUCTS_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useProductDetail = (id: ProductId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Product. */
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateProduct = () => {
   });
 };
 
-/** Update a Product. */
 export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateProduct = () => {
   });
 };
 
-/** Delete a Product. */
 export const useDeleteProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({

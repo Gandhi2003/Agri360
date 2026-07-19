@@ -16,7 +16,6 @@ const statusOptions = Object.values(DeliveryStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Delivery. */
 export function DeliveryForm({
   defaultValues,
   onSubmit,

@@ -4,7 +4,6 @@ import type { CreateCropDto, Crop, CropFilters, CropId, UpdateCropDto } from '..
 
 const RESOURCE = '/crop';
 
-/** Pure data-access layer for the Crop Management feature. No business logic here. */
 export const cropApi = {
   list: (params: PaginationParams & CropFilters) =>
     apiClient.get<PaginatedResponse<Crop>>(RESOURCE, { params }),

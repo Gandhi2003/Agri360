@@ -7,7 +7,6 @@ import { useInvoices } from '../hooks/useInvoices';
 import { useInvoicesStore } from '../store/invoices.store';
 import type { Invoice } from '../types';
 
-/** Invoices — paginated list view. */
 export default function InvoicesListPage() {
   const { page, pageSize, setPage } = useInvoicesStore();
   const [search, setSearch] = useState('');

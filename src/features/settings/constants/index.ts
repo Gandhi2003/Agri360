@@ -1,7 +1,5 @@
-/** TanStack Query root key for the Settings feature. */
 export const SETTINGS_QUERY_KEY = 'settings' as const;
 
-/** RBAC permission identifiers for Settings. */
 export const SETTINGS_PERMISSIONS = {
   VIEW: 'settings:view',
   CREATE: 'settings:create',
@@ -12,5 +10,4 @@ export const SETTINGS_PERMISSIONS = {
 
 export type SettingPermission = (typeof SETTINGS_PERMISSIONS)[keyof typeof SETTINGS_PERMISSIONS];
 
-/** Default page size for Settings tables. */
 export const SETTINGS_PAGE_SIZE = 10;

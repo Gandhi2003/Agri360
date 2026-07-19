@@ -13,7 +13,6 @@ interface SuppliersUiState {
 
 const initial = { filters: {} as SupplierFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Supplier Management. */
 export const useSuppliersStore = create<SuppliersUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

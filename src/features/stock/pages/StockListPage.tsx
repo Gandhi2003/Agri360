@@ -7,7 +7,6 @@ import { useStock } from '../hooks/useStock';
 import { useStockStore } from '../store/stock.store';
 import type { Stock } from '../types';
 
-/** Stock — paginated list view. */
 export default function StockListPage() {
   const { page, pageSize, setPage } = useStockStore();
   const [search, setSearch] = useState('');

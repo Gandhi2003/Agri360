@@ -2,7 +2,6 @@ import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import type { ApiError } from '@common/types';
 
-/** Normalize any thrown value into a consistent ApiError shape. */
 export const normalizeError = (error: unknown): ApiError => {
   if (error instanceof AxiosError) {
     const data = error.response?.data as
@@ -20,7 +19,6 @@ export const normalizeError = (error: unknown): ApiError => {
   return { status: 0, code: 'UNKNOWN', message: 'An unexpected error occurred' };
 };
 
-/** Map HTTP status to a user-friendly message. */
 const friendlyMessage = (error: ApiError): string => {
   switch (error.status) {
     case 400:
@@ -44,10 +42,8 @@ const friendlyMessage = (error: ApiError): string => {
   }
 };
 
-/** Normalize + surface an error via toast. Returns the normalized error. */
 export const handleApiError = (error: unknown, { silent = false } = {}): ApiError => {
   const normalized = normalizeError(error);
-  // 401 is handled by the refresh flow; avoid double-toasting.
   if (!silent && normalized.status !== 401) {
     toast.error(friendlyMessage(normalized));
   }

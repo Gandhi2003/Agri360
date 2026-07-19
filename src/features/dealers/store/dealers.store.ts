@@ -13,7 +13,6 @@ interface DealersUiState {
 
 const initial = { filters: {} as DealerFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Dealer Management. */
 export const useDealersStore = create<DealersUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

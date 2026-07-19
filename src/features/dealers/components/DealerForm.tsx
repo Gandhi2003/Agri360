@@ -16,7 +16,6 @@ const statusOptions = Object.values(DealerStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Dealer Management. */
 export function DealerForm({
   defaultValues,
   onSubmit,

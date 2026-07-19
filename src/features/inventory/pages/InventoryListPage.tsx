@@ -7,7 +7,6 @@ import { useInventory } from '../hooks/useInventory';
 import { useInventoryStore } from '../store/inventory.store';
 import type { Inventory } from '../types';
 
-/** Inventory — paginated list view. */
 export default function InventoryListPage() {
   const { page, pageSize, setPage } = useInventoryStore();
   const [search, setSearch] = useState('');

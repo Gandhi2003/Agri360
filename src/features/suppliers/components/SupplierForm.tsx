@@ -16,7 +16,6 @@ const statusOptions = Object.values(SupplierStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Supplier Management. */
 export function SupplierForm({
   defaultValues,
   onSubmit,

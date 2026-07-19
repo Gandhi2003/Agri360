@@ -4,7 +4,6 @@ import type { CreateStockDto, Stock, StockFilters, StockId, UpdateStockDto } fro
 
 const RESOURCE = '/stock';
 
-/** Pure data-access layer for the Stock feature. No business logic here. */
 export const stockApi = {
   list: (params: PaginationParams & StockFilters) =>
     apiClient.get<PaginatedResponse<Stock>>(RESOURCE, { params }),

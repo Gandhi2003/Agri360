@@ -7,7 +7,6 @@ import { useReports } from '../hooks/useReports';
 import { useReportsStore } from '../store/reports.store';
 import type { Report } from '../types';
 
-/** Reports — paginated list view. */
 export default function ReportsListPage() {
   const { page, pageSize, setPage } = useReportsStore();
   const [search, setSearch] = useState('');

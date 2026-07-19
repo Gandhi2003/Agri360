@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/warehouse';
 
-/** Pure data-access layer for the Warehouse feature. No business logic here. */
 export const warehouseApi = {
   list: (params: PaginationParams & WarehouseFilters) =>
     apiClient.get<PaginatedResponse<Warehouse>>(RESOURCE, { params }),

@@ -7,7 +7,6 @@ import { useQuotations } from '../hooks/useQuotations';
 import { useQuotationsStore } from '../store/quotations.store';
 import type { Quotation } from '../types';
 
-/** Quotations — paginated list view. */
 export default function QuotationsListPage() {
   const { page, pageSize, setPage } = useQuotationsStore();
   const [search, setSearch] = useState('');

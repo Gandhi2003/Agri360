@@ -16,7 +16,6 @@ const statusOptions = Object.values(ProfileStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Profile. */
 export function ProfileForm({
   defaultValues,
   onSubmit,

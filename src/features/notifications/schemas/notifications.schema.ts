@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { NotificationStatus } from '../types';
 
-/** Zod schema mirroring Create/Update Notification payloads. */
 export const notificationSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(120),
   code: z.string().min(1, 'Code is required').max(40),

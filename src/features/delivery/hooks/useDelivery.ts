@@ -5,7 +5,6 @@ import { deliveryService } from '../services/delivery.service';
 import { DELIVERY_QUERY_KEY } from '../constants';
 import type { CreateDeliveryDto, DeliveryFilters, DeliveryId, UpdateDeliveryDto } from '../types';
 
-/** Paginated, filtered list of Delivery. */
 export const useDelivery = (params: PaginationParams & DeliveryFilters) =>
   useQuery({
     queryKey: [DELIVERY_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useDelivery = (params: PaginationParams & DeliveryFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Delivery by id. */
 export const useDeliveryDetail = (id: DeliveryId | undefined) =>
   useQuery({
     queryKey: [DELIVERY_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useDeliveryDetail = (id: DeliveryId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Delivery. */
 export const useCreateDelivery = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateDelivery = () => {
   });
 };
 
-/** Update a Delivery. */
 export const useUpdateDelivery = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateDelivery = () => {
   });
 };
 
-/** Delete a Delivery. */
 export const useDeleteDelivery = () => {
   const queryClient = useQueryClient();
   return useMutation({

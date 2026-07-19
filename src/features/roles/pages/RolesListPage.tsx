@@ -7,7 +7,6 @@ import { useRoles } from '../hooks/useRoles';
 import { useRolesStore } from '../store/roles.store';
 import type { Role } from '../types';
 
-/** Role Management — paginated list view. */
 export default function RolesListPage() {
   const { page, pageSize, setPage } = useRolesStore();
   const [search, setSearch] = useState('');

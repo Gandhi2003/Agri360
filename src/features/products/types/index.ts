@@ -1,6 +1,5 @@
 import type { BaseEntity, ID } from '@common/types';
 
-/** Lifecycle status for a Product. */
 export enum ProductStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -8,7 +7,6 @@ export enum ProductStatus {
   Archived = 'archived',
 }
 
-/** Core Product domain entity. */
 export interface Product extends BaseEntity {
   name: string;
   code: string;
@@ -16,7 +14,6 @@ export interface Product extends BaseEntity {
   description?: string;
 }
 
-/** Payload to create a Product. */
 export interface CreateProductDto {
   name: string;
   code: string;
@@ -24,10 +21,8 @@ export interface CreateProductDto {
   description?: string;
 }
 
-/** Payload to update a Product (all fields optional). */
 export type UpdateProductDto = Partial<CreateProductDto>;
 
-/** Server/UI filters for listing Products. */
 export interface ProductFilters {
   search?: string;
   status?: ProductStatus;

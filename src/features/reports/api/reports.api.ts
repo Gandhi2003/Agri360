@@ -4,7 +4,6 @@ import type { CreateReportDto, Report, ReportFilters, ReportId, UpdateReportDto 
 
 const RESOURCE = '/reports';
 
-/** Pure data-access layer for the Reports feature. No business logic here. */
 export const reportsApi = {
   list: (params: PaginationParams & ReportFilters) =>
     apiClient.get<PaginatedResponse<Report>>(RESOURCE, { params }),

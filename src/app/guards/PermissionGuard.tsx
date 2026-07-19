@@ -10,7 +10,6 @@ interface PermissionGuardProps {
   children: ReactNode;
 }
 
-/** Page-level RBAC gate. Sends unauthorized users to the 403 page. */
 export function PermissionGuard({ permission, roles, children }: PermissionGuardProps) {
   const { can, hasRole } = usePermissions();
 

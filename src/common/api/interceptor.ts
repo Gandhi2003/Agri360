@@ -6,12 +6,6 @@ import { tokenStore } from './token';
 
 type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 
-/**
- * Attach request/response interceptors:
- *  - Request: inject Bearer access token.
- *  - Response: on 401, attempt a single token refresh and replay the request;
- *    if refresh fails, clear session and bounce to login.
- */
 export const setupInterceptors = (): void => {
   axiosInstance.interceptors.request.use((config) => {
     const token = tokenStore.getAccessToken();
@@ -23,10 +17,6 @@ export const setupInterceptors = (): void => {
 
   axiosInstance.interceptors.response.use(
     (response) => {
-      // The backend wraps every payload in `{ success, data, error, meta }`.
-      // Unwrap to `data` so feature APIs receive their typed payload directly.
-      // For paginated responses, preserve `meta` (normalizing snake_case →
-      // camelCase) so list views keep their pagination info.
       const body = response.data as
         | {
             success?: boolean;
@@ -80,7 +70,6 @@ export const setupInterceptors = (): void => {
           original.headers.Authorization = `Bearer ${newToken}`;
           return axiosInstance(original);
         }
-        // Refresh failed → force re-authentication.
         tokenStore.clear();
         if (window.location.pathname !== ROUTES.LOGIN) {
           window.location.assign(ROUTES.LOGIN);

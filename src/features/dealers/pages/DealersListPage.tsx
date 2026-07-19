@@ -7,7 +7,6 @@ import { useDealers } from '../hooks/useDealers';
 import { useDealersStore } from '../store/dealers.store';
 import type { Dealer } from '../types';
 
-/** Dealer Management — paginated list view. */
 export default function DealersListPage() {
   const { page, pageSize, setPage } = useDealersStore();
   const [search, setSearch] = useState('');

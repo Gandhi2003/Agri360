@@ -5,7 +5,6 @@ import { profileService } from '../services/profile.service';
 import { PROFILE_QUERY_KEY } from '../constants';
 import type { CreateProfileDto, ProfileFilters, ProfileId, UpdateProfileDto } from '../types';
 
-/** Paginated, filtered list of Profile. */
 export const useProfile = (params: PaginationParams & ProfileFilters) =>
   useQuery({
     queryKey: [PROFILE_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useProfile = (params: PaginationParams & ProfileFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Profile by id. */
 export const useProfileDetail = (id: ProfileId | undefined) =>
   useQuery({
     queryKey: [PROFILE_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useProfileDetail = (id: ProfileId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Profile. */
 export const useCreateProfile = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateProfile = () => {
   });
 };
 
-/** Update a Profile. */
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateProfile = () => {
   });
 };
 
-/** Delete a Profile. */
 export const useDeleteProfile = () => {
   const queryClient = useQueryClient();
   return useMutation({

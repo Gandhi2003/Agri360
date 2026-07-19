@@ -5,7 +5,6 @@ import { farmersService } from '../services/farmers.service';
 import { FARMERS_QUERY_KEY } from '../constants';
 import type { CreateFarmerDto, FarmerFilters, FarmerId, UpdateFarmerDto } from '../types';
 
-/** Paginated, filtered list of Farmers. */
 export const useFarmers = (params: PaginationParams & FarmerFilters) =>
   useQuery({
     queryKey: [FARMERS_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useFarmers = (params: PaginationParams & FarmerFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Farmer by id. */
 export const useFarmer = (id: FarmerId | undefined) =>
   useQuery({
     queryKey: [FARMERS_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useFarmer = (id: FarmerId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Farmer. */
 export const useCreateFarmer = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateFarmer = () => {
   });
 };
 
-/** Update a Farmer. */
 export const useUpdateFarmer = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateFarmer = () => {
   });
 };
 
-/** Delete a Farmer. */
 export const useDeleteFarmer = () => {
   const queryClient = useQueryClient();
   return useMutation({

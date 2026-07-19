@@ -7,7 +7,6 @@ import { useSettings } from '../hooks/useSettings';
 import { useSettingsStore } from '../store/settings.store';
 import type { Setting } from '../types';
 
-/** Settings — paginated list view. */
 export default function SettingsListPage() {
   const { page, pageSize, setPage } = useSettingsStore();
   const [search, setSearch] = useState('');

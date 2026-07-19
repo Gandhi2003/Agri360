@@ -13,7 +13,6 @@ interface SettingsUiState {
 
 const initial = { filters: {} as SettingFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Settings. */
 export const useSettingsStore = create<SettingsUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

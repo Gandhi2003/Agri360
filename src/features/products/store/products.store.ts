@@ -13,7 +13,6 @@ interface ProductsUiState {
 
 const initial = { filters: {} as ProductFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Products. */
 export const useProductsStore = create<ProductsUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

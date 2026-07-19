@@ -3,7 +3,6 @@ import { useAuthStore } from '@app/store';
 import { can, canAll, canAny, hasRole } from '@common/permissions';
 import type { Permission, Role } from '@common/types';
 
-/** RBAC helpers bound to the current user. */
 export function usePermissions() {
   const user = useAuthStore((s) => s.user);
 

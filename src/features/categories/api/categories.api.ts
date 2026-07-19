@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/categories';
 
-/** Pure data-access layer for the Categories feature. No business logic here. */
 export const categoriesApi = {
   list: (params: PaginationParams & CategoryFilters) =>
     apiClient.get<PaginatedResponse<Category>>(RESOURCE, { params }),

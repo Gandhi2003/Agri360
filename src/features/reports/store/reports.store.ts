@@ -13,7 +13,6 @@ interface ReportsUiState {
 
 const initial = { filters: {} as ReportFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Reports. */
 export const useReportsStore = create<ReportsUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

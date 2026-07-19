@@ -13,7 +13,6 @@ interface MarketingUiState {
 
 const initial = { filters: {} as MarketingFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Marketing. */
 export const useMarketingStore = create<MarketingUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

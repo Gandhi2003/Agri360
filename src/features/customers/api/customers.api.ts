@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/customers';
 
-/** Pure data-access layer for the Customer Management feature. No business logic here. */
 export const customersApi = {
   list: (params: PaginationParams & CustomerFilters) =>
     apiClient.get<PaginatedResponse<Customer>>(RESOURCE, { params }),

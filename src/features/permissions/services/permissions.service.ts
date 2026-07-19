@@ -7,11 +7,6 @@ import type {
   UpdatePermissionDto,
 } from '../types';
 
-/**
- * Application/service layer for Permission Management.
- * Encapsulates orchestration & business rules, keeping the API layer thin
- * and the UI/hooks layer free of domain logic (Clean Architecture).
- */
 export const permissionsService = {
   getList: (params: PaginationParams & PermissionFilters) => permissionsApi.list(params),
   getOne: (id: PermissionId) => permissionsApi.getById(id),

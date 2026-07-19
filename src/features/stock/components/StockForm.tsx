@@ -16,7 +16,6 @@ const statusOptions = Object.values(StockStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Stock. */
 export function StockForm({
   defaultValues,
   onSubmit,

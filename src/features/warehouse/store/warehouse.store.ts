@@ -13,7 +13,6 @@ interface WarehouseUiState {
 
 const initial = { filters: {} as WarehouseFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Warehouse. */
 export const useWarehouseStore = create<WarehouseUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

@@ -7,7 +7,6 @@ import { useMarketing } from '../hooks/useMarketing';
 import { useMarketingStore } from '../store/marketing.store';
 import type { Marketing } from '../types';
 
-/** Marketing — paginated list view. */
 export default function MarketingListPage() {
   const { page, pageSize, setPage } = useMarketingStore();
   const [search, setSearch] = useState('');

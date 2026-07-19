@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/quotations';
 
-/** Pure data-access layer for the Quotations feature. No business logic here. */
 export const quotationsApi = {
   list: (params: PaginationParams & QuotationFilters) =>
     apiClient.get<PaginatedResponse<Quotation>>(RESOURCE, { params }),

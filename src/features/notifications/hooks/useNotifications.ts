@@ -10,7 +10,6 @@ import type {
   UpdateNotificationDto,
 } from '../types';
 
-/** Paginated, filtered list of Notifications. */
 export const useNotifications = (params: PaginationParams & NotificationFilters) =>
   useQuery({
     queryKey: [NOTIFICATIONS_QUERY_KEY, 'list', params],
@@ -18,7 +17,6 @@ export const useNotifications = (params: PaginationParams & NotificationFilters)
     placeholderData: keepPreviousData,
   });
 
-/** A single Notification by id. */
 export const useNotificationDetail = (id: NotificationId | undefined) =>
   useQuery({
     queryKey: [NOTIFICATIONS_QUERY_KEY, 'detail', id],
@@ -26,7 +24,6 @@ export const useNotificationDetail = (id: NotificationId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Notification. */
 export const useCreateNotification = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -38,7 +35,6 @@ export const useCreateNotification = () => {
   });
 };
 
-/** Update a Notification. */
 export const useUpdateNotification = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -51,7 +47,6 @@ export const useUpdateNotification = () => {
   });
 };
 
-/** Delete a Notification. */
 export const useDeleteNotification = () => {
   const queryClient = useQueryClient();
   return useMutation({

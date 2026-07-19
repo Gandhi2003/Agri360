@@ -13,7 +13,6 @@ interface CategoriesUiState {
 
 const initial = { filters: {} as CategoryFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Categories. */
 export const useCategoriesStore = create<CategoriesUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

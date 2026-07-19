@@ -16,7 +16,6 @@ const statusOptions = Object.values(QuotationStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Quotations. */
 export function QuotationForm({
   defaultValues,
   onSubmit,

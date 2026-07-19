@@ -7,7 +7,6 @@ import { useFarmVisits } from '../hooks/useFarmVisits';
 import { useFarmVisitsStore } from '../store/farm-visits.store';
 import type { FarmVisit } from '../types';
 
-/** Farm Visits — paginated list view. */
 export default function FarmVisitsListPage() {
   const { page, pageSize, setPage } = useFarmVisitsStore();
   const [search, setSearch] = useState('');

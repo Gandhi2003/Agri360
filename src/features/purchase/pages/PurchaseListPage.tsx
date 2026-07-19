@@ -7,7 +7,6 @@ import { usePurchase } from '../hooks/usePurchase';
 import { usePurchaseStore } from '../store/purchase.store';
 import type { Purchase } from '../types';
 
-/** Purchase — paginated list view. */
 export default function PurchaseListPage() {
   const { page, pageSize, setPage } = usePurchaseStore();
   const [search, setSearch] = useState('');

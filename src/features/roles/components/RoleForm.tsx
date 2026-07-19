@@ -16,7 +16,6 @@ const statusOptions = Object.values(RoleStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Role Management. */
 export function RoleForm({
   defaultValues,
   onSubmit,

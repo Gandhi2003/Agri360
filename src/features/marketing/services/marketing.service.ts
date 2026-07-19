@@ -7,11 +7,6 @@ import type {
   UpdateMarketingDto,
 } from '../types';
 
-/**
- * Application/service layer for Marketing.
- * Encapsulates orchestration & business rules, keeping the API layer thin
- * and the UI/hooks layer free of domain logic (Clean Architecture).
- */
 export const marketingService = {
   getList: (params: PaginationParams & MarketingFilters) => marketingApi.list(params),
   getOne: (id: MarketingId) => marketingApi.getById(id),

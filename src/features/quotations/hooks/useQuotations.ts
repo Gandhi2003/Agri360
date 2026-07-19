@@ -10,7 +10,6 @@ import type {
   UpdateQuotationDto,
 } from '../types';
 
-/** Paginated, filtered list of Quotations. */
 export const useQuotations = (params: PaginationParams & QuotationFilters) =>
   useQuery({
     queryKey: [QUOTATIONS_QUERY_KEY, 'list', params],
@@ -18,7 +17,6 @@ export const useQuotations = (params: PaginationParams & QuotationFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Quotation by id. */
 export const useQuotationDetail = (id: QuotationId | undefined) =>
   useQuery({
     queryKey: [QUOTATIONS_QUERY_KEY, 'detail', id],
@@ -26,7 +24,6 @@ export const useQuotationDetail = (id: QuotationId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Quotation. */
 export const useCreateQuotation = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -38,7 +35,6 @@ export const useCreateQuotation = () => {
   });
 };
 
-/** Update a Quotation. */
 export const useUpdateQuotation = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -51,7 +47,6 @@ export const useUpdateQuotation = () => {
   });
 };
 
-/** Delete a Quotation. */
 export const useDeleteQuotation = () => {
   const queryClient = useQueryClient();
   return useMutation({

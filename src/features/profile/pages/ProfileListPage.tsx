@@ -40,7 +40,6 @@ const statusFilterOptions = [
   })),
 ];
 
-/** Profile — paginated list view with create/edit/detail/delete flows. */
 export default function ProfileListPage() {
   const { page, pageSize, setPage } = useProfileStore();
   const [search, setSearch] = useState('');

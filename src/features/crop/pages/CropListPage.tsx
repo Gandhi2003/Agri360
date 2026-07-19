@@ -7,7 +7,6 @@ import { useCrop } from '../hooks/useCrop';
 import { useCropStore } from '../store/crop.store';
 import type { Crop } from '../types';
 
-/** Crop Management — paginated list view. */
 export default function CropListPage() {
   const { page, pageSize, setPage } = useCropStore();
   const [search, setSearch] = useState('');

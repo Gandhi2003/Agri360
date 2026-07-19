@@ -13,7 +13,6 @@ interface NotificationsUiState {
 
 const initial = { filters: {} as NotificationFilters, page: 1, pageSize: 10 };
 
-/** Feature-scoped UI state (filters/pagination) for Notifications. */
 export const useNotificationsStore = create<NotificationsUiState>((set) => ({
   ...initial,
   setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters }, page: 1 })),

@@ -1,18 +1,14 @@
-# Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
 node_modules
 dist
 dist-ssr
 *.local
 coverage
-
-# Editor / OS
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,8 +18,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-
-# Env — keep .env.example committed, ignore real secrets
 .env
 .env.*.local
 .env.local

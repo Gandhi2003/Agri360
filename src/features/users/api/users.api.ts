@@ -4,7 +4,6 @@ import type { CreateUserDto, User, UserFilters, UserId, UpdateUserDto } from '..
 
 const RESOURCE = '/users';
 
-/** Pure data-access layer for the User Management feature. No business logic here. */
 export const usersApi = {
   list: (params: PaginationParams & UserFilters) =>
     apiClient.get<PaginatedResponse<User>>(RESOURCE, { params }),

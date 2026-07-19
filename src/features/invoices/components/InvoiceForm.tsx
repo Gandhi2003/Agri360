@@ -16,7 +16,6 @@ const statusOptions = Object.values(InvoiceStatus).map((value) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
 }));
 
-/** Reusable create/edit form for Invoices. */
 export function InvoiceForm({
   defaultValues,
   onSubmit,

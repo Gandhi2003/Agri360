@@ -1,6 +1,5 @@
 import type { BaseEntity, ID } from '@common/types';
 
-/** Lifecycle status for a Warehouse. */
 export enum WarehouseStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -8,7 +7,6 @@ export enum WarehouseStatus {
   Archived = 'archived',
 }
 
-/** Core Warehouse domain entity. */
 export interface Warehouse extends BaseEntity {
   name: string;
   code: string;
@@ -16,7 +14,6 @@ export interface Warehouse extends BaseEntity {
   description?: string;
 }
 
-/** Payload to create a Warehouse. */
 export interface CreateWarehouseDto {
   name: string;
   code: string;
@@ -24,10 +21,8 @@ export interface CreateWarehouseDto {
   description?: string;
 }
 
-/** Payload to update a Warehouse (all fields optional). */
 export type UpdateWarehouseDto = Partial<CreateWarehouseDto>;
 
-/** Server/UI filters for listing Warehouse. */
 export interface WarehouseFilters {
   search?: string;
   status?: WarehouseStatus;

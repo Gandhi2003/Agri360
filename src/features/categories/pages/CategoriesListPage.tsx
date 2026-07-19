@@ -35,7 +35,6 @@ const statusFilterOptions = [
   })),
 ];
 
-/** Categories — card-grid list view with create/edit/delete flows. */
 export default function CategoriesListPage() {
   const { page, pageSize, setPage } = useCategoriesStore();
   const [search, setSearch] = useState('');

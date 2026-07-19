@@ -7,7 +7,6 @@ import { useWarehouse } from '../hooks/useWarehouse';
 import { useWarehouseStore } from '../store/warehouse.store';
 import type { Warehouse } from '../types';
 
-/** Warehouse — paginated list view. */
 export default function WarehouseListPage() {
   const { page, pageSize, setPage } = useWarehouseStore();
   const [search, setSearch] = useState('');

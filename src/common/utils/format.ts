@@ -1,5 +1,3 @@
-/** Formatting helpers — pure, no side effects. */
-
 const DEFAULT_LOCALE = 'en-IN';
 
 export const formatCurrency = (value: number, currency = 'INR', locale = DEFAULT_LOCALE): string =>

@@ -4,7 +4,6 @@ import type { CreateDealerDto, Dealer, DealerFilters, DealerId, UpdateDealerDto 
 
 const RESOURCE = '/dealers';
 
-/** Pure data-access layer for the Dealer Management feature. No business logic here. */
 export const dealersApi = {
   list: (params: PaginationParams & DealerFilters) =>
     apiClient.get<PaginatedResponse<Dealer>>(RESOURCE, { params }),

@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/payments';
 
-/** Pure data-access layer for the Payments feature. No business logic here. */
 export const paymentsApi = {
   list: (params: PaginationParams & PaymentFilters) =>
     apiClient.get<PaginatedResponse<Payment>>(RESOURCE, { params }),

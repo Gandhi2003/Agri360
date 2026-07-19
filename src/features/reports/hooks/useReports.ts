@@ -5,7 +5,6 @@ import { reportsService } from '../services/reports.service';
 import { REPORTS_QUERY_KEY } from '../constants';
 import type { CreateReportDto, ReportFilters, ReportId, UpdateReportDto } from '../types';
 
-/** Paginated, filtered list of Reports. */
 export const useReports = (params: PaginationParams & ReportFilters) =>
   useQuery({
     queryKey: [REPORTS_QUERY_KEY, 'list', params],
@@ -13,7 +12,6 @@ export const useReports = (params: PaginationParams & ReportFilters) =>
     placeholderData: keepPreviousData,
   });
 
-/** A single Report by id. */
 export const useReportDetail = (id: ReportId | undefined) =>
   useQuery({
     queryKey: [REPORTS_QUERY_KEY, 'detail', id],
@@ -21,7 +19,6 @@ export const useReportDetail = (id: ReportId | undefined) =>
     enabled: Boolean(id),
   });
 
-/** Create a Report. */
 export const useCreateReport = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -33,7 +30,6 @@ export const useCreateReport = () => {
   });
 };
 
-/** Update a Report. */
 export const useUpdateReport = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -46,7 +42,6 @@ export const useUpdateReport = () => {
   });
 };
 
-/** Delete a Report. */
 export const useDeleteReport = () => {
   const queryClient = useQueryClient();
   return useMutation({

@@ -10,7 +10,6 @@ import type {
 
 const RESOURCE = '/purchase';
 
-/** Pure data-access layer for the Purchase feature. No business logic here. */
 export const purchaseApi = {
   list: (params: PaginationParams & PurchaseFilters) =>
     apiClient.get<PaginatedResponse<Purchase>>(RESOURCE, { params }),
