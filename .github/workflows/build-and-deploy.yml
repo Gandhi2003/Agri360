@@ -1,4 +1,4 @@
-name: Build and Deploy Agri360 Web UI (Docker / self-hosted)
+name: Build, Push, and Deploy Web UI
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   build-and-deploy:
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
