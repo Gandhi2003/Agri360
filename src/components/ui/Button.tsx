@@ -15,12 +15,12 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
-  secondary: 'bg-muted text-foreground hover:bg-muted/70',
-  outline: 'border border-border bg-transparent hover:bg-muted text-foreground',
-  ghost: 'bg-transparent hover:bg-muted text-foreground',
-  danger: 'bg-danger text-white hover:bg-danger/90 shadow-sm',
-  link: 'bg-transparent text-primary underline-offset-4 hover:underline p-0 h-auto',
+  primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm font-bold',
+  secondary: 'bg-muted text-foreground hover:bg-muted/70 font-medium',
+  outline: 'border border-border bg-transparent hover:bg-muted text-foreground font-medium',
+  ghost: 'bg-transparent hover:bg-muted text-foreground font-medium',
+  danger: 'bg-danger text-white hover:bg-danger/90 shadow-sm font-medium',
+  link: 'bg-transparent text-primary underline-offset-4 hover:underline p-0 h-auto font-medium',
 };
 
 const sizes: Record<Size, string> = {
@@ -50,7 +50,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       ref={ref}
       disabled={disabled || isLoading}
       className={cn(
-        'focus-ring inline-flex select-none items-center justify-center rounded-md font-medium transition-colors disabled:pointer-events-none disabled:opacity-50',
+        'focus-ring inline-flex select-none items-center justify-center rounded-md transition-colors disabled:pointer-events-none disabled:opacity-50',
         variants[variant],
         sizes[size],
         fullWidth && 'w-full',

@@ -14,16 +14,20 @@ function SidebarLink({ item, collapsed }: { item: NavItem; collapsed: boolean })
       title={collapsed ? label : undefined}
       className={({ isActive }) =>
         cn(
-          'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+          'flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors',
           collapsed && 'justify-center',
           isActive
-            ? 'bg-primary/10 text-primary'
+            ? 'bg-primary font-bold text-primary-foreground shadow-sm'
             : 'text-muted-foreground hover:bg-muted hover:text-foreground',
         )
       }
     >
-      <Icon className="size-5 shrink-0" />
-      {!collapsed && <span className="truncate">{label}</span>}
+      {({ isActive }) => (
+        <>
+          <Icon className="size-5 shrink-0" strokeWidth={isActive ? 2.5 : 2} />
+          {!collapsed && <span className="truncate">{label}</span>}
+        </>
+      )}
     </NavLink>
   );
 }
@@ -52,7 +56,7 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 flex flex-col border-r border-border bg-card transition-[width,transform] duration-200 lg:static lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-40 flex flex-col bg-card shadow-customTable transition-[width,transform] duration-200 lg:static lg:translate-x-0',
           collapsed ? 'w-[72px]' : 'w-64',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
         )}
@@ -75,7 +79,7 @@ export function Sidebar() {
           </button>
         </div>
 
-        <nav className="thin-scroll flex-1 space-y-6 overflow-y-auto px-3 py-4">
+        <nav className="sidebar-scroll flex-1 space-y-6 overflow-y-auto px-3 py-4">
           {visibleSections.map((section) => (
             <div key={section.title} className="space-y-1">
               {!collapsed && (

@@ -14,7 +14,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="mb-1.5 block text-sm font-medium text-foreground">
+          <label htmlFor={inputId} className="mb-2 block text-xs font-bold text-[#1d252db3]">
             {label}
           </label>
         )}
@@ -29,11 +29,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              'focus:ring-0 h-9.5 px-3 py-2 w-full font-medium rounded-md border border-gray5 bg-card text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed no-spinner',
+              'focus-ring h-9.5 px-3 py-2 w-full font-medium rounded-md border border-gray5 bg-card text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed no-spinner',
               leftIcon && 'pl-9',
-              !error
-                ? ' border-gray1 focus:border-green'
-                : 'border-danger focus-visible:ring-danger',
+              !error ? ' border-gray1' : 'border-danger focus-visible:border-danger',
               className,
             )}
             aria-invalid={Boolean(error)}

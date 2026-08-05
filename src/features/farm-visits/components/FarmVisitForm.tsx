@@ -32,7 +32,7 @@ export function FarmVisitForm({
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <Input label="Name" {...register('name')} error={errors.name?.message} />
       <Input label="Code" {...register('code')} error={errors.code?.message} />
       <Select

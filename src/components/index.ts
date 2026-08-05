@@ -9,4 +9,4 @@ export { EmptyState } from './empty-state/EmptyState';
 export { Breadcrumb } from './breadcrumb/Breadcrumb';
 export { Sidebar } from './sidebar/Sidebar';
 export { Navbar } from './navbar/Navbar';
-export { ErrorBoundary, PageHeader, PermissionGate, ThemeToggle } from './shared';
+export { ErrorBoundary, FullscreenToggle, PageHeader, PermissionGate, ThemeToggle } from './shared';

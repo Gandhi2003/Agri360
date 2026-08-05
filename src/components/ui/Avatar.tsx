@@ -19,7 +19,7 @@ export function Avatar({ src, firstName, lastName, size = 'md', className }: Ava
   return (
     <span
       className={cn(
-        'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/10 font-medium text-primary',
+        'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary font-bold text-primary-foreground',
         sizes[size],
         className,
       )}

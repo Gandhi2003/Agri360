@@ -31,7 +31,7 @@ function Field({
   children: ReactNode;
 }) {
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-2">
       <label
         htmlFor={htmlFor}
         className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
@@ -61,7 +61,7 @@ export function CategoryForm({
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <Field icon={<Tag className="size-4" />} label="Name" htmlFor="name">
         <Input {...register('name')} error={errors.name?.message} placeholder="e.g. Seeds" />
       </Field>

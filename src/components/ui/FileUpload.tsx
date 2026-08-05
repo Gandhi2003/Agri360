@@ -41,12 +41,12 @@ export function FileUpload({
       onDragLeave={() => setDragging(false)}
       onDrop={onDrop}
       className={cn(
-        'flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-input bg-muted/30 p-8 text-center transition-colors hover:border-primary/50',
+        'flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray5 bg-muted/30 p-8 text-center transition-colors hover:border-primary/50',
         dragging && 'border-primary bg-primary/5',
       )}
     >
       <UploadCloud className="size-8 text-muted-foreground" />
-      <p className="text-sm font-medium text-foreground">{label}</p>
+      <p className="text-xs font-bold text-[#1d252db3]">{label}</p>
       {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
       <input
         ref={inputRef}

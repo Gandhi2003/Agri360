@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Breadcrumb } from '@components/breadcrumb/Breadcrumb';
 import { Navbar } from '@components/navbar/Navbar';
 import { Sidebar } from '@components/sidebar/Sidebar';
 import { ErrorBoundary } from '@components/shared';
@@ -13,6 +14,7 @@ export function DashboardLayout() {
         <Navbar />
         <main className="thin-scroll flex-1 overflow-y-auto">
           <div className="mx-auto w-full max-w-[1600px] p-4 sm:p-6">
+            <Breadcrumb className="mb-4" />
             <ErrorBoundary>
               <Suspense fallback={<Loader />}>
                 <Outlet />

@@ -2,16 +2,17 @@ import { Fragment } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 import { capitalize } from '@common/utils';
+import { cn } from '@lib/cn';
 
 /** Auto-generated breadcrumb derived from the current pathname. */
-export function Breadcrumb() {
+export function Breadcrumb({ className }: { className?: string }) {
   const { pathname } = useLocation();
   const segments = pathname.split('/').filter(Boolean);
 
   return (
     <nav
       aria-label="Breadcrumb"
-      className="flex items-center gap-1.5 text-sm text-muted-foreground"
+      className={cn('flex items-center gap-1.5 text-sm text-muted-foreground', className)}
     >
       <Link to="/dashboard" className="hover:text-foreground" aria-label="Home">
         <Home className="size-4" />

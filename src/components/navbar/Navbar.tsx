@@ -7,45 +7,38 @@ import { useUiStore } from '@app/store';
 import { Avatar } from '@components/ui/Avatar';
 import { Button } from '@components/ui/Button';
 import { Dropdown } from '@components/ui/Dropdown';
-import { Breadcrumb } from '@components/breadcrumb/Breadcrumb';
+import { FullscreenToggle } from '@components/shared/FullscreenToggle';
 import { ThemeToggle } from '@components/shared/ThemeToggle';
+import { NavSearch } from './NavSearch';
+
+const formatRoleLabel = (role?: string) =>
+  role ? role.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : '';
 
 export function Navbar() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { mutate: logout } = useLogout();
-  // const toggleSidebar = useUiStore((s) => s.toggleSidebar);
-  // const collapsed = useUiStore((s) => s.sidebarCollapsed);
   const setMobileOpen = useUiStore((s) => s.setMobileSidebarOpen);
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-border border-[#e5e5e5] bg-card/80 px-4 backdrop-blur">
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden"
-          onClick={() => setMobileOpen(true)}
-          aria-label="Open menu"
-        >
-          <Menu className="size-5" />
-        </Button>
-        {/* <Button
-          variant="ghost"
-          size="icon"
-          className="hidden lg:inline-flex"
-          onClick={toggleSidebar}
-          aria-label="Toggle sidebar"
-        >
-          {collapsed ? <PanelLeft className="size-5" /> : <PanelLeftClose className="size-5" />}
-        </Button> */}
-        <div className="hidden md:block">
-          <Breadcrumb />
-        </div>
+    <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-border bg-card/80 px-4 backdrop-blur">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="lg:hidden"
+        onClick={() => setMobileOpen(true)}
+        aria-label="Open menu"
+      >
+        <Menu className="size-5" />
+      </Button>
+
+      <div className="hidden flex-1 sm:block">
+        <NavSearch />
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="ml-auto flex items-center gap-1">
         <ThemeToggle />
+        <FullscreenToggle />
         <Button
           variant="ghost"
           size="icon"
@@ -56,13 +49,21 @@ export function Navbar() {
         </Button>
         <Dropdown
           trigger={
-            <button className="focus-ring flex items-center gap-2 rounded-full p-1 hover:bg-muted">
+            <button className="focus-ring flex items-center gap-2 rounded-full p-1">
               <Avatar
                 src={user?.avatarUrl}
                 firstName={user?.firstName}
                 lastName={user?.lastName}
                 size="sm"
               />
+              <span className="hidden text-left leading-tight sm:block">
+                <span className="block text-sm font-bold text-foreground">
+                  {user?.firstName} {user?.lastName}
+                </span>
+                <span className="block text-xs font-medium text-muted-foreground">
+                  {formatRoleLabel(user?.roles?.[0])}
+                </span>
+              </span>
             </button>
           }
           items={[
