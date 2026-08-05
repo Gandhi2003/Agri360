@@ -1,15 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal, Pencil, Plus, Trash2, Eye } from 'lucide-react';
+import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
   Avatar,
   Badge,
   Button,
   Card,
   CardContent,
+  Checkbox,
   ConfirmDialog,
   DataTable,
-  Dropdown,
   Modal,
   PageHeader,
   SearchInput,
@@ -60,7 +60,7 @@ export default function ProfileListPage() {
   const updateProfile = useUpdateProfile();
   const deleteProfile = useDeleteProfile();
 
-  const rows = data?.data ?? [];
+  const rows = useMemo(() => data?.data ?? [], [data]);
   const total = data?.meta.total ?? 0;
 
   const statusCounts = useMemo(() => {
@@ -69,16 +69,53 @@ export default function ProfileListPage() {
     return counts;
   }, [rows]);
 
-  const columns = useMemo<ColumnDef<Profile>[]>(
+  const [selectedIds, setSelectedIds] = useState<Set<Profile['id']>>(new Set());
+  const allSelected = rows.length > 0 && selectedIds.size === rows.length;
+
+  const toggleSelectAll = useCallback(() => {
+    setSelectedIds(allSelected ? new Set() : new Set(rows.map((item) => item.id)));
+  }, [allSelected, rows]);
+
+  const toggleSelect = useCallback((id: Profile['id']) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const columns = useMemo<ColumnDef<Profile, unknown>[]>(
     () => [
       {
-        accessorKey: 'name',
-        header: 'Name',
+        id: 'select',
+        header: () => (
+          <Checkbox checked={allSelected} onChange={toggleSelectAll} aria-label="Select all" />
+        ),
+        enableSorting: false,
+        meta: { cellClassName: 'pr-0', headerClassName: 'pr-0' },
         cell: ({ row }) => (
-          <div className="flex items-center gap-3">
+          <div onClick={(e) => e.stopPropagation()}>
+            <Checkbox
+              checked={selectedIds.has(row.original.id)}
+              onChange={() => toggleSelect(row.original.id)}
+              aria-label={`Select ${row.original.name}`}
+            />
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'name',
+        header: 'Profile',
+        meta: { cellClassName: 'pl-1', headerClassName: 'pl-1' },
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2">
             <Avatar firstName={row.original.name} size="sm" />
             <div className="min-w-0">
-              <p className="truncate font-medium text-foreground">{row.original.name}</p>
+              <p className="truncate font-semibold text-foreground">{row.original.name}</p>
               <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
             </div>
           </div>
@@ -102,40 +139,39 @@ export default function ProfileListPage() {
       },
       {
         id: 'actions',
-        header: '',
+        header: 'Actions',
         enableSorting: false,
         cell: ({ row }) => (
-          <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
-            <Dropdown
-              trigger={
-                <Button variant="ghost" size="sm" aria-label="Row actions">
-                  <MoreHorizontal className="size-4" />
-                </Button>
-              }
-              items={[
-                {
-                  label: 'View details',
-                  icon: <Eye className="size-4" />,
-                  onClick: () => setDetailTarget(row.original),
-                },
-                {
-                  label: 'Edit',
-                  icon: <Pencil className="size-4" />,
-                  onClick: () => setModal({ mode: 'edit', profile: row.original }),
-                },
-                {
-                  label: 'Delete',
-                  icon: <Trash2 className="size-4" />,
-                  danger: true,
-                  onClick: () => setDeleteTarget(row.original),
-                },
-              ]}
-            />
+          <div className="flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              aria-label="View profile"
+              onClick={() => setDetailTarget(row.original)}
+              className="text-info transition-opacity hover:opacity-70"
+            >
+              <Eye className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Edit profile"
+              onClick={() => setModal({ mode: 'edit', profile: row.original })}
+              className="text-success transition-opacity hover:opacity-70"
+            >
+              <Pencil className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Delete profile"
+              onClick={() => setDeleteTarget(row.original)}
+              className="text-danger transition-opacity hover:opacity-70"
+            >
+              <Trash2 className="size-4" />
+            </button>
           </div>
         ),
       },
     ],
-    [],
+    [allSelected, selectedIds, toggleSelectAll, toggleSelect],
   );
 
   const handleSubmit = (values: ProfileFormValues) => {
@@ -161,18 +197,7 @@ export default function ProfileListPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Profile"
-        description={`Manage profile records across your organization${total ? ` · ${total} total` : ''}.`}
-        actions={
-          <Button
-            leftIcon={<Plus className="size-4" />}
-            onClick={() => setModal({ mode: 'create' })}
-          >
-            New
-          </Button>
-        }
-      />
+      <PageHeader title="Profile" description="" />
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {(
@@ -195,11 +220,14 @@ export default function ProfileListPage() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="sm:max-w-sm sm:flex-1">
-          <SearchInput value={search} onChange={setSearch} placeholder="Search profile..." />
-        </div>
-        <div className="sm:w-48">
+      <Card className="grid grid-cols-2 items-center gap-3 p-4">
+        <SearchInput
+          value={search}
+          className="max-w-md"
+          onChange={setSearch}
+          placeholder="Search profiles…"
+        />
+        <div className="ml-auto w-48">
           <Select
             options={statusFilterOptions}
             value={status}
@@ -207,7 +235,7 @@ export default function ProfileListPage() {
             aria-label="Filter by status"
           />
         </div>
-      </div>
+      </Card>
 
       <DataTable
         columns={columns}
@@ -215,6 +243,15 @@ export default function ProfileListPage() {
         isLoading={isLoading}
         emptyMessage="No profiles match your filters yet."
         onRowClick={setDetailTarget}
+        title="All Profiles"
+        headerActions={
+          <Button
+            leftIcon={<Plus className="size-4" />}
+            onClick={() => setModal({ mode: 'create' })}
+          >
+            New Profile
+          </Button>
+        }
         pagination={{
           page,
           pageSize,

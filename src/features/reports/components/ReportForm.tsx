@@ -9,6 +9,7 @@ interface ReportFormProps {
   onSubmit: (values: ReportFormValues) => void;
   isSubmitting?: boolean;
   submitLabel?: string;
+  readOnly?: boolean;
 }
 
 const statusOptions = Object.values(ReportStatus).map((value) => ({
@@ -21,6 +22,7 @@ export function ReportForm({
   onSubmit,
   isSubmitting,
   submitLabel = 'Save',
+  readOnly = false,
 }: ReportFormProps) {
   const {
     register,
@@ -33,24 +35,28 @@ export function ReportForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      <Input label="Name" {...register('name')} error={errors.name?.message} />
-      <Input label="Code" {...register('code')} error={errors.code?.message} />
+      <Input label="Name" disabled={readOnly} {...register('name')} error={errors.name?.message} />
+      <Input label="Code" disabled={readOnly} {...register('code')} error={errors.code?.message} />
       <Select
         label="Status"
         options={statusOptions}
+        disabled={readOnly}
         {...register('status')}
         error={errors.status?.message}
       />
       <Textarea
         label="Description"
+        disabled={readOnly}
         {...register('description')}
         error={errors.description?.message}
       />
-      <div className="flex justify-end gap-2">
-        <Button type="submit" isLoading={isSubmitting}>
-          {submitLabel}
-        </Button>
-      </div>
+      {!readOnly && (
+        <div className="flex justify-end gap-2">
+          <Button type="submit" isLoading={isSubmitting}>
+            {submitLabel}
+          </Button>
+        </div>
+      )}
     </form>
   );
 }

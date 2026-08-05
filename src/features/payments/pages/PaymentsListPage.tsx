@@ -1,52 +1,256 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Plus } from 'lucide-react';
-import { Badge, Button, DataTable, PageHeader, SearchInput } from '@components';
-import { useDebounce } from '@common/hooks';
-import { usePayments } from '../hooks/usePayments';
+import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Checkbox,
+  ConfirmDialog,
+  DataTable,
+  Modal,
+  PageHeader,
+  PermissionGate,
+  SearchInput,
+  Select,
+} from '@components';
+import { useDebounce, useModal } from '@common/hooks';
+import { formatDate } from '@common/utils';
+import type { SelectOption } from '@common/types';
+import { PAYMENTS_PERMISSIONS } from '../constants';
+import {
+  useCreatePayment,
+  useDeletePayment,
+  usePayments,
+  useUpdatePayment,
+} from '../hooks/usePayments';
 import { usePaymentsStore } from '../store/payments.store';
-import type { Payment } from '../types';
+import { PaymentForm } from '../components/PaymentForm';
+import { PaymentStatus, type Payment } from '../types';
+import type { PaymentFormValues } from '../schemas/payments.schema';
+
+const statusFilterOptions: SelectOption[] = [
+  { label: 'All Status', value: '' },
+  ...Object.values(PaymentStatus).map((value) => ({ label: value, value })),
+];
+
+const statusBadgeVariant: Record<PaymentStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
+  [PaymentStatus.Active]: 'success',
+  [PaymentStatus.Pending]: 'warning',
+  [PaymentStatus.Archived]: 'danger',
+  [PaymentStatus.Inactive]: 'outline',
+};
 
 export default function PaymentsListPage() {
   const { page, pageSize, setPage } = usePaymentsStore();
   const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const debouncedSearch = useDebounce(search, 350);
 
-  const { data, isLoading } = usePayments({ page, pageSize, search: debouncedSearch });
+  const { data, isLoading } = usePayments({
+    page,
+    pageSize,
+    search: debouncedSearch,
+    status: (statusFilter || undefined) as PaymentStatus | undefined,
+  });
+  const createPayment = useCreatePayment();
+  const updatePayment = useUpdatePayment();
+  const deletePayment = useDeletePayment();
 
-  const columns = useMemo<ColumnDef<Payment>[]>(
+  const rows = useMemo(() => data?.data ?? [], [data]);
+
+  const formModal = useModal<Payment>();
+  const viewModal = useModal<Payment>();
+  const deleteModal = useModal<Payment>();
+  const editing = formModal.data;
+
+  const [selectedIds, setSelectedIds] = useState<Set<Payment['id']>>(new Set());
+  const allSelected = rows.length > 0 && selectedIds.size === rows.length;
+
+  const toggleSelectAll = useCallback(() => {
+    setSelectedIds(allSelected ? new Set() : new Set(rows.map((item) => item.id)));
+  }, [allSelected, rows]);
+
+  const toggleSelect = useCallback((id: Payment['id']) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleSubmit = (values: PaymentFormValues) => {
+    const onSuccess = () => formModal.close();
+    if (editing) {
+      updatePayment.mutate({ id: editing.id, dto: values }, { onSuccess });
+    } else {
+      createPayment.mutate(values, { onSuccess });
+    }
+  };
+
+  const columns = useMemo<ColumnDef<Payment, unknown>[]>(
     () => [
-      { accessorKey: 'code', header: 'Code' },
-      { accessorKey: 'name', header: 'Name' },
+      {
+        id: 'select',
+        header: () => (
+          <Checkbox checked={allSelected} onChange={toggleSelectAll} aria-label="Select all" />
+        ),
+        enableSorting: false,
+        meta: { cellClassName: 'pr-0', headerClassName: 'pr-0' },
+        cell: ({ row }) => (
+          <Checkbox
+            checked={selectedIds.has(row.original.id)}
+            onChange={() => toggleSelect(row.original.id)}
+            aria-label={`Select ${row.original.name}`}
+          />
+        ),
+      },
+      {
+        accessorKey: 'name',
+        header: 'Payment',
+        meta: { cellClassName: 'pl-1', headerClassName: 'pl-1' },
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2">
+            <Avatar firstName={row.original.name} size="sm" />
+            <div className="min-w-0">
+              <p className="truncate font-semibold text-foreground">{row.original.name}</p>
+              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
+            </div>
+          </div>
+        ),
+      },
       {
         accessorKey: 'status',
         header: 'Status',
-        cell: ({ row }) => <Badge variant="outline">{row.original.status}</Badge>,
+        cell: ({ row }) => (
+          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
+        ),
+      },
+      {
+        accessorKey: 'createdAt',
+        header: 'Created',
+        cell: ({ row }) => formatDate(row.original.createdAt),
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        enableSorting: false,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              aria-label="View payment"
+              onClick={() => viewModal.open(row.original)}
+              className="text-info transition-opacity hover:opacity-70"
+            >
+              <Eye className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Edit payment"
+              onClick={() => formModal.open(row.original)}
+              className="text-success transition-opacity hover:opacity-70"
+            >
+              <Pencil className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Delete payment"
+              onClick={() => deleteModal.open(row.original)}
+              className="text-danger transition-opacity hover:opacity-70"
+            >
+              <Trash2 className="size-4" />
+            </button>
+          </div>
+        ),
       },
     ],
-    [],
+    [allSelected, selectedIds, toggleSelectAll, toggleSelect, formModal, viewModal, deleteModal],
   );
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Payments"
-        description="Manage payments records across your organization."
-        actions={<Button leftIcon={<Plus className="size-4" />}>New</Button>}
-      />
-      <div className="max-w-sm">
-        <SearchInput value={search} onChange={setSearch} placeholder="Search payments..." />
-      </div>
+      <PageHeader title="Payments" description="" />
+
+      <Card className="grid grid-cols-2 items-center gap-3 p-4">
+        <SearchInput
+          value={search}
+          className="max-w-md"
+          onChange={setSearch}
+          placeholder="Search payments…"
+        />
+        <div className="ml-auto w-48">
+          <Select
+            options={statusFilterOptions}
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            aria-label="Filter by status"
+          />
+        </div>
+      </Card>
+
       <DataTable
         columns={columns}
-        data={data?.data ?? []}
+        data={rows}
         isLoading={isLoading}
+        emptyMessage="No payments match your search."
+        title="All Payments"
+        headerActions={
+          <PermissionGate permissions={[PAYMENTS_PERMISSIONS.CREATE]}>
+            <Button leftIcon={<Plus className="size-4" />} onClick={() => formModal.open()}>
+              New Payment
+            </Button>
+          </PermissionGate>
+        }
         pagination={{
           page,
           pageSize,
           total: data?.meta.total ?? 0,
           onPageChange: setPage,
         }}
+      />
+
+      <Modal
+        isOpen={formModal.isOpen}
+        onClose={formModal.close}
+        title={editing ? 'Edit Payment' : 'New Payment'}
+        description="Provide the payment's details below."
+      >
+        <PaymentForm
+          defaultValues={editing ?? undefined}
+          onSubmit={handleSubmit}
+          isSubmitting={createPayment.isPending || updatePayment.isPending}
+          submitLabel={editing ? 'Update' : 'Create'}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={viewModal.isOpen}
+        onClose={viewModal.close}
+        title="Payment details"
+        description="Read-only view of this payment's record."
+      >
+        {viewModal.data && (
+          <PaymentForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />
+        )}
+      </Modal>
+
+      <ConfirmDialog
+        isOpen={deleteModal.isOpen}
+        onClose={deleteModal.close}
+        onConfirm={() =>
+          deleteModal.data &&
+          deletePayment.mutate(deleteModal.data.id, { onSuccess: deleteModal.close })
+        }
+        title="Delete payment?"
+        message={`This will permanently remove "${deleteModal.data?.name}".`}
+        confirmLabel="Delete"
+        isLoading={deletePayment.isPending}
       />
     </div>
   );

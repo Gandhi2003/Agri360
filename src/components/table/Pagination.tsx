@@ -13,7 +13,7 @@ export interface PaginationProps {
 /** Page-number pagination with windowed buttons. */
 export function Pagination({ page, pageSize, total, onPageChange, className }: PaginationProps) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  if (totalPages <= 1) return null;
+  if (total === 0) return null;
 
   const from = (page - 1) * pageSize + 1;
   const to = Math.min(page * pageSize, total);
@@ -31,10 +31,11 @@ export function Pagination({ page, pageSize, total, onPageChange, className }: P
         <span className="font-medium text-foreground">{to}</span> of{' '}
         <span className="font-medium text-foreground">{total}</span>
       </p>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         <Button
           variant="outline"
           size="icon"
+          className="size-8 cursor-pointer hover:bg-gray"
           disabled={page <= 1}
           onClick={() => onPageChange(page - 1)}
           aria-label="Previous page"
@@ -46,6 +47,7 @@ export function Pagination({ page, pageSize, total, onPageChange, className }: P
             key={p}
             variant={p === page ? 'primary' : 'outline'}
             size="icon"
+            className={cn('size-8 cursor-pointer', p !== page && 'hover:bg-gray')}
             onClick={() => onPageChange(p)}
           >
             {p}
@@ -54,6 +56,7 @@ export function Pagination({ page, pageSize, total, onPageChange, className }: P
         <Button
           variant="outline"
           size="icon"
+          className="size-8 cursor-pointer hover:bg-gray"
           disabled={page >= totalPages}
           onClick={() => onPageChange(page + 1)}
           aria-label="Next page"

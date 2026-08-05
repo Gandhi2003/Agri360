@@ -1,52 +1,256 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Plus } from 'lucide-react';
-import { Badge, Button, DataTable, PageHeader, SearchInput } from '@components';
-import { useDebounce } from '@common/hooks';
-import { useFarmVisits } from '../hooks/useFarmVisits';
+import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Checkbox,
+  ConfirmDialog,
+  DataTable,
+  Modal,
+  PageHeader,
+  PermissionGate,
+  SearchInput,
+  Select,
+} from '@components';
+import { useDebounce, useModal } from '@common/hooks';
+import { formatDate } from '@common/utils';
+import type { SelectOption } from '@common/types';
+import { FARM_VISITS_PERMISSIONS } from '../constants';
+import {
+  useCreateFarmVisit,
+  useDeleteFarmVisit,
+  useFarmVisits,
+  useUpdateFarmVisit,
+} from '../hooks/useFarmVisits';
 import { useFarmVisitsStore } from '../store/farm-visits.store';
-import type { FarmVisit } from '../types';
+import { FarmVisitForm } from '../components/FarmVisitForm';
+import { FarmVisitStatus, type FarmVisit } from '../types';
+import type { FarmVisitFormValues } from '../schemas/farm-visits.schema';
+
+const statusFilterOptions: SelectOption[] = [
+  { label: 'All Status', value: '' },
+  ...Object.values(FarmVisitStatus).map((value) => ({ label: value, value })),
+];
+
+const statusBadgeVariant: Record<FarmVisitStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
+  [FarmVisitStatus.Active]: 'success',
+  [FarmVisitStatus.Pending]: 'warning',
+  [FarmVisitStatus.Archived]: 'danger',
+  [FarmVisitStatus.Inactive]: 'outline',
+};
 
 export default function FarmVisitsListPage() {
   const { page, pageSize, setPage } = useFarmVisitsStore();
   const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const debouncedSearch = useDebounce(search, 350);
 
-  const { data, isLoading } = useFarmVisits({ page, pageSize, search: debouncedSearch });
+  const { data, isLoading } = useFarmVisits({
+    page,
+    pageSize,
+    search: debouncedSearch,
+    status: (statusFilter || undefined) as FarmVisitStatus | undefined,
+  });
+  const createFarmVisit = useCreateFarmVisit();
+  const updateFarmVisit = useUpdateFarmVisit();
+  const deleteFarmVisit = useDeleteFarmVisit();
 
-  const columns = useMemo<ColumnDef<FarmVisit>[]>(
+  const rows = useMemo(() => data?.data ?? [], [data]);
+
+  const formModal = useModal<FarmVisit>();
+  const viewModal = useModal<FarmVisit>();
+  const deleteModal = useModal<FarmVisit>();
+  const editing = formModal.data;
+
+  const [selectedIds, setSelectedIds] = useState<Set<FarmVisit['id']>>(new Set());
+  const allSelected = rows.length > 0 && selectedIds.size === rows.length;
+
+  const toggleSelectAll = useCallback(() => {
+    setSelectedIds(allSelected ? new Set() : new Set(rows.map((item) => item.id)));
+  }, [allSelected, rows]);
+
+  const toggleSelect = useCallback((id: FarmVisit['id']) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleSubmit = (values: FarmVisitFormValues) => {
+    const onSuccess = () => formModal.close();
+    if (editing) {
+      updateFarmVisit.mutate({ id: editing.id, dto: values }, { onSuccess });
+    } else {
+      createFarmVisit.mutate(values, { onSuccess });
+    }
+  };
+
+  const columns = useMemo<ColumnDef<FarmVisit, unknown>[]>(
     () => [
-      { accessorKey: 'code', header: 'Code' },
-      { accessorKey: 'name', header: 'Name' },
+      {
+        id: 'select',
+        header: () => (
+          <Checkbox checked={allSelected} onChange={toggleSelectAll} aria-label="Select all" />
+        ),
+        enableSorting: false,
+        meta: { cellClassName: 'pr-0', headerClassName: 'pr-0' },
+        cell: ({ row }) => (
+          <Checkbox
+            checked={selectedIds.has(row.original.id)}
+            onChange={() => toggleSelect(row.original.id)}
+            aria-label={`Select ${row.original.name}`}
+          />
+        ),
+      },
+      {
+        accessorKey: 'name',
+        header: 'Farm Visit',
+        meta: { cellClassName: 'pl-1', headerClassName: 'pl-1' },
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2">
+            <Avatar firstName={row.original.name} size="sm" />
+            <div className="min-w-0">
+              <p className="truncate font-semibold text-foreground">{row.original.name}</p>
+              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
+            </div>
+          </div>
+        ),
+      },
       {
         accessorKey: 'status',
         header: 'Status',
-        cell: ({ row }) => <Badge variant="outline">{row.original.status}</Badge>,
+        cell: ({ row }) => (
+          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
+        ),
+      },
+      {
+        accessorKey: 'createdAt',
+        header: 'Created',
+        cell: ({ row }) => formatDate(row.original.createdAt),
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        enableSorting: false,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              aria-label="View farm visit"
+              onClick={() => viewModal.open(row.original)}
+              className="text-info transition-opacity hover:opacity-70"
+            >
+              <Eye className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Edit farm visit"
+              onClick={() => formModal.open(row.original)}
+              className="text-success transition-opacity hover:opacity-70"
+            >
+              <Pencil className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Delete farm visit"
+              onClick={() => deleteModal.open(row.original)}
+              className="text-danger transition-opacity hover:opacity-70"
+            >
+              <Trash2 className="size-4" />
+            </button>
+          </div>
+        ),
       },
     ],
-    [],
+    [allSelected, selectedIds, toggleSelectAll, toggleSelect, formModal, viewModal, deleteModal],
   );
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Farm Visits"
-        description="Manage farm visits records across your organization."
-        actions={<Button leftIcon={<Plus className="size-4" />}>New</Button>}
-      />
-      <div className="max-w-sm">
-        <SearchInput value={search} onChange={setSearch} placeholder="Search farm visits..." />
-      </div>
+      <PageHeader title="Farm Visits" description="" />
+
+      <Card className="grid grid-cols-2 items-center gap-3 p-4">
+        <SearchInput
+          value={search}
+          className="max-w-md"
+          onChange={setSearch}
+          placeholder="Search farm visits…"
+        />
+        <div className="ml-auto w-48">
+          <Select
+            options={statusFilterOptions}
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            aria-label="Filter by status"
+          />
+        </div>
+      </Card>
+
       <DataTable
         columns={columns}
-        data={data?.data ?? []}
+        data={rows}
         isLoading={isLoading}
+        emptyMessage="No farm visits match your search."
+        title="All Farm Visits"
+        headerActions={
+          <PermissionGate permissions={[FARM_VISITS_PERMISSIONS.CREATE]}>
+            <Button leftIcon={<Plus className="size-4" />} onClick={() => formModal.open()}>
+              New Farm Visit
+            </Button>
+          </PermissionGate>
+        }
         pagination={{
           page,
           pageSize,
           total: data?.meta.total ?? 0,
           onPageChange: setPage,
         }}
+      />
+
+      <Modal
+        isOpen={formModal.isOpen}
+        onClose={formModal.close}
+        title={editing ? 'Edit Farm Visit' : 'New Farm Visit'}
+        description="Provide the farm visit's details below."
+      >
+        <FarmVisitForm
+          defaultValues={editing ?? undefined}
+          onSubmit={handleSubmit}
+          isSubmitting={createFarmVisit.isPending || updateFarmVisit.isPending}
+          submitLabel={editing ? 'Update' : 'Create'}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={viewModal.isOpen}
+        onClose={viewModal.close}
+        title="Farm Visit details"
+        description="Read-only view of this farm visit's record."
+      >
+        {viewModal.data && (
+          <FarmVisitForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />
+        )}
+      </Modal>
+
+      <ConfirmDialog
+        isOpen={deleteModal.isOpen}
+        onClose={deleteModal.close}
+        onConfirm={() =>
+          deleteModal.data &&
+          deleteFarmVisit.mutate(deleteModal.data.id, { onSuccess: deleteModal.close })
+        }
+        title="Delete farm visit?"
+        message={`This will permanently remove "${deleteModal.data?.name}".`}
+        confirmLabel="Delete"
+        isLoading={deleteFarmVisit.isPending}
       />
     </div>
   );
