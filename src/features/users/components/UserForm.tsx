@@ -35,7 +35,18 @@ export function UserForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      <Input label="Name" disabled={readOnly} {...register('name')} error={errors.name?.message} />
+      <Input
+        label="First name"
+        disabled={readOnly}
+        {...register('firstName')}
+        error={errors.firstName?.message}
+      />
+      <Input
+        label="Last name"
+        disabled={readOnly}
+        {...register('lastName')}
+        error={errors.lastName?.message}
+      />
       <Input label="Code" disabled={readOnly} {...register('code')} error={errors.code?.message} />
       <Select
         label="Status"

@@ -101,19 +101,21 @@ export default function UsersListPage() {
           <Checkbox
             checked={selectedIds.has(row.original.id)}
             onChange={() => toggleSelect(row.original.id)}
-            aria-label={`Select ${row.original.name}`}
+            aria-label={`Select ${row.original.firstName} ${row.original.lastName}`}
           />
         ),
       },
       {
-        accessorKey: 'name',
+        accessorKey: 'firstName',
         header: 'User',
         meta: { cellClassName: 'pl-1', headerClassName: 'pl-1' },
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
-            <Avatar firstName={row.original.name} size="sm" />
+            <Avatar firstName={row.original.firstName} lastName={row.original.lastName} size="sm" />
             <div className="min-w-0">
-              <p className="truncate font-semibold text-foreground">{row.original.name}</p>
+              <p className="truncate font-semibold text-foreground">
+                {row.original.firstName} {row.original.lastName}
+              </p>
               <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
             </div>
           </div>
@@ -241,7 +243,7 @@ export default function UsersListPage() {
           deleteUser.mutate(deleteModal.data.id, { onSuccess: deleteModal.close })
         }
         title="Delete user?"
-        message={`This will permanently remove "${deleteModal.data?.name}".`}
+        message={`This will permanently remove "${deleteModal.data?.firstName} ${deleteModal.data?.lastName}".`}
         confirmLabel="Delete"
         isLoading={deleteUser.isPending}
       />

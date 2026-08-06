@@ -8,14 +8,16 @@ export enum UserStatus {
 }
 
 export interface User extends BaseEntity {
-  name: string;
+  firstName: string;
+  lastName: string;
   code: string;
   status: UserStatus;
   description?: string;
 }
 
 export interface CreateUserDto {
-  name: string;
+  firstName: string;
+  lastName: string;
   code: string;
   status: UserStatus;
   description?: string;

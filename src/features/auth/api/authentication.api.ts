@@ -100,13 +100,14 @@ const liveAuthApi = {
       expiresIn: expires_in,
     };
     tokenStore.setTokens(tokens.accessToken, tokens.refreshToken);
-    const user = normalizeUser(await apiClient.get<unknown>(AUTH_ENDPOINTS.ME));
+    const user = normalizeUser(await apiClient.get<unknown>(AUTH_ENDPOINTS.USERINFO));
     return { user, tokens };
   },
 
   logout: () => apiClient.post<void>(AUTH_ENDPOINTS.LOGOUT),
 
-  me: async (): Promise<AuthUser> => normalizeUser(await apiClient.get<unknown>(AUTH_ENDPOINTS.ME)),
+  me: async (): Promise<AuthUser> =>
+    normalizeUser(await apiClient.get<unknown>(AUTH_ENDPOINTS.USERINFO)),
 
   forgotPassword: (payload: ForgotPasswordPayload) =>
     apiClient.post<{ message: string }>(AUTH_ENDPOINTS.FORGOT_PASSWORD, payload),
