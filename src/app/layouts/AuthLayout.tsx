@@ -44,7 +44,7 @@ export function AuthLayout() {
         backgroundSize: '22px 22px, 100% 100%',
       }}
     >
-      <div className="relative z-10 flex items-center justify-center bg-background p-6 sm:p-10 lg:rounded-r-[2.5rem] lg:shadow-2xl">
+      <div className="relative z-10 flex items-center justify-center bg-white p-6 sm:p-10 lg:rounded-r-3xl lg:shadow-2xl">
         <div className="w-full max-w-102.5">
           <Suspense fallback={<Loader />}>
             <Outlet />
