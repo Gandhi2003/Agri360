@@ -1,7 +1,7 @@
 {
   "name": "agri360-crm",
   "private": true,
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "description": "Agri360 CRM — Enterprise agriculture CRM frontend (React 19 + TypeScript + Vite).",
   "packageManager": "pnpm@10.27.0",
