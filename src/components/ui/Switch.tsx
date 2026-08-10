@@ -9,7 +9,10 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   ({ label, className, id, ...props }, ref) => {
     const switchId = id ?? props.name;
     return (
-      <label htmlFor={switchId} className="flex cursor-pointer items-center gap-2.5 text-sm">
+      <label
+        htmlFor={switchId}
+        className="flex cursor-pointer items-center gap-2.5 text-sm has-disabled:cursor-not-allowed has-disabled:opacity-60"
+      >
         <span className="relative inline-flex">
           <input
             ref={ref}

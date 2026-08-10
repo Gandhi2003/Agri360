@@ -3,7 +3,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   Checkbox,
@@ -16,7 +15,6 @@ import {
   Select,
 } from '@components';
 import { useDebounce, useModal } from '@common/hooks';
-import { formatDate } from '@common/utils';
 import type { SelectOption } from '@common/types';
 import { DEALERS_PERMISSIONS } from '../constants';
 import { useCreateDealer, useDeleteDealer, useDealers, useUpdateDealer } from '../hooks/useDealers';
@@ -29,13 +27,6 @@ const statusFilterOptions: SelectOption[] = [
   { label: 'All Status', value: '' },
   ...Object.values(DealerStatus).map((value) => ({ label: value, value })),
 ];
-
-const statusBadgeVariant: Record<DealerStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
-  [DealerStatus.Active]: 'success',
-  [DealerStatus.Pending]: 'warning',
-  [DealerStatus.Archived]: 'danger',
-  [DealerStatus.Inactive]: 'outline',
-};
 
 export default function DealersListPage() {
   const { page, pageSize, setPage } = useDealersStore();
@@ -113,23 +104,50 @@ export default function DealersListPage() {
           <div className="flex items-center gap-2">
             <Avatar firstName={row.original.name} size="sm" />
             <div className="min-w-0">
-              <p className="truncate font-semibold text-foreground">{row.original.name}</p>
+              <p className="truncate font-bold text-foreground">{row.original.name}</p>
               <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
             </div>
           </div>
         ),
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: 'company',
+        header: 'Company',
         cell: ({ row }) => (
-          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
+          <p className=" font-bold text-sm text-black10">{row.original.company || '—'}</p>
         ),
       },
       {
-        accessorKey: 'createdAt',
-        header: 'Created',
-        cell: ({ row }) => formatDate(row.original.createdAt),
+        accessorKey: 'email',
+        header: 'Email',
+        cell: ({ row }) => (
+          <p className=" font-mono font-medium text-sm text-muted-foreground">
+            {row.original.email || '—'}
+          </p>
+        ),
+      },
+      {
+        accessorKey: 'phone',
+        header: 'Phone',
+        cell: ({ row }) => (
+          <p className="font-mono font-medium text-sm text-muted-foreground">
+            {row.original.phone || '—'}
+          </p>
+        ),
+      },
+      {
+        accessorKey: 'region',
+        header: 'Region',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.region || '—'}</p>
+        ),
+      },
+      {
+        accessorKey: 'gst_number',
+        header: 'GST Number',
+        cell: ({ row }) => (
+          <p className="font-bold text-sm text-foreground">{row.original.gst_number || '—'}</p>
+        ),
       },
       {
         id: 'actions',

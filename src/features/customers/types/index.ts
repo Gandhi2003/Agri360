@@ -10,7 +10,9 @@ export enum CustomerStatus {
 export interface Customer extends BaseEntity {
   name: string;
   code: string;
-  status: CustomerStatus;
+  email?: string;
+  phone?: string;
+  country?: string;
   description?: string;
 }
 

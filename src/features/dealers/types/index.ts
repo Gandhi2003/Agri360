@@ -9,8 +9,12 @@ export enum DealerStatus {
 
 export interface Dealer extends BaseEntity {
   name: string;
+  company: string;
   code: string;
-  status: DealerStatus;
+  email?: string;
+  phone?: string;
+  region?: string;
+  gst_number?: string;
   description?: string;
 }
 

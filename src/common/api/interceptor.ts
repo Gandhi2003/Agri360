@@ -26,6 +26,7 @@ export const setupInterceptors = (): void => {
               page?: number;
               page_size?: number;
               total_items?: number;
+              total?: number;
               total_pages?: number;
             };
           }
@@ -43,13 +44,13 @@ export const setupInterceptors = (): void => {
           );
         }
         const meta = body.meta;
-        if (meta && meta.total_items != null) {
+        if (meta) {
           response.data = {
             data: body.data,
             meta: {
               page: meta.page ?? 1,
               pageSize: meta.page_size ?? 0,
-              total: meta.total_items ?? 0,
+              total: meta.total_items ?? meta.total ?? 0,
               totalPages: meta.total_pages ?? 0,
             },
           };

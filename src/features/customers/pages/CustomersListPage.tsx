@@ -3,7 +3,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   Checkbox,
@@ -16,7 +15,6 @@ import {
   Select,
 } from '@components';
 import { useDebounce, useModal } from '@common/hooks';
-import { formatDate } from '@common/utils';
 import type { SelectOption } from '@common/types';
 import { CUSTOMERS_PERMISSIONS } from '../constants';
 import {
@@ -34,13 +32,6 @@ const statusFilterOptions: SelectOption[] = [
   { label: 'All Status', value: '' },
   ...Object.values(CustomerStatus).map((value) => ({ label: value, value })),
 ];
-
-const statusBadgeVariant: Record<CustomerStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
-  [CustomerStatus.Active]: 'success',
-  [CustomerStatus.Pending]: 'warning',
-  [CustomerStatus.Archived]: 'danger',
-  [CustomerStatus.Inactive]: 'outline',
-};
 
 export default function CustomersListPage() {
   const { page, pageSize, setPage } = useCustomersStore();
@@ -118,23 +109,38 @@ export default function CustomersListPage() {
           <div className="flex items-center gap-2">
             <Avatar firstName={row.original.name} size="sm" />
             <div className="min-w-0">
-              <p className="truncate font-semibold text-foreground">{row.original.name}</p>
+              <p className="truncate font-bold text-foreground">{row.original.name}</p>
               <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
             </div>
           </div>
         ),
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: 'email',
+        header: 'Email',
         cell: ({ row }) => (
-          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
+          <p className="font-mono font-medium text-sm text-muted-foreground">
+            {row.original.email || '—'}
+          </p>
         ),
       },
       {
-        accessorKey: 'createdAt',
-        header: 'Created',
-        cell: ({ row }) => formatDate(row.original.createdAt),
+        accessorKey: 'phone',
+        header: 'Phone',
+        cell: ({ row }) => (
+          <p className="font-mono font-medium text-sm text-muted-foreground">
+            {row.original.phone || '—'}
+          </p>
+        ),
+      },
+      {
+        accessorKey: 'country',
+        header: 'Country',
+        cell: ({ row }) => (
+          <p className="font-mono font-medium text-sm text-muted-foreground">
+            {row.original.country || '—'}
+          </p>
+        ),
       },
       {
         id: 'actions',

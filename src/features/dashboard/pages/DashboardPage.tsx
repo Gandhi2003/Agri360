@@ -1,9 +1,10 @@
 import { Boxes, IndianRupee, ShoppingCart, Tractor } from 'lucide-react';
 import { formatCurrency, formatNumber } from '@common/utils';
 import { useAuth } from '@common/hooks';
-import { AreaChartCard, BarChartCard, PageHeader, PieChartCard, StatCard } from '@components';
+import { AreaChartCard, BarChartCard, PieChartCard, StatCard } from '@components';
 import { useDashboardOverview } from '../hooks/useDashboard';
 import { SAMPLE_OVERVIEW } from '../constants';
+import { WelcomeBanner } from '../components/WelcomeBanner';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -13,10 +14,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title={`Welcome${user ? `, ${user.firstName}` : ''} 👋`}
-        description="Here’s what’s happening across your agri-business today."
-      />
+      <WelcomeBanner name={user?.firstName || 'there'} updatedAt={user?.updatedAt} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard

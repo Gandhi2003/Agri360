@@ -10,7 +10,11 @@ export enum ProductStatus {
 export interface Product extends BaseEntity {
   name: string;
   code: string;
-  status: ProductStatus;
+  unit: string;
+  price: string;
+  stock_quantity: number;
+  is_active: boolean;
+  category_id: number;
   description?: string;
 }
 

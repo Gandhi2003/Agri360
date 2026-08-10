@@ -3,7 +3,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   Checkbox,
@@ -16,7 +15,6 @@ import {
   Select,
 } from '@components';
 import { useDebounce, useModal } from '@common/hooks';
-import { formatDate } from '@common/utils';
 import type { SelectOption } from '@common/types';
 import { FARMERS_PERMISSIONS } from '../constants';
 import { useCreateFarmer, useDeleteFarmer, useFarmers, useUpdateFarmer } from '../hooks/useFarmers';
@@ -29,13 +27,6 @@ const statusFilterOptions: SelectOption[] = [
   { label: 'All Status', value: '' },
   ...Object.values(FarmerStatus).map((value) => ({ label: value, value })),
 ];
-
-const statusBadgeVariant: Record<FarmerStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
-  [FarmerStatus.Active]: 'success',
-  [FarmerStatus.Pending]: 'warning',
-  [FarmerStatus.Archived]: 'danger',
-  [FarmerStatus.Inactive]: 'outline',
-};
 
 export default function FarmersListPage() {
   const { page, pageSize, setPage } = useFarmersStore();
@@ -120,16 +111,58 @@ export default function FarmersListPage() {
         ),
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: 'email',
+        header: 'Email',
         cell: ({ row }) => (
-          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
+          <p className="font-mono text-sm text-muted-foreground">{row.original.email || '—'}</p>
         ),
       },
       {
-        accessorKey: 'createdAt',
-        header: 'Created',
-        cell: ({ row }) => formatDate(row.original.createdAt),
+        accessorKey: 'phone',
+        header: 'Phone',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.phone || '—'}</p>
+        ),
+      },
+      {
+        accessorKey: 'primary_crop',
+        header: 'Primary Crop',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">
+            {row.original.primary_crop || '—'}
+          </p>
+        ),
+      },
+      {
+        accessorKey: 'land_size_acres',
+        header: 'Land Size (acres)',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">
+            {row.original.land_size_acres || '—'}
+          </p>
+        ),
+      },
+      {
+        accessorKey: 'state',
+        header: 'State',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.state || '—'}</p>
+        ),
+      },
+
+      {
+        accessorKey: 'district',
+        header: 'District',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.district || '—'}</p>
+        ),
+      },
+      {
+        accessorKey: 'village',
+        header: 'Village',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.village || '—'}</p>
+        ),
       },
       {
         id: 'actions',
@@ -205,7 +238,7 @@ export default function FarmersListPage() {
         pagination={{
           page,
           pageSize,
-          total: data?.meta.total ?? 0,
+          total: data?.meta?.total ?? 0,
           onPageChange: setPage,
         }}
       />

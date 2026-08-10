@@ -9,8 +9,14 @@ export enum FarmerStatus {
 
 export interface Farmer extends BaseEntity {
   name: string;
+  email: string;
+  phone: string;
+  primary_crop: string;
+  land_size_acres: number;
+  village: string;
+  district: string;
+  state: string;
   code: string;
-  status: FarmerStatus;
   description?: string;
 }
 

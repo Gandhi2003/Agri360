@@ -43,6 +43,7 @@ export default function CategoriesListPage() {
 
   const [modal, setModal] = useState<ModalState>(null);
   const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
+  const [togglingId, setTogglingId] = useState<Category['id'] | null>(null);
 
   const { data, isLoading } = useCategories({
     page,
@@ -73,11 +74,21 @@ export default function CategoriesListPage() {
     deleteCategory.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) });
   };
 
+  const handleToggleStatus = (category: Category) => {
+    const nextStatus =
+      category.status === CategoryStatus.Active ? CategoryStatus.Inactive : CategoryStatus.Active;
+    setTogglingId(category.id);
+    updateCategory.mutate(
+      { id: category.id, dto: { status: nextStatus } },
+      { onSettled: () => setTogglingId(null) },
+    );
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Categories"
-        description={`Manage categories across your organization${total ? ` · ${total} total` : ''}.`}
+        description=""
         actions={
           <Button
             leftIcon={<Plus className="size-4" />}
@@ -88,11 +99,14 @@ export default function CategoriesListPage() {
         }
       />
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="sm:max-w-sm sm:flex-1">
-          <SearchInput value={search} onChange={setSearch} placeholder="Search categories..." />
-        </div>
-        <div className="sm:w-48">
+      <Card className="grid grid-cols-2 items-center gap-3 p-4">
+        <SearchInput
+          value={search}
+          className="max-w-md"
+          onChange={setSearch}
+          placeholder="Search categories..."
+        />
+        <div className="ml-auto w-48">
           <Select
             options={statusFilterOptions}
             value={status}
@@ -100,7 +114,7 @@ export default function CategoriesListPage() {
             aria-label="Filter by status"
           />
         </div>
-      </div>
+      </Card>
 
       {isLoading ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -138,6 +152,8 @@ export default function CategoriesListPage() {
                 category={category}
                 onEdit={(c) => setModal({ mode: 'edit', category: c })}
                 onDelete={setDeleteTarget}
+                onToggleStatus={handleToggleStatus}
+                isTogglingStatus={togglingId === category.id}
               />
             ))}
           </div>

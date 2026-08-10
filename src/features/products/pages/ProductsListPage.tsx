@@ -16,7 +16,7 @@ import {
   Select,
 } from '@components';
 import { useDebounce, useModal } from '@common/hooks';
-import { formatDate } from '@common/utils';
+import { formatCurrency, formatNumber } from '@common/utils';
 import type { SelectOption } from '@common/types';
 import { PRODUCTS_PERMISSIONS } from '../constants';
 import {
@@ -34,13 +34,6 @@ const statusFilterOptions: SelectOption[] = [
   { label: 'All Status', value: '' },
   ...Object.values(ProductStatus).map((value) => ({ label: value, value })),
 ];
-
-const statusBadgeVariant: Record<ProductStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
-  [ProductStatus.Active]: 'success',
-  [ProductStatus.Pending]: 'warning',
-  [ProductStatus.Archived]: 'danger',
-  [ProductStatus.Inactive]: 'outline',
-};
 
 export default function ProductsListPage() {
   const { page, pageSize, setPage } = useProductsStore();
@@ -125,16 +118,45 @@ export default function ProductsListPage() {
         ),
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: 'category_id',
+        header: 'Category',
         cell: ({ row }) => (
-          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
+          <p className="font-mono text-sm text-muted-foreground">{row.original.category_id}</p>
         ),
       },
       {
-        accessorKey: 'createdAt',
-        header: 'Created',
-        cell: ({ row }) => formatDate(row.original.createdAt),
+        accessorKey: 'unit',
+        header: 'Unit',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.unit || '—'}</p>
+        ),
+      },
+      {
+        accessorKey: 'price',
+        header: 'Price',
+        cell: ({ row }) => (
+          <p className="font-bold text-sm text-foreground">
+            {formatCurrency(Number(row.original.price))}
+          </p>
+        ),
+      },
+      {
+        accessorKey: 'stock_quantity',
+        header: 'Stock',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">
+            {formatNumber(row.original.stock_quantity)}
+          </p>
+        ),
+      },
+      {
+        accessorKey: 'is_active',
+        header: 'Active',
+        cell: ({ row }) => (
+          <Badge variant={row.original.is_active ? 'success' : 'outline'}>
+            {row.original.is_active ? 'Active' : 'Inactive'}
+          </Badge>
+        ),
       },
       {
         id: 'actions',
