@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell, LogOut, Menu, Settings, User } from 'lucide-react';
+import { cn } from '@lib/cn';
 import { ROUTES } from '@common/constants';
 import { useAuth } from '@common/hooks';
 import { useLogout } from '@features/auth';
@@ -16,9 +17,11 @@ const formatRoleLabel = (role?: string) =>
 
 export function Navbar() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { user } = useAuth();
   const { mutate: logout } = useLogout();
   const setMobileOpen = useUiStore((s) => s.setMobileSidebarOpen);
+  const isSettingsActive = pathname.startsWith(ROUTES.SETTINGS);
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-border bg-card/80 px-4 backdrop-blur">
@@ -46,6 +49,15 @@ export function Navbar() {
           onClick={() => navigate('/notifications')}
         >
           <Bell className="size-5" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Settings"
+          className={cn(isSettingsActive && 'text-primary')}
+          onClick={() => navigate(ROUTES.SETTINGS)}
+        >
+          <Settings className="size-5" />
         </Button>
         <Dropdown
           trigger={

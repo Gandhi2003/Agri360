@@ -14,7 +14,6 @@ import {
   Package,
   PackageCheck,
   ReceiptText,
-  Settings,
   ShieldCheck,
   ShoppingCart,
   Sprout,
@@ -148,7 +147,6 @@ export const NAVIGATION: NavSection[] = [
         icon: KeyRound,
         permission: PERMISSIONS.PERMISSIONS_VIEW,
       },
-      { label: 'Settings', to: '/settings', icon: Settings, permission: PERMISSIONS.SETTINGS_VIEW },
     ],
   },
   {

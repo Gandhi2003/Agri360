@@ -11,6 +11,7 @@ export const ROUTES = {
   RESET_PASSWORD: '/reset-password',
   PROFILE: '/profile',
   SETTINGS: '/settings',
+  SETTINGS_GENERAL: '/settings/general',
   UNAUTHORIZED: '/403',
   NOT_FOUND: '/404',
 } as const;

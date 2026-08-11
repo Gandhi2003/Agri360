@@ -1,257 +1,81 @@
-import { useCallback, useMemo, useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
-import {
-  Avatar,
-  Badge,
-  Button,
-  Card,
-  Checkbox,
-  ConfirmDialog,
-  DataTable,
-  Modal,
-  PageHeader,
-  PermissionGate,
-  SearchInput,
-  Select,
-} from '@components';
-import { useDebounce, useModal } from '@common/hooks';
-import { formatDate } from '@common/utils';
-import type { SelectOption } from '@common/types';
-import { SETTINGS_PERMISSIONS } from '../constants';
-import {
-  useCreateSetting,
-  useDeleteSetting,
-  useSettings,
-  useUpdateSetting,
-} from '../hooks/useSettings';
-import { useSettingsStore } from '../store/settings.store';
-import { SettingForm } from '../components/SettingForm';
-import { SettingStatus, type Setting } from '../types';
-import type { SettingFormValues } from '../schemas/settings.schema';
+import { KeyRound, Package, Settings, ShieldCheck, UserCog, type LucideIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Card, PageHeader, PermissionGate } from '@components';
+import { PERMISSIONS } from '@common/permissions';
+import { ROUTES } from '@common/constants';
+import type { Permission } from '@common/types';
 
-const statusFilterOptions: SelectOption[] = [
-  { label: 'All Status', value: '' },
-  ...Object.values(SettingStatus).map((value) => ({ label: value, value })),
+interface SettingsSection {
+  title: string;
+  description: string;
+  to: string;
+  icon: LucideIcon;
+  permission: Permission;
+}
+
+const SETTINGS_SECTIONS: SettingsSection[] = [
+  {
+    title: 'General',
+    description: 'Manage company profile, currency, time zone and date format.',
+    to: ROUTES.SETTINGS_GENERAL,
+    icon: Settings,
+    permission: PERMISSIONS.SETTINGS_VIEW,
+  },
+  {
+    title: 'Products',
+    description: 'Manage catalog items, pricing and product details.',
+    to: '/products',
+    icon: Package,
+    permission: PERMISSIONS.PRODUCTS_VIEW,
+  },
+  {
+    title: 'Users',
+    description: 'Manage user accounts and their access to the system.',
+    to: '/users',
+    icon: UserCog,
+    permission: PERMISSIONS.USERS_VIEW,
+  },
+  {
+    title: 'Roles',
+    description: 'Define roles and the permissions assigned to them.',
+    to: '/roles',
+    icon: ShieldCheck,
+    permission: PERMISSIONS.ROLES_VIEW,
+  },
+  {
+    title: 'Permissions',
+    description: 'Configure granular permissions available to roles.',
+    to: '/permissions',
+    icon: KeyRound,
+    permission: PERMISSIONS.PERMISSIONS_VIEW,
+  },
 ];
 
-const statusBadgeVariant: Record<SettingStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
-  [SettingStatus.Active]: 'success',
-  [SettingStatus.Pending]: 'warning',
-  [SettingStatus.Archived]: 'danger',
-  [SettingStatus.Inactive]: 'outline',
-};
-
 export default function SettingsListPage() {
-  const { page, pageSize, setPage } = useSettingsStore();
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const debouncedSearch = useDebounce(search, 350);
-
-  const { data, isLoading } = useSettings({
-    page,
-    pageSize,
-    search: debouncedSearch,
-    status: (statusFilter || undefined) as SettingStatus | undefined,
-  });
-  const createSetting = useCreateSetting();
-  const updateSetting = useUpdateSetting();
-  const deleteSetting = useDeleteSetting();
-
-  const rows = useMemo(() => data?.data ?? [], [data]);
-
-  const formModal = useModal<Setting>();
-  const viewModal = useModal<Setting>();
-  const deleteModal = useModal<Setting>();
-  const editing = formModal.data;
-
-  const [selectedIds, setSelectedIds] = useState<Set<Setting['id']>>(new Set());
-  const allSelected = rows.length > 0 && selectedIds.size === rows.length;
-
-  const toggleSelectAll = useCallback(() => {
-    setSelectedIds(allSelected ? new Set() : new Set(rows.map((item) => item.id)));
-  }, [allSelected, rows]);
-
-  const toggleSelect = useCallback((id: Setting['id']) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
-  }, []);
-
-  const handleSubmit = (values: SettingFormValues) => {
-    const onSuccess = () => formModal.close();
-    if (editing) {
-      updateSetting.mutate({ id: editing.id, dto: values }, { onSuccess });
-    } else {
-      createSetting.mutate(values, { onSuccess });
-    }
-  };
-
-  const columns = useMemo<ColumnDef<Setting, unknown>[]>(
-    () => [
-      {
-        id: 'select',
-        header: () => (
-          <Checkbox checked={allSelected} onChange={toggleSelectAll} aria-label="Select all" />
-        ),
-        enableSorting: false,
-        meta: { cellClassName: 'pr-0', headerClassName: 'pr-0' },
-        cell: ({ row }) => (
-          <Checkbox
-            checked={selectedIds.has(row.original.id)}
-            onChange={() => toggleSelect(row.original.id)}
-            aria-label={`Select ${row.original.name}`}
-          />
-        ),
-      },
-      {
-        accessorKey: 'name',
-        header: 'Setting',
-        meta: { cellClassName: 'pl-1', headerClassName: 'pl-1' },
-        cell: ({ row }) => (
-          <div className="flex items-center gap-2">
-            <Avatar firstName={row.original.name} size="sm" />
-            <div className="min-w-0">
-              <p className="truncate font-semibold text-foreground">{row.original.name}</p>
-              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
-            </div>
-          </div>
-        ),
-      },
-      {
-        accessorKey: 'status',
-        header: 'Status',
-        cell: ({ row }) => (
-          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
-        ),
-      },
-      {
-        accessorKey: 'createdAt',
-        header: 'Created',
-        cell: ({ row }) => formatDate(row.original.createdAt),
-      },
-      {
-        id: 'actions',
-        header: 'Actions',
-        enableSorting: false,
-        cell: ({ row }) => (
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              aria-label="View setting"
-              onClick={() => viewModal.open(row.original)}
-              className="text-info transition-opacity hover:opacity-70"
-            >
-              <Eye className="size-4" />
-            </button>
-            <button
-              type="button"
-              aria-label="Edit setting"
-              onClick={() => formModal.open(row.original)}
-              className="text-success transition-opacity hover:opacity-70"
-            >
-              <Pencil className="size-4" />
-            </button>
-            <button
-              type="button"
-              aria-label="Delete setting"
-              onClick={() => deleteModal.open(row.original)}
-              className="text-danger transition-opacity hover:opacity-70"
-            >
-              <Trash2 className="size-4" />
-            </button>
-          </div>
-        ),
-      },
-    ],
-    [allSelected, selectedIds, toggleSelectAll, toggleSelect, formModal, viewModal, deleteModal],
-  );
-
   return (
     <div className="space-y-6">
-      <PageHeader title="Settings" description="" />
+      <PageHeader title="Settings" description="Manage products, users, roles and permissions." />
 
-      <Card className="grid grid-cols-2 items-center gap-3 p-4">
-        <SearchInput
-          value={search}
-          className="max-w-md"
-          onChange={setSearch}
-          placeholder="Search settings…"
-        />
-        <div className="ml-auto w-48">
-          <Select
-            options={statusFilterOptions}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            aria-label="Filter by status"
-          />
-        </div>
-      </Card>
-
-      <DataTable
-        columns={columns}
-        data={rows}
-        isLoading={isLoading}
-        emptyMessage="No settings match your search."
-        title="All Settings"
-        headerActions={
-          <PermissionGate permissions={[SETTINGS_PERMISSIONS.CREATE]}>
-            <Button leftIcon={<Plus className="size-4" />} onClick={() => formModal.open()}>
-              New Setting
-            </Button>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {SETTINGS_SECTIONS.map((section) => (
+          <PermissionGate key={section.to} permissions={[section.permission]}>
+            <Link
+              to={section.to}
+              className="block rounded-6px focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <Card className="flex h-full items-start gap-4 p-5 transition-shadow hover:shadow-lg">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <section.icon className="size-5" />
+                </span>
+                <div className="space-y-1">
+                  <h3 className="font-semibold text-foreground">{section.title}</h3>
+                  <p className="text-sm text-muted-foreground">{section.description}</p>
+                </div>
+              </Card>
+            </Link>
           </PermissionGate>
-        }
-        pagination={{
-          page,
-          pageSize,
-          total: data?.meta.total ?? 0,
-          onPageChange: setPage,
-        }}
-      />
-
-      <Modal
-        isOpen={formModal.isOpen}
-        onClose={formModal.close}
-        title={editing ? 'Edit Setting' : 'New Setting'}
-        description="Provide the setting's details below."
-      >
-        <SettingForm
-          defaultValues={editing ?? undefined}
-          onSubmit={handleSubmit}
-          isSubmitting={createSetting.isPending || updateSetting.isPending}
-          submitLabel={editing ? 'Update' : 'Create'}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={viewModal.isOpen}
-        onClose={viewModal.close}
-        title="Setting details"
-        description="Read-only view of this setting's record."
-      >
-        {viewModal.data && (
-          <SettingForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />
-        )}
-      </Modal>
-
-      <ConfirmDialog
-        isOpen={deleteModal.isOpen}
-        onClose={deleteModal.close}
-        onConfirm={() =>
-          deleteModal.data &&
-          deleteSetting.mutate(deleteModal.data.id, { onSuccess: deleteModal.close })
-        }
-        title="Delete setting?"
-        message={`This will permanently remove "${deleteModal.data?.name}".`}
-        confirmLabel="Delete"
-        isLoading={deleteSetting.isPending}
-      />
+        ))}
+      </div>
     </div>
   );
 }

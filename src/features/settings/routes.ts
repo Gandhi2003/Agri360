@@ -8,4 +8,10 @@ export const settingsRoutes: FeatureRoute[] = [
     permission: SETTINGS_PERMISSIONS.VIEW,
     component: () => import('./pages/SettingsListPage'),
   },
+  {
+    path: 'settings/general',
+    title: 'General Settings',
+    permission: SETTINGS_PERMISSIONS.VIEW,
+    component: () => import('./pages/GeneralSettingsPage'),
+  },
 ];
