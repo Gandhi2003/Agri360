@@ -97,33 +97,34 @@ export default function GeneralSettingsPage() {
 
       <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
         <Card className="h-fit p-2 lg:sticky lg:top-6">
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 w-3px bg-muted-foreground/70" aria-hidden />
-            <nav className="relative flex flex-col  pb-8">
-              {SECTIONS.map((section) => {
-                const isActive = activeSection === section.id;
-                return (
-                  <button
-                    key={section.id}
-                    type="button"
-                    onClick={() => handleSectionClick(section.id)}
+          <nav className="flex flex-col pb-8">
+            {SECTIONS.map((section) => {
+              const isActive = activeSection === section.id;
+              return (
+                <button
+                  key={section.id}
+                  type="button"
+                  onClick={() => handleSectionClick(section.id)}
+                  className={cn(
+                    'relative flex w-full items-center gap-3 px-4 py-3.5 text-left text-sm transition-colors',
+                    isActive
+                      ? 'bg-primary/10 font-semibold text-foreground'
+                      : 'font-medium text-muted-foreground hover:bg-muted hover:text-foreground',
+                  )}
+                >
+                  <span
                     className={cn(
-                      'relative flex w-full items-center gap-3 px-4 py-3.5 text-left text-sm font-medium transition-colors',
-                      isActive
-                        ? 'bg-muted text-foreground'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                      'absolute inset-y-0 left-0 w-3px',
+                      isActive ? 'bg-primary' : 'bg-muted-foreground/70',
                     )}
-                  >
-                    {isActive && (
-                      <span className="absolute inset-y-0 left-0 w-3px bg-primary" aria-hidden />
-                    )}
-                    <section.icon className={cn('size-4 shrink-0', isActive && 'text-primary')} />
-                    <span className="truncate">{section.label}</span>
-                  </button>
-                );
-              })}
-            </nav>
-          </div>
+                    aria-hidden
+                  />
+                  <section.icon className={cn('size-4 shrink-0', isActive && 'text-primary')} />
+                  <span className="truncate">{section.label}</span>
+                </button>
+              );
+            })}
+          </nav>
         </Card>
 
         <div className="space-y-6">
