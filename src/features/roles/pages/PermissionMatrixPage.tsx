@@ -4,6 +4,7 @@ import { ArrowDownAZ, ArrowLeft, ArrowUpAZ } from 'lucide-react';
 import { Button, Card, Pagination, PageHeader, SearchInput } from '@components';
 import { useDebounce } from '@common/hooks';
 import { PAGE_SIZE_OPTIONS } from '@common/constants';
+import { useBreadcrumbStore } from '@app/store';
 import { PermissionMatrixTable } from '../components/PermissionMatrixTable';
 import { usePermissionMatrix, useUpdatePermissionMatrix } from '../hooks/useRoles';
 import type { PermissionActionKey, PermissionMatrixModule } from '../types';
@@ -18,6 +19,14 @@ export default function PermissionMatrixPage() {
   useEffect(() => {
     if (data) setModules(data.modules);
   }, [data]);
+
+  const setBreadcrumbLabel = useBreadcrumbStore((state) => state.setLabel);
+  const clearBreadcrumbLabel = useBreadcrumbStore((state) => state.clearLabel);
+  useEffect(() => {
+    if (!id || !data?.role_name) return;
+    setBreadcrumbLabel(id, data.role_name);
+    return () => clearBreadcrumbLabel(id);
+  }, [id, data?.role_name, setBreadcrumbLabel, clearBreadcrumbLabel]);
 
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 350);
