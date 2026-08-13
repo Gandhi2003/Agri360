@@ -14,4 +14,10 @@ export const settingsRoutes: FeatureRoute[] = [
     permission: SETTINGS_PERMISSIONS.VIEW,
     component: () => import('./pages/GeneralSettingsPage'),
   },
+  {
+    path: 'settings/users',
+    title: 'Add User',
+    permission: SETTINGS_PERMISSIONS.CREATE,
+    component: () => import('./pages/NewUserPage'),
+  },
 ];

@@ -29,11 +29,11 @@ const SETTINGS_SECTIONS: SettingsSection[] = [
     permission: PERMISSIONS.PRODUCTS_VIEW,
   },
   {
-    title: 'Users',
-    description: 'Manage user accounts and their access to the system.',
-    to: '/users',
+    title: 'Add User',
+    description: 'Create a new user account and assign their roles.',
+    to: ROUTES.SETTINGS_USERS,
     icon: UserCog,
-    permission: PERMISSIONS.USERS_VIEW,
+    permission: PERMISSIONS.USERS_MANAGE,
   },
   {
     title: 'Roles',
@@ -61,8 +61,8 @@ export default function SettingsListPage() {
                   <section.icon className="size-5" />
                 </span>
                 <div className="space-y-1">
-                  <h3 className="font-semibold text-foreground">{section.title}</h3>
-                  <p className="text-sm text-muted-foreground">{section.description}</p>
+                  <h3 className=" text-black20 font-bold text-buttonlarge ">{section.title}</h3>
+                  <p className=" text-gray92 font-medium text-bodysmall ">{section.description}</p>
                 </div>
               </Card>
             </Link>

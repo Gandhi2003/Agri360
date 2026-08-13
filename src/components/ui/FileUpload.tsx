@@ -1,5 +1,5 @@
 import { useRef, useState, type DragEvent } from 'react';
-import { UploadCloud } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { cn } from '@lib/cn';
 
 interface FileUploadProps {
@@ -8,6 +8,7 @@ interface FileUploadProps {
   multiple?: boolean;
   label?: string;
   hint?: string;
+  className?: string;
 }
 
 /** Drag-and-drop + click file picker. */
@@ -17,6 +18,7 @@ export function FileUpload({
   multiple = false,
   label = 'Click to upload or drag and drop',
   hint,
+  className,
 }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
@@ -43,9 +45,10 @@ export function FileUpload({
       className={cn(
         'flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray5 bg-muted/30 p-8 text-center transition-colors hover:border-primary/50',
         dragging && 'border-primary bg-primary/5',
+        className,
       )}
     >
-      <UploadCloud className="size-8 text-muted-foreground" />
+      <Upload className="size-7 text-muted-foreground" />
       <p className="text-xs font-bold text-[#1d252db3]">{label}</p>
       {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
       <input

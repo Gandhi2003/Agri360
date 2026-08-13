@@ -1,54 +1,47 @@
 import { useCallback, useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Trash2 } from 'lucide-react';
 import {
   Avatar,
   Badge,
-  Button,
   Card,
   Checkbox,
   ConfirmDialog,
   DataTable,
   Modal,
   PageHeader,
-  PermissionGate,
   SearchInput,
-  Select,
 } from '@components';
 import { useDebounce, useModal } from '@common/hooks';
 import { formatDate } from '@common/utils';
-import type { SelectOption } from '@common/types';
-import { USERS_PERMISSIONS } from '../constants';
 import { useCreateUser, useDeleteUser, useUsers, useUpdateUser } from '../hooks/useUsers';
 import { useUsersStore } from '../store/users.store';
 import { UserForm } from '../components/UserForm';
-import { UserStatus, type User } from '../types';
+import type { User } from '../types';
 import type { UserFormValues } from '../schemas/users.schema';
 
-const statusFilterOptions: SelectOption[] = [
-  { label: 'All Status', value: '' },
-  ...Object.values(UserStatus).map((value) => ({ label: value, value })),
-];
-
-const statusBadgeVariant: Record<UserStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
-  [UserStatus.Active]: 'success',
-  [UserStatus.Pending]: 'warning',
-  [UserStatus.Archived]: 'danger',
-  [UserStatus.Inactive]: 'outline',
-};
+const toFormValues = (user: User): Partial<UserFormValues> => ({
+  email: user.email,
+  firstName: user.firstName,
+  lastName: user.lastName ?? '',
+  phoneNumber: user.phoneNumber ?? '',
+  address1: user.address1 ?? '',
+  address2: user.address2 ?? '',
+  country: user.country ?? '',
+  state: user.state ?? '',
+  city: user.city ?? '',
+  pincode: user.pincode ?? '',
+  dateOfBirth: user.dateOfBirth ?? '',
+  isSuperuser: user.isSuperuser,
+  roleIds: user.roles.map((role) => role.id),
+});
 
 export default function UsersListPage() {
   const { page, pageSize, setPage } = useUsersStore();
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
   const debouncedSearch = useDebounce(search, 350);
 
-  const { data, isLoading } = useUsers({
-    page,
-    pageSize,
-    search: debouncedSearch,
-    status: (statusFilter || undefined) as UserStatus | undefined,
-  });
+  const { data, isLoading } = useUsers({ page, pageSize, search: debouncedSearch });
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
   const deleteUser = useDeleteUser();
@@ -101,31 +94,59 @@ export default function UsersListPage() {
           <Checkbox
             checked={selectedIds.has(row.original.id)}
             onChange={() => toggleSelect(row.original.id)}
-            aria-label={`Select ${row.original.firstName} ${row.original.lastName}`}
+            aria-label={`Select ${row.original.fullName}`}
           />
         ),
       },
       {
-        accessorKey: 'firstName',
+        accessorKey: 'fullName',
         header: 'User',
         meta: { cellClassName: 'pl-1', headerClassName: 'pl-1' },
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
-            <Avatar firstName={row.original.firstName} lastName={row.original.lastName} size="sm" />
+            <Avatar
+              src={row.original.image ?? undefined}
+              firstName={row.original.firstName}
+              lastName={row.original.lastName}
+              size="sm"
+            />
             <div className="min-w-0">
-              <p className="truncate font-semibold text-foreground">
-                {row.original.firstName} {row.original.lastName}
-              </p>
-              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
+              <p className="truncate font-semibold text-foreground">{row.original.fullName}</p>
+              <p className="truncate text-xs text-muted-foreground">{row.original.email}</p>
             </div>
           </div>
         ),
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: 'phoneNumber',
+        header: 'Phone',
+        cell: ({ row }) => row.original.phoneNumber ?? '—',
+      },
+      {
+        accessorKey: 'roles',
+        header: 'Roles',
+        enableSorting: false,
         cell: ({ row }) => (
-          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
+          <div className="flex flex-wrap gap-1">
+            {row.original.roles.length === 0 ? (
+              <span className="text-muted-foreground">—</span>
+            ) : (
+              row.original.roles.map((role) => (
+                <Badge key={role.id} variant="outline">
+                  {role.name}
+                </Badge>
+              ))
+            )}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'isSuperuser',
+        header: 'Superuser',
+        cell: ({ row }) => (
+          <Badge variant={row.original.isSuperuser ? 'success' : 'outline'}>
+            {row.original.isSuperuser ? 'Yes' : 'No'}
+          </Badge>
         ),
       },
       {
@@ -174,21 +195,13 @@ export default function UsersListPage() {
     <div className="space-y-6">
       <PageHeader title="User Management" description="" />
 
-      <Card className="grid grid-cols-2 items-center gap-3 p-4">
+      <Card className="flex items-center gap-3 p-4">
         <SearchInput
           value={search}
           className="max-w-md"
           onChange={setSearch}
           placeholder="Search users…"
         />
-        <div className="ml-auto w-48">
-          <Select
-            options={statusFilterOptions}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            aria-label="Filter by status"
-          />
-        </div>
       </Card>
 
       <DataTable
@@ -197,13 +210,6 @@ export default function UsersListPage() {
         isLoading={isLoading}
         emptyMessage="No users match your search."
         title="All Users"
-        headerActions={
-          <PermissionGate permissions={[USERS_PERMISSIONS.CREATE]}>
-            <Button leftIcon={<Plus className="size-4" />} onClick={() => formModal.open()}>
-              New User
-            </Button>
-          </PermissionGate>
-        }
         pagination={{
           page,
           pageSize,
@@ -219,7 +225,7 @@ export default function UsersListPage() {
         description="Provide the user's details below."
       >
         <UserForm
-          defaultValues={editing ?? undefined}
+          defaultValues={editing ? toFormValues(editing) : undefined}
           onSubmit={handleSubmit}
           isSubmitting={createUser.isPending || updateUser.isPending}
           submitLabel={editing ? 'Update' : 'Create'}
@@ -232,7 +238,9 @@ export default function UsersListPage() {
         title="User details"
         description="Read-only view of this user's record."
       >
-        {viewModal.data && <UserForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />}
+        {viewModal.data && (
+          <UserForm defaultValues={toFormValues(viewModal.data)} readOnly onSubmit={() => {}} />
+        )}
       </Modal>
 
       <ConfirmDialog
@@ -243,7 +251,7 @@ export default function UsersListPage() {
           deleteUser.mutate(deleteModal.data.id, { onSuccess: deleteModal.close })
         }
         title="Delete user?"
-        message={`This will permanently remove "${deleteModal.data?.firstName} ${deleteModal.data?.lastName}".`}
+        message={`This will permanently remove "${deleteModal.data?.fullName}".`}
         confirmLabel="Delete"
         isLoading={deleteUser.isPending}
       />

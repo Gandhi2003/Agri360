@@ -9,7 +9,6 @@ interface ImageUploadProps {
   className?: string;
 }
 
-/** Single-image picker with live preview. */
 export function ImageUpload({ value, onChange, className }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | undefined>(value);
 
@@ -47,12 +46,13 @@ export function ImageUpload({ value, onChange, className }: ImageUploadProps) {
   }
 
   return (
-    <div className={className}>
+    <div className={cn('w-40', className)}>
       <FileUpload
         accept="image/*"
         onFiles={handleFiles}
         label="Upload image"
         hint="PNG, JPG up to 5MB"
+        className="h-40 w-40 p-4"
       />
       <ImagePlus className="sr-only" />
     </div>

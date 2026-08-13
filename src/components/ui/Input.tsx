@@ -9,13 +9,14 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, hint, leftIcon, className, id, ...props }, ref) => {
+  ({ label, error, hint, leftIcon, className, id, required, ...props }, ref) => {
     const inputId = id ?? props.name;
     return (
       <div className="w-full">
         {label && (
           <label htmlFor={inputId} className="mb-2 block text-xs font-bold text-[#1d252db3]">
             {label}
+            {required && <span className="text-danger"> *</span>}
           </label>
         )}
         <div className="relative">
@@ -28,6 +29,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
+            required={required}
             className={cn(
               'focus-ring h-9.5 px-3 py-2 w-full font-medium rounded-md border border-gray5 bg-card text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed no-spinner',
               leftIcon && 'pl-9',

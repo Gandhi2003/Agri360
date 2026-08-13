@@ -12,6 +12,7 @@ export const ROUTES = {
   PROFILE: '/profile',
   SETTINGS: '/settings',
   SETTINGS_GENERAL: '/settings/general',
+  SETTINGS_USERS: '/settings/users',
   UNAUTHORIZED: '/403',
   NOT_FOUND: '/404',
 } as const;
