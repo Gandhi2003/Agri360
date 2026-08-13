@@ -1,4 +1,4 @@
-import { KeyRound, Package, Settings, ShieldCheck, UserCog, type LucideIcon } from 'lucide-react';
+import { Package, Settings, ShieldCheck, UserCog, type LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, PageHeader, PermissionGate } from '@components';
 import { PERMISSIONS } from '@common/permissions';
@@ -41,13 +41,6 @@ const SETTINGS_SECTIONS: SettingsSection[] = [
     to: '/roles',
     icon: ShieldCheck,
     permission: PERMISSIONS.ROLES_VIEW,
-  },
-  {
-    title: 'Permissions',
-    description: 'Configure granular permissions available to roles.',
-    to: '/permissions',
-    icon: KeyRound,
-    permission: PERMISSIONS.PERMISSIONS_VIEW,
   },
 ];
 

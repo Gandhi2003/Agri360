@@ -1,6 +1,14 @@
 import { apiClient } from '@common/api/apiClient';
 import type { PaginatedResponse, PaginationParams } from '@common/types';
-import type { CreateRoleDto, Role, RoleFilters, RoleId, UpdateRoleDto } from '../types';
+import type {
+  CreateRoleDto,
+  PermissionMatrix,
+  Role,
+  RoleFilters,
+  RoleId,
+  UpdatePermissionMatrixDto,
+  UpdateRoleDto,
+} from '../types';
 
 const RESOURCE = '/roles';
 
@@ -15,4 +23,10 @@ export const rolesApi = {
   update: (id: RoleId, dto: UpdateRoleDto) => apiClient.put<Role>(`${RESOURCE}/${id}`, dto),
 
   remove: (id: RoleId) => apiClient.delete<void>(`${RESOURCE}/${id}`),
+
+  getPermissionMatrix: (id: RoleId) =>
+    apiClient.get<PermissionMatrix>(`${RESOURCE}/${id}/permission-matrix`),
+
+  updatePermissionMatrix: (id: RoleId, dto: UpdatePermissionMatrixDto) =>
+    apiClient.put<PermissionMatrix>(`${RESOURCE}/${id}/permission-matrix`, dto),
 };

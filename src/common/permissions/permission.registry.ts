@@ -35,7 +35,6 @@ export const PERMISSIONS = {
   USERS_VIEW: 'users:view',
   USERS_MANAGE: 'users:create',
   ROLES_VIEW: 'roles:view',
-  PERMISSIONS_VIEW: 'permissions:view',
   SETTINGS_VIEW: 'settings:view',
 } as const;
 

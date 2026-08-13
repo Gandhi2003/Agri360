@@ -7,3 +7,4 @@ export * from './schemas/roles.schema';
 export * from './store/roles.store';
 export { rolesRoutes } from './routes';
 export { RoleForm } from './components/RoleForm';
+export { PermissionMatrixTable } from './components/PermissionMatrixTable';

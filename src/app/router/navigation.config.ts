@@ -5,7 +5,6 @@ import {
   CreditCard,
   FileText,
   Handshake,
-  KeyRound,
   Layers,
   LayoutDashboard,
   type LucideIcon,
@@ -141,12 +140,6 @@ export const NAVIGATION: NavSection[] = [
     items: [
       { label: 'Users', to: '/users', icon: UserCog, permission: PERMISSIONS.USERS_VIEW },
       { label: 'Roles', to: '/roles', icon: ShieldCheck, permission: PERMISSIONS.ROLES_VIEW },
-      {
-        label: 'Permissions',
-        to: '/permissions',
-        icon: KeyRound,
-        permission: PERMISSIONS.PERMISSIONS_VIEW,
-      },
     ],
   },
   {

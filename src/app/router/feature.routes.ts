@@ -3,7 +3,6 @@ import { dashboardRoutes } from '@features/dashboard/routes';
 import { authenticationRoutes } from '@features/auth/routes';
 import { usersRoutes } from '@features/users/routes';
 import { rolesRoutes } from '@features/roles/routes';
-import { permissionsRoutes } from '@features/permissions/routes';
 import { farmersRoutes } from '@features/farmers/routes';
 import { dealersRoutes } from '@features/dealers/routes';
 import { customersRoutes } from '@features/customers/routes';
@@ -32,7 +31,6 @@ export const featureRoutes: FeatureRoute[] = [
   ...authenticationRoutes,
   ...usersRoutes,
   ...rolesRoutes,
-  ...permissionsRoutes,
   ...farmersRoutes,
   ...dealersRoutes,
   ...customersRoutes,

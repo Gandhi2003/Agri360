@@ -29,3 +29,5 @@ export interface RoleFilters {
 }
 
 export type RoleId = ID;
+
+export * from './permission-matrix.types';

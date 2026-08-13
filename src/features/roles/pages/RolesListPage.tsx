@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Plus, ShieldCheck, Trash2 } from 'lucide-react';
 import {
   Avatar,
   Badge,
@@ -38,6 +39,7 @@ const statusBadgeVariant: Record<RoleStatus, 'success' | 'warning' | 'danger' | 
 };
 
 export default function RolesListPage() {
+  const navigate = useNavigate();
   const { page, pageSize, setPage } = useRolesStore();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -155,6 +157,14 @@ export default function RolesListPage() {
             </button>
             <button
               type="button"
+              aria-label="Manage permissions"
+              onClick={() => navigate(`/roles/${row.original.id}/permissions`)}
+              className="text-primary transition-opacity hover:opacity-70"
+            >
+              <ShieldCheck className="size-4" />
+            </button>
+            <button
+              type="button"
               aria-label="Delete role"
               onClick={() => deleteModal.open(row.original)}
               className="text-danger transition-opacity hover:opacity-70"
@@ -165,7 +175,16 @@ export default function RolesListPage() {
         ),
       },
     ],
-    [allSelected, selectedIds, toggleSelectAll, toggleSelect, formModal, viewModal, deleteModal],
+    [
+      allSelected,
+      selectedIds,
+      toggleSelectAll,
+      toggleSelect,
+      formModal,
+      viewModal,
+      deleteModal,
+      navigate,
+    ],
   );
 
   return (

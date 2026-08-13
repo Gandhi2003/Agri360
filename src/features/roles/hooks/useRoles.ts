@@ -3,7 +3,13 @@ import toast from 'react-hot-toast';
 import type { PaginationParams } from '@common/types';
 import { rolesService } from '../services/roles.service';
 import { ROLES_QUERY_KEY } from '../constants';
-import type { CreateRoleDto, RoleFilters, RoleId, UpdateRoleDto } from '../types';
+import type {
+  CreateRoleDto,
+  RoleFilters,
+  RoleId,
+  UpdatePermissionMatrixDto,
+  UpdateRoleDto,
+} from '../types';
 
 export const useRoles = (params: PaginationParams & RoleFilters) =>
   useQuery({
@@ -48,6 +54,25 @@ export const useDeleteRole = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [ROLES_QUERY_KEY] });
       toast.success('Role deleted successfully');
+    },
+  });
+};
+
+export const usePermissionMatrix = (id: RoleId | undefined) =>
+  useQuery({
+    queryKey: [ROLES_QUERY_KEY, 'permission-matrix', id],
+    queryFn: () => rolesService.getPermissionMatrix(id as RoleId),
+    enabled: Boolean(id),
+  });
+
+export const useUpdatePermissionMatrix = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, dto }: { id: RoleId; dto: UpdatePermissionMatrixDto }) =>
+      rolesService.updatePermissionMatrix(id, dto),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: [ROLES_QUERY_KEY, 'permission-matrix', id] });
+      toast.success('Permissions updated successfully');
     },
   });
 };

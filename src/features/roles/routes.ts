@@ -8,4 +8,10 @@ export const rolesRoutes: FeatureRoute[] = [
     permission: ROLES_PERMISSIONS.VIEW,
     component: () => import('./pages/RolesListPage'),
   },
+  {
+    path: 'roles/:id/permissions',
+    title: 'Roles & Permissions List',
+    permission: ROLES_PERMISSIONS.VIEW,
+    component: () => import('./pages/PermissionMatrixPage'),
+  },
 ];
