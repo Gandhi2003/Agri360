@@ -4,6 +4,7 @@ import { Eye, Pencil, Trash2 } from 'lucide-react';
 import {
   Avatar,
   Badge,
+  Button,
   Card,
   Checkbox,
   ConfirmDialog,
@@ -16,7 +17,7 @@ import { useDebounce, useModal } from '@common/hooks';
 import { formatDate } from '@common/utils';
 import { useCreateUser, useDeleteUser, useUsers, useUpdateUser } from '../hooks/useUsers';
 import { useUsersStore } from '../store/users.store';
-import { UserForm } from '../components/UserForm';
+import { USER_FORM_ID, UserForm } from '../components/UserForm';
 import type { User } from '../types';
 import type { UserFormValues } from '../schemas/users.schema';
 
@@ -222,13 +223,26 @@ export default function UsersListPage() {
         isOpen={formModal.isOpen}
         onClose={formModal.close}
         title={editing ? 'Edit User' : 'New User'}
-        description="Provide the user's details below."
+        description=""
+        size="xl"
+        footer={
+          <>
+            <Button type="button" variant="outline" onClick={formModal.close}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form={USER_FORM_ID}
+              isLoading={createUser.isPending || updateUser.isPending}
+            >
+              {editing ? 'Update' : 'Create'}
+            </Button>
+          </>
+        }
       >
         <UserForm
           defaultValues={editing ? toFormValues(editing) : undefined}
           onSubmit={handleSubmit}
-          isSubmitting={createUser.isPending || updateUser.isPending}
-          submitLabel={editing ? 'Update' : 'Create'}
         />
       </Modal>
 
@@ -236,7 +250,8 @@ export default function UsersListPage() {
         isOpen={viewModal.isOpen}
         onClose={viewModal.close}
         title="User details"
-        description="Read-only view of this user's record."
+        description=""
+        size="xl"
       >
         {viewModal.data && (
           <UserForm defaultValues={toFormValues(viewModal.data)} readOnly onSubmit={() => {}} />

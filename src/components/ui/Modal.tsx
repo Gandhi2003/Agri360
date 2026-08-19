@@ -62,7 +62,7 @@ export function Modal({
         )}
       >
         {(title || description) && (
-          <div className="flex items-start justify-between gap-4 border-b border-border p-5">
+          <div className="flex items-start justify-between gap-4 border-b border-border p-4.5">
             <div className="space-y-1">
               {title && <h2 className="text-lg font-bold">{title}</h2>}
               {description && <p className="text-sm text-muted-foreground">{description}</p>}
@@ -76,9 +76,9 @@ export function Modal({
             </button>
           </div>
         )}
-        <div className="max-h-[70vh] overflow-y-auto p-5">{children}</div>
+        <div className="max-h-[70vh] overflow-y-auto p-4.5">{children}</div>
         {footer && (
-          <div className="flex justify-end gap-2 border-t border-border p-5">{footer}</div>
+          <div className="flex justify-end gap-2 border-t border-border p-4.5">{footer}</div>
         )}
       </div>
     </div>,

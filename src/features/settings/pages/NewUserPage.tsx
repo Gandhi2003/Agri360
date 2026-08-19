@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShieldCheck, UserCog, type LucideIcon } from 'lucide-react';
+import { Eye, EyeOff, ShieldCheck, UserCog, type LucideIcon } from 'lucide-react';
 import {
   Button,
   Card,
@@ -18,7 +18,7 @@ import { ROUTES } from '@common/constants';
 import { useRoles } from '@features/roles';
 import { cn } from '@lib/cn';
 import { useCreateUser } from '../../users/hooks/useUsers';
-import { userSchema, type UserFormValues } from '../../users/schemas/users.schema';
+import { createUserSchema, type CreateUserFormValues } from '../../users/schemas/users.schema';
 
 interface NewUserSection {
   id: string;
@@ -34,6 +34,8 @@ const SECTIONS: NewUserSection[] = [
 export default function NewUserPage() {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState<string>(SECTIONS[0].id);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const createUser = useCreateUser();
 
   const {
@@ -41,8 +43,8 @@ export default function NewUserPage() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserFormValues>({
-    resolver: zodResolver(userSchema),
+  } = useForm<CreateUserFormValues>({
+    resolver: zodResolver(createUserSchema),
     defaultValues: { isSuperuser: false, roleIds: [], image: null },
   });
 
@@ -53,8 +55,9 @@ export default function NewUserPage() {
     setActiveSection(id);
   };
 
-  const onSubmit = (values: UserFormValues) => {
-    createUser.mutate(values, { onSuccess: () => navigate('/users') });
+  const onSubmit = (values: CreateUserFormValues) => {
+    const { confirmPassword: _confirmPassword, ...dto } = values;
+    createUser.mutate(dto, { onSuccess: () => navigate('/users') });
   };
 
   return (
@@ -211,6 +214,57 @@ export default function NewUserPage() {
                         className="sm:max-w-[200px]"
                         {...register('pincode')}
                         error={errors.pincode?.message}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="border-b border-border pb-4">
+                    <CardTitle>Password</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4 pt-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <Input
+                        label="Password"
+                        placeholder="Enter Password"
+                        type={showPassword ? 'text' : 'password'}
+                        {...register('password')}
+                        error={errors.password?.message}
+                        rightIcon={
+                          <button
+                            type="button"
+                            tabIndex={-1}
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            aria-label={showPassword ? 'Hide password' : 'Show password'}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="size-4" />
+                            ) : (
+                              <Eye className="size-4" />
+                            )}
+                          </button>
+                        }
+                      />
+                      <Input
+                        label="Confirm Password"
+                        placeholder="Confirm Password"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        {...register('confirmPassword')}
+                        error={errors.confirmPassword?.message}
+                        rightIcon={
+                          <button
+                            type="button"
+                            tabIndex={-1}
+                            onClick={() => setShowConfirmPassword((prev) => !prev)}
+                            aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff className="size-4" />
+                            ) : (
+                              <Eye className="size-4" />
+                            )}
+                          </button>
+                        }
                       />
                     </div>
                   </CardContent>

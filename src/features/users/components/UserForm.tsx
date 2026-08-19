@@ -1,24 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Checkbox, Input } from '@components';
+import { Checkbox, Input } from '@components';
 import { useRoles } from '@features/roles';
 import { userSchema, type UserFormValues } from '../schemas/users.schema';
+
+export const USER_FORM_ID = 'user-form';
 
 interface UserFormProps {
   defaultValues?: Partial<UserFormValues>;
   onSubmit: (values: UserFormValues) => void;
-  isSubmitting?: boolean;
-  submitLabel?: string;
   readOnly?: boolean;
 }
 
-export function UserForm({
-  defaultValues,
-  onSubmit,
-  isSubmitting,
-  submitLabel = 'Save',
-  readOnly = false,
-}: UserFormProps) {
+export function UserForm({ defaultValues, onSubmit, readOnly = false }: UserFormProps) {
   const {
     register,
     control,
@@ -33,7 +27,7 @@ export function UserForm({
   const roleOptions = rolesData?.data ?? [];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+    <form id={USER_FORM_ID} onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <Input
         label="Email"
         type="email"
@@ -147,14 +141,6 @@ export function UserForm({
           )}
         />
       </div>
-
-      {!readOnly && (
-        <div className="flex justify-end gap-2">
-          <Button type="submit" isLoading={isSubmitting}>
-            {submitLabel}
-          </Button>
-        </div>
-      )}
     </form>
   );
 }

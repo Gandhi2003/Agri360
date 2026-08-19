@@ -14,7 +14,7 @@ function SidebarLink({ item, collapsed }: { item: NavItem; collapsed: boolean })
       title={collapsed ? label : undefined}
       className={({ isActive }) =>
         cn(
-          'flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors',
+          'flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors',
           collapsed && 'justify-center',
           isActive
             ? 'bg-primary font-bold text-primary-foreground shadow-sm'
@@ -24,7 +24,7 @@ function SidebarLink({ item, collapsed }: { item: NavItem; collapsed: boolean })
     >
       {({ isActive }) => (
         <>
-          <Icon className="size-5 shrink-0" strokeWidth={isActive ? 2.5 : 2} />
+          <Icon className="size-4 shrink-0" strokeWidth={isActive ? 2.5 : 2} />
           {!collapsed && <span className="truncate">{label}</span>}
         </>
       )}

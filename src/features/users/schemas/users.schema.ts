@@ -18,3 +18,15 @@ export const userSchema = z.object({
 });
 
 export type UserFormValues = z.infer<typeof userSchema>;
+
+export const createUserSchema = userSchema
+  .extend({
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+    confirmPassword: z.string().min(1, 'Confirm your password'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
+
+export type CreateUserFormValues = z.infer<typeof createUserSchema>;
