@@ -1,9 +1,67 @@
+import {
+  Beef,
+  Bird,
+  Bug,
+  Droplets,
+  Fish,
+  FlaskConical,
+  Hammer,
+  Leaf,
+  Milk,
+  Package,
+  PawPrint,
+  Layers,
+  SprayCan,
+  Sprout,
+  Tag,
+  Tractor,
+  Truck,
+  Warehouse,
+  Wheat,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react';
 import type { Category } from '../types';
 
 interface CategoryAccentColor {
   icon: string;
   bar: string;
 }
+
+const CATEGORY_ICON_KEYWORDS: Array<{ keyword: string; icon: LucideIcon }> = [
+  { keyword: 'seed', icon: Leaf },
+  { keyword: 'fertiliz', icon: Sprout },
+  { keyword: 'insecticide', icon: Bug },
+  { keyword: 'fungicide', icon: SprayCan },
+  { keyword: 'herbicide', icon: SprayCan },
+  { keyword: 'pesticide', icon: SprayCan },
+  { keyword: 'cide', icon: SprayCan },
+  { keyword: 'chemical', icon: FlaskConical },
+  { keyword: 'tractor', icon: Tractor },
+  { keyword: 'machin', icon: Tractor },
+  { keyword: 'vehicle', icon: Truck },
+  { keyword: 'irrigation', icon: Droplets },
+  { keyword: 'water', icon: Droplets },
+  { keyword: 'tool', icon: Wrench },
+  { keyword: 'equipment', icon: Wrench },
+  { keyword: 'hardware', icon: Hammer },
+  { keyword: 'feed', icon: Wheat },
+  { keyword: 'grain', icon: Wheat },
+  { keyword: 'livestock', icon: Beef },
+  { keyword: 'dairy', icon: Milk },
+  { keyword: 'poultry', icon: Bird },
+  { keyword: 'fish', icon: Fish },
+  { keyword: 'animal', icon: PawPrint },
+  { keyword: 'pack', icon: Package },
+  { keyword: 'storage', icon: Warehouse },
+  { keyword: 'soil', icon: Layers },
+];
+
+/** Maps a category name to a representative icon, falling back to a generic tag. */
+export const getCategoryIcon = (category: Category): LucideIcon => {
+  const name = category.name.toLowerCase();
+  return CATEGORY_ICON_KEYWORDS.find(({ keyword }) => name.includes(keyword))?.icon ?? Tag;
+};
 
 const CATEGORY_ACCENT_COLORS: CategoryAccentColor[] = [
   { icon: 'bg-blue-600', bar: 'bg-blue-600' },

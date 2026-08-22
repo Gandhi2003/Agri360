@@ -9,4 +9,11 @@ export { EmptyState } from './empty-state/EmptyState';
 export { Breadcrumb } from './breadcrumb/Breadcrumb';
 export { Sidebar } from './sidebar/Sidebar';
 export { Navbar } from './navbar/Navbar';
-export { ErrorBoundary, FullscreenToggle, PageHeader, PermissionGate, ThemeToggle } from './shared';
+export {
+  AgriLogo,
+  ErrorBoundary,
+  FullscreenToggle,
+  PageHeader,
+  PermissionGate,
+  ThemeToggle,
+} from './shared';

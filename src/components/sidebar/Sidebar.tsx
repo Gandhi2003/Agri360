@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import { Sprout, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import logo from '@assets/images/logo.png';
+import { AgriLogo } from '@components/shared/AgriLogo';
 import { cn } from '@lib/cn';
-import { APP_NAME } from '@common/constants';
 import { usePermissions } from '@common/hooks';
 import { useUiStore } from '@app/store';
 import { NAVIGATION, type NavItem } from '@app/router/navigation.config';
@@ -62,13 +63,16 @@ export function Sidebar() {
         )}
       >
         <div className="flex h-16 items-center justify-between gap-2 border-b border-border px-4">
-          <div
-            className={cn('flex items-center gap-2 overflow-hidden', collapsed && 'justify-center')}
-          >
-            <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <Sprout className="size-5" />
-            </span>
-            {!collapsed && <span className="truncate font-semibold">{APP_NAME}</span>}
+          <div className={cn('flex items-center overflow-hidden', collapsed && 'justify-center')}>
+            {collapsed ? (
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
+                <AgriLogo className="size-5" />
+              </span>
+            ) : (
+              <span className="grid h-10 shrink-0 place-items-center rounded-md bg-white px-2">
+                <img src={logo} alt="Agro Trade" className="h-8 w-auto object-contain" />
+              </span>
+            )}
           </div>
           <button
             className="rounded-md p-1 text-muted-foreground hover:bg-muted lg:hidden"

@@ -1,9 +1,9 @@
-import { MoreHorizontal, Pencil, Tag, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { Badge, Button, Card, Dropdown } from '@components';
 import { formatDate } from '@common/utils';
 import { cn } from '@lib/cn';
 import type { Category } from '../types';
-import { getCategoryAccentColor } from '../utils/categories.utils';
+import { getCategoryAccentColor, getCategoryIcon } from '../utils/categories.utils';
 
 interface CategoryCardProps {
   category: Category;
@@ -13,6 +13,7 @@ interface CategoryCardProps {
 
 export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
   const accent = getCategoryAccentColor(category);
+  const Icon = getCategoryIcon(category);
 
   return (
     <Card className="group relative flex flex-col overflow-hidden p-5 pb-4 transition-all hover:shadow-md">
@@ -24,7 +25,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
               accent.icon,
             )}
           >
-            <Tag className="size-5" />
+            <Icon className="size-5" />
           </span>
           <div className="min-w-0">
             <h3 className="truncate font-semibold text-foreground">{category.name}</h3>
