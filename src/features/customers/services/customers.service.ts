@@ -5,8 +5,7 @@ import type { CreateCustomerDto, CustomerFilters, CustomerId, UpdateCustomerDto 
 export const customersService = {
   getList: (params: PaginationParams & CustomerFilters) => customersApi.list(params),
   getOne: (id: CustomerId) => customersApi.getById(id),
-  create: (dto: CreateCustomerDto) =>
-    customersApi.create({ ...dto, code: dto.code.trim().toUpperCase() }),
+  create: (dto: CreateCustomerDto) => customersApi.create(dto),
   update: (id: CustomerId, dto: UpdateCustomerDto) => customersApi.update(id, dto),
   remove: (id: CustomerId) => customersApi.remove(id),
 };

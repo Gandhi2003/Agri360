@@ -1,35 +1,43 @@
-import type { BaseEntity, ID } from '@common/types';
-
-export enum ProductStatus {
-  Active = 'active',
-  Inactive = 'inactive',
-  Pending = 'pending',
-  Archived = 'archived',
+export interface ProductCategory {
+  id: number;
+  name: string;
 }
 
-export interface Product extends BaseEntity {
+export interface Product {
+  id: number;
   name: string;
-  code: string;
+  sku: string;
+  description: string | null;
   unit: string;
   price: string;
+  cost_price: string;
   stock_quantity: number;
+  reorder_level: number;
   is_active: boolean;
   category_id: number;
-  description?: string;
+  category: ProductCategory;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CreateProductDto {
   name: string;
-  code: string;
-  status: ProductStatus;
+  sku: string;
   description?: string;
+  unit: string;
+  price: string;
+  cost_price: string;
+  stock_quantity: number;
+  reorder_level: number;
+  is_active: boolean;
+  category_id: number;
 }
 
 export type UpdateProductDto = Partial<CreateProductDto>;
 
 export interface ProductFilters {
   search?: string;
-  status?: ProductStatus;
+  is_active?: boolean;
 }
 
-export type ProductId = ID;
+export type ProductId = number;

@@ -5,8 +5,7 @@ import type { CreateSupplierDto, SupplierFilters, SupplierId, UpdateSupplierDto 
 export const suppliersService = {
   getList: (params: PaginationParams & SupplierFilters) => suppliersApi.list(params),
   getOne: (id: SupplierId) => suppliersApi.getById(id),
-  create: (dto: CreateSupplierDto) =>
-    suppliersApi.create({ ...dto, code: dto.code.trim().toUpperCase() }),
+  create: (dto: CreateSupplierDto) => suppliersApi.create(dto),
   update: (id: SupplierId, dto: UpdateSupplierDto) => suppliersApi.update(id, dto),
   remove: (id: SupplierId) => suppliersApi.remove(id),
 };

@@ -1,5 +1,3 @@
-import type { BaseEntity, ID } from '@common/types';
-
 export enum DealerStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -7,22 +5,33 @@ export enum DealerStatus {
   Archived = 'archived',
 }
 
-export interface Dealer extends BaseEntity {
+export interface DealerOwner {
+  id: number;
+  full_name: string;
+  email: string;
+}
+
+export interface Dealer {
+  id: number;
   name: string;
   company: string;
-  code: string;
-  email?: string;
-  phone?: string;
-  region?: string;
-  gst_number?: string;
-  description?: string;
+  email: string | null;
+  phone: string | null;
+  region: string | null;
+  gst_number: string | null;
+  owner_id: number;
+  owner: DealerOwner;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CreateDealerDto {
   name: string;
-  code: string;
-  status: DealerStatus;
-  description?: string;
+  company: string;
+  email?: string;
+  phone?: string;
+  region?: string;
+  gst_number?: string;
 }
 
 export type UpdateDealerDto = Partial<CreateDealerDto>;
@@ -32,4 +41,4 @@ export interface DealerFilters {
   status?: DealerStatus;
 }
 
-export type DealerId = ID;
+export type DealerId = number;

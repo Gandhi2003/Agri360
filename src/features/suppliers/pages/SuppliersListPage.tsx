@@ -3,7 +3,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   Checkbox,
@@ -13,11 +12,8 @@ import {
   PageHeader,
   PermissionGate,
   SearchInput,
-  Select,
 } from '@components';
 import { useDebounce, useModal } from '@common/hooks';
-import { formatDate } from '@common/utils';
-import type { SelectOption } from '@common/types';
 import { SUPPLIERS_PERMISSIONS } from '../constants';
 import {
   useCreateSupplier,
@@ -27,32 +23,27 @@ import {
 } from '../hooks/useSuppliers';
 import { useSuppliersStore } from '../store/suppliers.store';
 import { SupplierForm } from '../components/SupplierForm';
-import { SupplierStatus, type Supplier } from '../types';
+import { SupplierDetails } from '../components/SupplierDetails';
+import type { Supplier } from '../types';
 import type { SupplierFormValues } from '../schemas/suppliers.schema';
 
-const statusFilterOptions: SelectOption[] = [
-  { label: 'All Status', value: '' },
-  ...Object.values(SupplierStatus).map((value) => ({ label: value, value })),
-];
-
-const statusBadgeVariant: Record<SupplierStatus, 'success' | 'warning' | 'danger' | 'outline'> = {
-  [SupplierStatus.Active]: 'success',
-  [SupplierStatus.Pending]: 'warning',
-  [SupplierStatus.Archived]: 'danger',
-  [SupplierStatus.Inactive]: 'outline',
-};
+const toFormValues = (supplier: Supplier): SupplierFormValues => ({
+  name: supplier.name,
+  company: supplier.company ?? '',
+  email: supplier.email ?? '',
+  phone: supplier.phone ?? '',
+  country: supplier.country ?? '',
+});
 
 export default function SuppliersListPage() {
   const { page, pageSize, setPage } = useSuppliersStore();
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
   const debouncedSearch = useDebounce(search, 350);
 
   const { data, isLoading } = useSuppliers({
     page,
     pageSize,
     search: debouncedSearch,
-    status: (statusFilter || undefined) as SupplierStatus | undefined,
   });
   const createSupplier = useCreateSupplier();
   const updateSupplier = useUpdateSupplier();
@@ -119,22 +110,40 @@ export default function SuppliersListPage() {
             <Avatar firstName={row.original.name} size="sm" />
             <div className="min-w-0">
               <p className="truncate font-semibold text-foreground">{row.original.name}</p>
-              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {row.original.owner?.full_name || '—'}
+              </p>
             </div>
           </div>
         ),
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: 'company',
+        header: 'Company',
         cell: ({ row }) => (
-          <Badge variant={statusBadgeVariant[row.original.status]}>{row.original.status}</Badge>
+          <p className="font-bold text-sm text-black10">{row.original.company || '—'}</p>
         ),
       },
       {
-        accessorKey: 'createdAt',
-        header: 'Created',
-        cell: ({ row }) => formatDate(row.original.createdAt),
+        accessorKey: 'email',
+        header: 'Email',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.email || '—'}</p>
+        ),
+      },
+      {
+        accessorKey: 'phone',
+        header: 'Phone',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.phone || '—'}</p>
+        ),
+      },
+      {
+        accessorKey: 'country',
+        header: 'Country',
+        cell: ({ row }) => (
+          <p className="font-mono text-sm text-muted-foreground">{row.original.country || '—'}</p>
+        ),
       },
       {
         id: 'actions',
@@ -177,21 +186,13 @@ export default function SuppliersListPage() {
     <div className="space-y-6">
       <PageHeader title="Supplier Management" description="" />
 
-      <Card className="grid grid-cols-2 items-center gap-3 p-4">
+      <Card className="flex items-center gap-3 p-4">
         <SearchInput
           value={search}
           className="max-w-md"
           onChange={setSearch}
           placeholder="Search suppliers…"
         />
-        <div className="ml-auto w-48">
-          <Select
-            options={statusFilterOptions}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            aria-label="Filter by status"
-          />
-        </div>
       </Card>
 
       <DataTable
@@ -219,11 +220,14 @@ export default function SuppliersListPage() {
         isOpen={formModal.isOpen}
         onClose={formModal.close}
         title={editing ? 'Edit Supplier' : 'New Supplier'}
-        description="Provide the supplier's details below."
+        description=""
+        size="lg"
       >
         <SupplierForm
-          defaultValues={editing ?? undefined}
+          defaultValues={editing ? toFormValues(editing) : undefined}
+          supplier={editing ?? undefined}
           onSubmit={handleSubmit}
+          onCancel={formModal.close}
           isSubmitting={createSupplier.isPending || updateSupplier.isPending}
           submitLabel={editing ? 'Update' : 'Create'}
         />
@@ -233,11 +237,10 @@ export default function SuppliersListPage() {
         isOpen={viewModal.isOpen}
         onClose={viewModal.close}
         title="Supplier details"
-        description="Read-only view of this supplier's record."
+        description=""
+        size="lg"
       >
-        {viewModal.data && (
-          <SupplierForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />
-        )}
+        {viewModal.data && <SupplierDetails supplier={viewModal.data} />}
       </Modal>
 
       <ConfirmDialog

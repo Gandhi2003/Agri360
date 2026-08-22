@@ -13,7 +13,7 @@ products/
 ├── services/     # Business logic / orchestration (productsService)
 ├── schemas/      # Zod validation (productSchema)
 ├── store/        # Zustand UI state (useProductsStore)
-├── types/        # Domain types, DTOs & enums (Product, ProductStatus)
+├── types/        # Domain types & DTOs (Product, ProductCategory)
 ├── constants/    # Query keys & RBAC permissions
 ├── utils/        # Pure helpers
 ├── routes.ts     # Lazy-loaded route config (productsRoutes)

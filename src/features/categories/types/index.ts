@@ -1,31 +1,23 @@
-import type { BaseEntity, ID } from '@common/types';
-
-export enum CategoryStatus {
-  Active = 'active',
-  Inactive = 'inactive',
-  Pending = 'pending',
-  Archived = 'archived',
-}
-
-export interface Category extends BaseEntity {
+export interface Category {
+  id: number;
   name: string;
-  code: string;
-  status: CategoryStatus;
-  description?: string;
+  description: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CreateCategoryDto {
   name: string;
-  code: string;
-  status: CategoryStatus;
   description?: string;
+  is_active: boolean;
 }
 
 export type UpdateCategoryDto = Partial<CreateCategoryDto>;
 
 export interface CategoryFilters {
   search?: string;
-  status?: CategoryStatus;
+  is_active?: boolean;
 }
 
-export type CategoryId = ID;
+export type CategoryId = number;

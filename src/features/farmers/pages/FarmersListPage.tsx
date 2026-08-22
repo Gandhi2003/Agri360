@@ -12,33 +12,35 @@ import {
   PageHeader,
   PermissionGate,
   SearchInput,
-  Select,
 } from '@components';
 import { useDebounce, useModal } from '@common/hooks';
-import type { SelectOption } from '@common/types';
 import { FARMERS_PERMISSIONS } from '../constants';
 import { useCreateFarmer, useDeleteFarmer, useFarmers, useUpdateFarmer } from '../hooks/useFarmers';
 import { useFarmersStore } from '../store/farmers.store';
 import { FarmerForm } from '../components/FarmerForm';
-import { FarmerStatus, type Farmer } from '../types';
+import type { Farmer } from '../types';
 import type { FarmerFormValues } from '../schemas/farmers.schema';
 
-const statusFilterOptions: SelectOption[] = [
-  { label: 'All Status', value: '' },
-  ...Object.values(FarmerStatus).map((value) => ({ label: value, value })),
-];
+const toFormValues = (farmer: Farmer): FarmerFormValues => ({
+  name: farmer.name,
+  phone: farmer.phone ?? '',
+  email: farmer.email ?? '',
+  village: farmer.village ?? '',
+  district: farmer.district ?? '',
+  state: farmer.state ?? '',
+  primary_crop: farmer.primary_crop ?? '',
+  land_size_acres: farmer.land_size_acres ?? undefined,
+});
 
 export default function FarmersListPage() {
   const { page, pageSize, setPage } = useFarmersStore();
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
   const debouncedSearch = useDebounce(search, 350);
 
   const { data, isLoading } = useFarmers({
     page,
     pageSize,
     search: debouncedSearch,
-    status: (statusFilter || undefined) as FarmerStatus | undefined,
   });
   const createFarmer = useCreateFarmer();
   const updateFarmer = useUpdateFarmer();
@@ -105,7 +107,9 @@ export default function FarmersListPage() {
             <Avatar firstName={row.original.name} size="sm" />
             <div className="min-w-0">
               <p className="truncate font-semibold text-foreground">{row.original.name}</p>
-              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {row.original.owner?.full_name || '—'}
+              </p>
             </div>
           </div>
         ),
@@ -205,21 +209,13 @@ export default function FarmersListPage() {
     <div className="space-y-6">
       <PageHeader title="Farmer Management" description="" />
 
-      <Card className="grid grid-cols-2 items-center gap-3 p-4">
+      <Card className="flex items-center gap-3 p-4">
         <SearchInput
           value={search}
           className="max-w-md"
           onChange={setSearch}
           placeholder="Search farmers…"
         />
-        <div className="ml-auto w-48">
-          <Select
-            options={statusFilterOptions}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            aria-label="Filter by status"
-          />
-        </div>
       </Card>
 
       <DataTable
@@ -247,11 +243,13 @@ export default function FarmersListPage() {
         isOpen={formModal.isOpen}
         onClose={formModal.close}
         title={editing ? 'Edit Farmer' : 'New Farmer'}
-        description="Provide the farmer’s details below."
+        description=""
+        size="lg"
       >
         <FarmerForm
-          defaultValues={editing ?? undefined}
+          defaultValues={editing ? toFormValues(editing) : undefined}
           onSubmit={handleSubmit}
+          onCancel={formModal.close}
           isSubmitting={createFarmer.isPending || updateFarmer.isPending}
           submitLabel={editing ? 'Update' : 'Create'}
         />
@@ -261,10 +259,16 @@ export default function FarmersListPage() {
         isOpen={viewModal.isOpen}
         onClose={viewModal.close}
         title="Farmer details"
-        description="Read-only view of this farmer’s record."
+        description=""
+        size="lg"
       >
         {viewModal.data && (
-          <FarmerForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />
+          <FarmerForm
+            defaultValues={toFormValues(viewModal.data)}
+            owner={viewModal.data.owner}
+            readOnly
+            onSubmit={() => {}}
+          />
         )}
       </Modal>
 

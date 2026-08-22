@@ -18,7 +18,7 @@ const CATEGORY_ACCENT_COLORS: CategoryAccentColor[] = [
 
 /** Deterministic per-category color so a given category always renders the same accent. */
 export const getCategoryAccentColor = (category: Category): CategoryAccentColor => {
-  const key = category.code || category.name || category.id;
+  const key = category.name || String(category.id);
   let hash = 0;
   for (let i = 0; i < key.length; i += 1) {
     hash = (hash << 5) - hash + key.charCodeAt(i);

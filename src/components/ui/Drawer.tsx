@@ -43,7 +43,7 @@ export function Drawer({
         role="dialog"
         aria-modal="true"
       >
-        <header className="flex items-center justify-between border-b border-border p-5">
+        <header className="flex h-15 shrink-0 items-center justify-between border-b border-border px-5">
           {title && <h2 className="text-lg font-semibold">{title}</h2>}
           <button
             onClick={onClose}
@@ -54,7 +54,7 @@ export function Drawer({
           </button>
         </header>
         <div className="flex-1 overflow-y-auto p-5">{children}</div>
-        {footer && <footer className="border-t border-border p-5">{footer}</footer>}
+        {footer && <footer className="p-5">{footer}</footer>}
       </aside>
     </div>,
     document.body,

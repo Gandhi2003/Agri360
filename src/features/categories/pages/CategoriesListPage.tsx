@@ -22,34 +22,37 @@ import {
 import { useCategoriesStore } from '../store/categories.store';
 import { CategoryCard } from '../components/CategoryCard';
 import { CategoryForm } from '../components/CategoryForm';
-import { CategoryStatus, type Category } from '../types';
+import type { Category } from '../types';
 import type { CategoryFormValues } from '../schemas/categories.schema';
 
 type ModalState = { mode: 'create' } | { mode: 'edit'; category: Category } | null;
 
-const statusFilterOptions = [
-  { value: '', label: 'All statuses' },
-  ...Object.values(CategoryStatus).map((value) => ({
-    value,
-    label: value.charAt(0).toUpperCase() + value.slice(1),
-  })),
+const activeFilterOptions = [
+  { value: '', label: 'All categories' },
+  { value: 'true', label: 'Active' },
+  { value: 'false', label: 'Inactive' },
 ];
+
+const toFormValues = (category: Category): CategoryFormValues => ({
+  name: category.name,
+  description: category.description ?? '',
+  is_active: category.is_active,
+});
 
 export default function CategoriesListPage() {
   const { page, pageSize, setPage } = useCategoriesStore();
   const [search, setSearch] = useState('');
-  const [status, setStatus] = useState<CategoryStatus | ''>('');
+  const [activeFilter, setActiveFilter] = useState('');
   const debouncedSearch = useDebounce(search, 350);
 
   const [modal, setModal] = useState<ModalState>(null);
   const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
-  const [togglingId, setTogglingId] = useState<Category['id'] | null>(null);
 
   const { data, isLoading } = useCategories({
     page,
     pageSize,
     search: debouncedSearch,
-    status: status || undefined,
+    is_active: activeFilter === '' ? undefined : activeFilter === 'true',
   });
   const createCategory = useCreateCategory();
   const updateCategory = useUpdateCategory();
@@ -72,16 +75,6 @@ export default function CategoriesListPage() {
   const handleConfirmDelete = () => {
     if (!deleteTarget) return;
     deleteCategory.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) });
-  };
-
-  const handleToggleStatus = (category: Category) => {
-    const nextStatus =
-      category.status === CategoryStatus.Active ? CategoryStatus.Inactive : CategoryStatus.Active;
-    setTogglingId(category.id);
-    updateCategory.mutate(
-      { id: category.id, dto: { status: nextStatus } },
-      { onSettled: () => setTogglingId(null) },
-    );
   };
 
   return (
@@ -108,10 +101,10 @@ export default function CategoriesListPage() {
         />
         <div className="ml-auto w-48">
           <Select
-            options={statusFilterOptions}
-            value={status}
-            onChange={(e) => setStatus(e.target.value as CategoryStatus | '')}
-            aria-label="Filter by status"
+            options={activeFilterOptions}
+            value={activeFilter}
+            onChange={(e) => setActiveFilter(e.target.value)}
+            aria-label="Filter by active status"
           />
         </div>
       </Card>
@@ -152,8 +145,6 @@ export default function CategoriesListPage() {
                 category={category}
                 onEdit={(c) => setModal({ mode: 'edit', category: c })}
                 onDelete={setDeleteTarget}
-                onToggleStatus={handleToggleStatus}
-                isTogglingStatus={togglingId === category.id}
               />
             ))}
           </div>
@@ -165,15 +156,11 @@ export default function CategoriesListPage() {
         isOpen={modal !== null}
         onClose={() => setModal(null)}
         title={modal?.mode === 'edit' ? 'Edit category' : 'New category'}
-        description={
-          modal?.mode === 'edit'
-            ? 'Update the details for this category.'
-            : 'Create a new category.'
-        }
+        description={modal?.mode === 'edit' ? '' : ''}
       >
         {modal !== null && (
           <CategoryForm
-            defaultValues={modal.mode === 'edit' ? modal.category : undefined}
+            defaultValues={modal.mode === 'edit' ? toFormValues(modal.category) : undefined}
             onSubmit={handleSubmit}
             onCancel={() => setModal(null)}
             isSubmitting={createCategory.isPending || updateCategory.isPending}

@@ -25,6 +25,7 @@ import {
 } from '../hooks/useCustomers';
 import { useCustomersStore } from '../store/customers.store';
 import { CustomerForm } from '../components/CustomerForm';
+import { CustomerDetails } from '../components/CustomerDetails';
 import { CustomerStatus, type Customer } from '../types';
 import type { CustomerFormValues } from '../schemas/customers.schema';
 
@@ -32,6 +33,14 @@ const statusFilterOptions: SelectOption[] = [
   { label: 'All Status', value: '' },
   ...Object.values(CustomerStatus).map((value) => ({ label: value, value })),
 ];
+
+const toFormValues = (customer: Customer): CustomerFormValues => ({
+  name: customer.name,
+  company: customer.company ?? '',
+  email: customer.email ?? '',
+  phone: customer.phone ?? '',
+  country: customer.country ?? '',
+});
 
 export default function CustomersListPage() {
   const { page, pageSize, setPage } = useCustomersStore();
@@ -110,9 +119,18 @@ export default function CustomersListPage() {
             <Avatar firstName={row.original.name} size="sm" />
             <div className="min-w-0">
               <p className="truncate font-bold text-foreground">{row.original.name}</p>
-              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {row.original.owner?.full_name || '—'}
+              </p>
             </div>
           </div>
+        ),
+      },
+      {
+        accessorKey: 'company',
+        header: 'Company',
+        cell: ({ row }) => (
+          <p className="font-bold text-sm text-black10">{row.original.company || '—'}</p>
         ),
       },
       {
@@ -225,11 +243,14 @@ export default function CustomersListPage() {
         isOpen={formModal.isOpen}
         onClose={formModal.close}
         title={editing ? 'Edit Customer' : 'New Customer'}
-        description="Provide the customer's details below."
+        description=""
+        size="lg"
       >
         <CustomerForm
-          defaultValues={editing ?? undefined}
+          defaultValues={editing ? toFormValues(editing) : undefined}
+          customer={editing ?? undefined}
           onSubmit={handleSubmit}
+          onCancel={formModal.close}
           isSubmitting={createCustomer.isPending || updateCustomer.isPending}
           submitLabel={editing ? 'Update' : 'Create'}
         />
@@ -239,11 +260,10 @@ export default function CustomersListPage() {
         isOpen={viewModal.isOpen}
         onClose={viewModal.close}
         title="Customer details"
-        description="Read-only view of this customer's record."
+        description=""
+        size="lg"
       >
-        {viewModal.data && (
-          <CustomerForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />
-        )}
+        {viewModal.data && <CustomerDetails customer={viewModal.data} />}
       </Modal>
 
       <ConfirmDialog

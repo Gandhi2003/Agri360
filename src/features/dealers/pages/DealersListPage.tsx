@@ -20,6 +20,7 @@ import { DEALERS_PERMISSIONS } from '../constants';
 import { useCreateDealer, useDeleteDealer, useDealers, useUpdateDealer } from '../hooks/useDealers';
 import { useDealersStore } from '../store/dealers.store';
 import { DealerForm } from '../components/DealerForm';
+import { DealerDetails } from '../components/DealerDetails';
 import { DealerStatus, type Dealer } from '../types';
 import type { DealerFormValues } from '../schemas/dealers.schema';
 
@@ -27,6 +28,15 @@ const statusFilterOptions: SelectOption[] = [
   { label: 'All Status', value: '' },
   ...Object.values(DealerStatus).map((value) => ({ label: value, value })),
 ];
+
+const toFormValues = (dealer: Dealer): DealerFormValues => ({
+  name: dealer.name,
+  company: dealer.company,
+  email: dealer.email ?? '',
+  phone: dealer.phone ?? '',
+  region: dealer.region ?? '',
+  gst_number: dealer.gst_number ?? '',
+});
 
 export default function DealersListPage() {
   const { page, pageSize, setPage } = useDealersStore();
@@ -105,7 +115,9 @@ export default function DealersListPage() {
             <Avatar firstName={row.original.name} size="sm" />
             <div className="min-w-0">
               <p className="truncate font-bold text-foreground">{row.original.name}</p>
-              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {row.original.owner?.full_name || '—'}
+              </p>
             </div>
           </div>
         ),
@@ -232,11 +244,14 @@ export default function DealersListPage() {
         isOpen={formModal.isOpen}
         onClose={formModal.close}
         title={editing ? 'Edit Dealer' : 'New Dealer'}
-        description="Provide the dealer's details below."
+        description=""
+        size="lg"
       >
         <DealerForm
-          defaultValues={editing ?? undefined}
+          defaultValues={editing ? toFormValues(editing) : undefined}
+          dealer={editing ?? undefined}
           onSubmit={handleSubmit}
+          onCancel={formModal.close}
           isSubmitting={createDealer.isPending || updateDealer.isPending}
           submitLabel={editing ? 'Update' : 'Create'}
         />
@@ -246,11 +261,10 @@ export default function DealersListPage() {
         isOpen={viewModal.isOpen}
         onClose={viewModal.close}
         title="Dealer details"
-        description="Read-only view of this dealer's record."
+        description=""
+        size="lg"
       >
-        {viewModal.data && (
-          <DealerForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />
-        )}
+        {viewModal.data && <DealerDetails dealer={viewModal.data} />}
       </Modal>
 
       <ConfirmDialog

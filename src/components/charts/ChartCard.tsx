@@ -51,7 +51,7 @@ interface SeriesPoint {
 const AXIS = {
   stroke: '#67707d',
   fontSize: 11,
-  fontWeight: 400,
+  fontWeight: 100,
   fontFamily: 'Helvetica, Arial, sans-serif',
 };
 const PIE_COLORS = [
@@ -125,7 +125,7 @@ export function MultiLineChartCard<T extends { name: string }>({
 }) {
   return (
     <ChartWrapper title={title} action={action}>
-      <LineChart data={data} margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
+      <LineChart data={data} margin={{ top: 4, right: 8, left: -28, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="rgb(var(--border))" vertical={false} />
         <XAxis dataKey="name" tick={AXIS} tickLine={false} axisLine={false} />
         <YAxis tick={AXIS} tickLine={false} axisLine={false} tickFormatter={formatK} />

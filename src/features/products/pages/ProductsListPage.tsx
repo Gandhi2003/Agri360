@@ -9,6 +9,7 @@ import {
   Checkbox,
   ConfirmDialog,
   DataTable,
+  Drawer,
   Modal,
   PageHeader,
   PermissionGate,
@@ -18,6 +19,7 @@ import {
 import { useDebounce, useModal } from '@common/hooks';
 import { formatCurrency, formatNumber } from '@common/utils';
 import type { SelectOption } from '@common/types';
+import { useCategories } from '@features/categories';
 import { PRODUCTS_PERMISSIONS } from '../constants';
 import {
   useCreateProduct,
@@ -26,27 +28,51 @@ import {
   useUpdateProduct,
 } from '../hooks/useProducts';
 import { useProductsStore } from '../store/products.store';
-import { ProductForm } from '../components/ProductForm';
-import { ProductStatus, type Product } from '../types';
+import { PRODUCT_FORM_ID, ProductForm } from '../components/ProductForm';
+import { ProductDetails } from '../components/ProductDetails';
+import type { Product } from '../types';
 import type { ProductFormValues } from '../schemas/products.schema';
 
-const statusFilterOptions: SelectOption[] = [
-  { label: 'All Status', value: '' },
-  ...Object.values(ProductStatus).map((value) => ({ label: value, value })),
+const activeFilterOptions: SelectOption[] = [
+  { label: 'All Products', value: '' },
+  { label: 'Active', value: 'true' },
+  { label: 'Inactive', value: 'false' },
 ];
+
+const toFormValues = (product: Product): ProductFormValues => ({
+  name: product.name,
+  sku: product.sku,
+  description: product.description ?? '',
+  unit: product.unit,
+  price: product.price,
+  cost_price: product.cost_price,
+  stock_quantity: product.stock_quantity,
+  reorder_level: product.reorder_level,
+  is_active: product.is_active,
+  category_id: product.category_id,
+});
 
 export default function ProductsListPage() {
   const { page, pageSize, setPage } = useProductsStore();
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [activeFilter, setActiveFilter] = useState('');
   const debouncedSearch = useDebounce(search, 350);
 
   const { data, isLoading } = useProducts({
     page,
     pageSize,
     search: debouncedSearch,
-    status: (statusFilter || undefined) as ProductStatus | undefined,
+    is_active: activeFilter === '' ? undefined : activeFilter === 'true',
   });
+  const { data: categoriesData } = useCategories({ page: 1, pageSize: 100 });
+  const categoryOptions = useMemo<SelectOption[]>(
+    () =>
+      (categoriesData?.data ?? []).map((category) => ({
+        label: category.name,
+        value: String(category.id),
+      })),
+    [categoriesData],
+  );
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
   const deleteProduct = useDeleteProduct();
@@ -112,16 +138,18 @@ export default function ProductsListPage() {
             <Avatar firstName={row.original.name} size="sm" />
             <div className="min-w-0">
               <p className="truncate font-semibold text-foreground">{row.original.name}</p>
-              <p className="font-mono text-xs text-muted-foreground">{row.original.code}</p>
+              <p className="font-mono text-xs text-muted-foreground">{row.original.sku}</p>
             </div>
           </div>
         ),
       },
       {
-        accessorKey: 'category_id',
+        accessorKey: 'category',
         header: 'Category',
         cell: ({ row }) => (
-          <p className="font-mono text-sm text-muted-foreground">{row.original.category_id}</p>
+          <p className="font-mono text-sm text-muted-foreground">
+            {row.original.category?.name || '—'}
+          </p>
         ),
       },
       {
@@ -208,10 +236,10 @@ export default function ProductsListPage() {
         />
         <div className="ml-auto w-48">
           <Select
-            options={statusFilterOptions}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            aria-label="Filter by status"
+            options={activeFilterOptions}
+            value={activeFilter}
+            onChange={(e) => setActiveFilter(e.target.value)}
+            aria-label="Filter by active status"
           />
         </div>
       </Card>
@@ -237,29 +265,47 @@ export default function ProductsListPage() {
         }}
       />
 
-      <Modal
+      <Drawer
         isOpen={formModal.isOpen}
         onClose={formModal.close}
         title={editing ? 'Edit Product' : 'New Product'}
-        description="Provide the product's details below."
+        width="max-w-2xl"
+        footer={
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={formModal.close}
+              disabled={createProduct.isPending || updateProduct.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form={PRODUCT_FORM_ID}
+              isLoading={createProduct.isPending || updateProduct.isPending}
+            >
+              {editing ? 'Update' : 'Create'}
+            </Button>
+          </div>
+        }
       >
         <ProductForm
-          defaultValues={editing ?? undefined}
+          defaultValues={editing ? toFormValues(editing) : undefined}
+          product={editing ?? undefined}
+          categoryOptions={categoryOptions}
           onSubmit={handleSubmit}
-          isSubmitting={createProduct.isPending || updateProduct.isPending}
-          submitLabel={editing ? 'Update' : 'Create'}
         />
-      </Modal>
+      </Drawer>
 
       <Modal
         isOpen={viewModal.isOpen}
         onClose={viewModal.close}
         title="Product details"
-        description="Read-only view of this product's record."
+        description=""
+        size="lg"
       >
-        {viewModal.data && (
-          <ProductForm defaultValues={viewModal.data} readOnly onSubmit={() => {}} />
-        )}
+        {viewModal.data && <ProductDetails product={viewModal.data} />}
       </Modal>
 
       <ConfirmDialog

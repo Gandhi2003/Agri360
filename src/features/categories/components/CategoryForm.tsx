@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { FileText, Hash, Save, Tag, ToggleLeft } from 'lucide-react';
-import { Button, Input, Select, Textarea } from '@components';
-import { CategoryStatus } from '../types';
+import { Save } from 'lucide-react';
+import { Button, Input, Switch, Textarea } from '@components';
 import { categorySchema, type CategoryFormValues } from '../schemas/categories.schema';
 
 interface CategoryFormProps {
@@ -14,30 +13,25 @@ interface CategoryFormProps {
   submitLabel?: string;
 }
 
-const statusOptions = Object.values(CategoryStatus).map((value) => ({
-  value,
-  label: value.charAt(0).toUpperCase() + value.slice(1),
-}));
-
 function Field({
-  icon,
   label,
   htmlFor,
+  required,
   children,
 }: {
-  icon: ReactNode;
   label: string;
   htmlFor?: string;
+  required?: boolean;
   children: ReactNode;
 }) {
   return (
     <div className="space-y-2">
       <label
         htmlFor={htmlFor}
-        className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+        className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
       >
-        <span className="text-primary">{icon}</span>
         {label}
+        {required && <span className="text-danger"> *</span>}
       </label>
       {children}
     </div>
@@ -57,25 +51,16 @@ export function CategoryForm({
     formState: { errors },
   } = useForm<CategoryFormValues>({
     resolver: zodResolver(categorySchema),
-    defaultValues: { status: CategoryStatus.Active, ...defaultValues },
+    defaultValues: { is_active: true, ...defaultValues },
   });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      <Field icon={<Tag className="size-4" />} label="Name" htmlFor="name">
+      <Field label="Name" htmlFor="name" required>
         <Input {...register('name')} error={errors.name?.message} placeholder="e.g. Seeds" />
       </Field>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <Field icon={<Hash className="size-4" />} label="Code" htmlFor="code">
-          <Input {...register('code')} error={errors.code?.message} placeholder="e.g. SEED" />
-        </Field>
-        <Field icon={<ToggleLeft className="size-4" />} label="Status" htmlFor="status">
-          <Select options={statusOptions} {...register('status')} error={errors.status?.message} />
-        </Field>
-      </div>
-
-      <Field icon={<FileText className="size-4" />} label="Description" htmlFor="description">
+      <Field label="Description" htmlFor="description">
         <Textarea
           {...register('description')}
           error={errors.description?.message}
@@ -83,9 +68,13 @@ export function CategoryForm({
         />
       </Field>
 
-      <div className="flex justify-end gap-2 border-t border-border pt-5">
+      <Field label="Active">
+        <Switch label="Active" {...register('is_active')} />
+      </Field>
+
+      <div className="flex justify-end gap-2">
         {onCancel && (
-          <Button type="button" variant="ghost" onClick={onCancel} disabled={isSubmitting}>
+          <Button type="button" variant="secondary" onClick={onCancel} disabled={isSubmitting}>
             Cancel
           </Button>
         )}

@@ -1,5 +1,3 @@
-import type { BaseEntity, ID } from '@common/types';
-
 export enum CustomerStatus {
   Active = 'active',
   Inactive = 'inactive',
@@ -7,20 +5,31 @@ export enum CustomerStatus {
   Archived = 'archived',
 }
 
-export interface Customer extends BaseEntity {
+export interface CustomerOwner {
+  id: number;
+  full_name: string;
+  email: string;
+}
+
+export interface Customer {
+  id: number;
   name: string;
-  code: string;
-  email?: string;
-  phone?: string;
-  country?: string;
-  description?: string;
+  company: string | null;
+  email: string | null;
+  phone: string | null;
+  country: string | null;
+  owner_id: number;
+  owner: CustomerOwner;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CreateCustomerDto {
   name: string;
-  code: string;
-  status: CustomerStatus;
-  description?: string;
+  company?: string;
+  email?: string;
+  phone?: string;
+  country?: string;
 }
 
 export type UpdateCustomerDto = Partial<CreateCustomerDto>;
@@ -30,4 +39,4 @@ export interface CustomerFilters {
   status?: CustomerStatus;
 }
 
-export type CustomerId = ID;
+export type CustomerId = number;

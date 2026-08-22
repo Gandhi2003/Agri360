@@ -1,31 +1,34 @@
-import type { BaseEntity, ID } from '@common/types';
-
-export enum SupplierStatus {
-  Active = 'active',
-  Inactive = 'inactive',
-  Pending = 'pending',
-  Archived = 'archived',
+export interface SupplierOwner {
+  id: number;
+  full_name: string;
+  email: string;
 }
 
-export interface Supplier extends BaseEntity {
+export interface Supplier {
+  id: number;
   name: string;
-  code: string;
-  status: SupplierStatus;
-  description?: string;
+  company: string | null;
+  email: string | null;
+  phone: string | null;
+  country: string | null;
+  owner_id: number;
+  owner: SupplierOwner;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CreateSupplierDto {
   name: string;
-  code: string;
-  status: SupplierStatus;
-  description?: string;
+  company?: string;
+  email?: string;
+  phone?: string;
+  country?: string;
 }
 
 export type UpdateSupplierDto = Partial<CreateSupplierDto>;
 
 export interface SupplierFilters {
   search?: string;
-  status?: SupplierStatus;
 }
 
-export type SupplierId = ID;
+export type SupplierId = number;

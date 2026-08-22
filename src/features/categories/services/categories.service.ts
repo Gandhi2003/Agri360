@@ -5,8 +5,7 @@ import type { CreateCategoryDto, CategoryFilters, CategoryId, UpdateCategoryDto 
 export const categoriesService = {
   getList: (params: PaginationParams & CategoryFilters) => categoriesApi.list(params),
   getOne: (id: CategoryId) => categoriesApi.getById(id),
-  create: (dto: CreateCategoryDto) =>
-    categoriesApi.create({ ...dto, code: dto.code.trim().toUpperCase() }),
+  create: (dto: CreateCategoryDto) => categoriesApi.create(dto),
   update: (id: CategoryId, dto: UpdateCategoryDto) => categoriesApi.update(id, dto),
   remove: (id: CategoryId) => categoriesApi.remove(id),
 };
